@@ -1,40 +1,40 @@
 module.exports = {
-  OWNER_IDS: [], // Bot owner ID's
-  PREFIX: "!", // Default prefix for the bot
-  SUPPORT_SERVER: "", // Your bot support server
+  OWNER_IDS: ["", ""], // Créateur du bot
+  PREFIX: ".", // Prefix par defaut
+  SUPPORT_SERVER: "", // Serveur d'Assistance
   PRESENCE: {
-    ENABLED: true, // Whether or not the bot should update its status
-    STATUS: "online", // The bot's status [online, idle, dnd, invisible]
-    TYPE: "WATCHING", // Status type for the bot [PLAYING | LISTENING | WATCHING | COMPETING]
-    MESSAGE: "{members} members in {servers} servers", // Your bot status message
+    ENABLED: true,
+    STATUS: "online",
+    TYPE: "WATCHING",
+    MESSAGE: "{members} members in {servers} servers",
   },
   DASHBOARD: {
-    enabled: false, // enable or disable dashboard
-    baseURL: "http://localhost:8080", // base url
-    failureURL: "http://localhost:8080", // failure redirect url
-    port: "8080", // port to run the bot on
+    enabled: false,
+    baseURL: "http://localhost:8080",
+    failureURL: "http://localhost:8080",
+    port: "8080",
   },
   INTERACTIONS: {
-    SLASH: false, // Should the interactions be enabled
-    CONTEXT: false, // Should contexts be enabled
-    GLOBAL: false, // Should the interactions be registered globally
-    TEST_GUILD_ID: "xxxxxxxxxx", // Guild ID where the interactions should be registered. [** Test you commands here first **]
+    SLASH: false,
+    CONTEXT: false,
+    GLOBAL: false,
+    TEST_GUILD_ID: "xxxxxxxxxx",
   },
   XP_SYSTEM: {
-    COOLDOWN: 5, // Cooldown in seconds between messages
+    COOLDOWN: 5,
     DEFAULT_LVL_UP_MSG: "{m}, You just advanced to **Level {l}**",
   },
   MISCELLANEOUS: {
-    DAILY_COINS: 100, // coins to be received by daily command
+    DAILY_COINS: 100,
   },
   ECONOMY: {
     CURRENCY: "₪",
-    DAILY_COINS: 100, // coins to be received by daily command
-    MIN_BEG_AMOUNT: 100, // minimum coins to be received when beg command is used
-    MAX_BEG_AMOUNT: 2500, // maximum coins to be received when beg command is used
+    DAILY_COINS: 100,
+    MIN_BEG_AMOUNT: 100,
+    MAX_BEG_AMOUNT: 2500,
   },
   SUGGESTIONS: {
-    ENABLED: true, // Should the suggestion system be enabled
+    ENABLED: true,
     EMOJI: {
       UP_VOTE: "⬆️",
       DOWN_VOTE: "⬇️",
@@ -47,7 +47,7 @@ module.exports = {
     BASE_API: "https://image-api.strangebot.xyz",
   },
   MUSIC: {
-    IDLE_TIME: 60, // Time in seconds before the bot disconnects from the voice channel
+    IDLE_TIME: 60,
     MAX_SEARCH_RESULTS: 5,
     NODES: [
       {
@@ -68,7 +68,7 @@ module.exports = {
       },
     ],
   },
-  /* Bot Embed Colors */
+  /* Couleurs des embed */
   EMBED_COLORS: {
     BOT_EMBED: "#068ADD",
     TRANSPARENT: "#36393F",
@@ -91,13 +91,13 @@ module.exports = {
     MOVE_LOG: "RANDOM",
     GIVEAWAYS: "#FF468A",
   },
-  /* Maximum number of keys that can be stored */
+  /* Nombre maximal de clés pouvant être stockées */
   CACHE_SIZE: {
     GUILDS: 100,
     USERS: 10000,
     MEMBERS: 10000,
   },
   MESSAGES: {
-    API_ERROR: "Unexpected Backend Error! Try again later or contact support server",
+    API_ERROR: "Erreur inattendue dans le backend ! Essayez à nouveau plus tard ou contactez le serveur d'assistance",
   },
 };
