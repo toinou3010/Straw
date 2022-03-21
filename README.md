@@ -8,7 +8,7 @@
 >
 > Support Server: [Rejoindre](https://discord.gg/sociale)
 
-### Fonctions
+### 🍙 Fonctions
 
 Straw est un bot multi-fonctions avec une magnifique decoration
 
@@ -21,7 +21,7 @@ Straw est un bot multi-fonctions avec une magnifique decoration
 **Rôles de réaction** : Support pour la création de multiples rôles de réaction personnalisés
 **Greeting** : Hautement personnalisable bienvenue et d'adieu embeds
 
-### Catégories
+### 🍣 Catégories
 
 Strange possède une liste exhaustive de toutes les commandes utiles (**plus de 100**) qui sont classées comme suit
 
