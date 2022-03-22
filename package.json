@@ -1,7 +1,7 @@
 {
   "name": "straw",
   "version": "4.2.0",
-  "description": "Bot discord multi-fonctions avec une magnifique decoration",
+  "description": "Bot discord multi-fonctionelle avec une magnifique decoration",
   "main": "bot.js",
   "author": "Sai Teja M",
   "license": "ISC",
