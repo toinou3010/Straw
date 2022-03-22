@@ -1,7 +1,7 @@
 {
-  "name": "discord-js-bot",
+  "name": "straw",
   "version": "4.2.0",
-  "description": "An open-source, multipurpose discord bot built using discord-js",
+  "description": "Bot discord multi-fonctions avec une magnifique decoration",
   "main": "bot.js",
   "author": "Sai Teja M",
   "license": "ISC",
@@ -11,14 +11,6 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node ."
-  },
-  "homepage": "https://github.com/saiteja-madha/discord-js-bot#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/saiteja-madha/discord-js-bot.git"
-  },
-  "bugs": {
-    "url": "https://github.com/saiteja-madha/discord-js-bot/issues"
   },
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
@@ -68,15 +60,6 @@
     "nodemon": "^2.0.15",
     "prettier": "2.5.1"
   },
-  "keywords": [
-    "discord",
-    "discord.js",
-    "discord-bot",
-    "open-source",
-    "bot",
-    "multipurpose",
-    "multi-purpose-bot"
-  ],
   "_moduleAliases": {
     "@root": ".",
     "@commands": "src/commands/",
