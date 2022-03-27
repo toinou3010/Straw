@@ -26,53 +26,53 @@ module.exports = (client) => {
   const overallUsage = `${Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)}%`;
 
   let desc = "";
-  desc += `❒ Total guilds: ${guilds}\n`;
-  desc += `❒ Total users: ${users}\n`;
-  desc += `❒ Total channels: ${channels}\n`;
-  desc += `❒ Websocket Ping: ${client.ws.ping} ms\n`;
+  desc += `❒ Total serveur: ${guilds}\n`;
+  desc += `❒ Total utilisateurs: ${users}\n`;
+  desc += `❒ Total salons: ${channels}\n`;
+  desc += `❒ Ping: ${client.ws.ping} ms\n`;
   desc += "\n";
 
   const embed = new MessageEmbed()
-    .setTitle("Bot Information")
+    .setTitle("Straw Informations")
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(desc)
     .addField(
       "CPU:",
       stripIndent`
-        ❯ **OS:** ${platform} [${architecture}]
-        ❯ **Cores:** ${cores}
-        ❯ **Usage:** ${cpuUsage}
+        <:point:955639055511601152>**OS:** ${platform} [${architecture}]
+        <:point:955639055511601152>**Coeurs:** ${cores}
+        <:point:955639055511601152>**Utilisation:** ${cpuUsage}
         `,
       true
     )
     .addField(
-      "Bot's RAM:",
+      "RAM Bot:",
       stripIndent`
-        ❯ **Used:** ${botUsed}
-        ❯ **Available:** ${botAvailable}
-        ❯ **Usage:** ${botUsage}
+        <:point:955639055511601152>**Utilisé:** ${botUsed}
+        <:point:955639055511601152>**Disponible:** ${botAvailable}
+        <:point:955639055511601152>**Utilisation:** ${botUsage}
         `,
       true
     )
     .addField(
-      "Overall RAM:",
+      "RAM Total:",
       stripIndent`
-      ❯ **Used:** ${overallUsed}
-      ❯ **Available:** ${overallAvailable}
-      ❯ **Usage:** ${overallUsage}
+      <:point:955639055511601152>**Utilisé:** ${overallUsed}
+      <:point:955639055511601152>**Disponible:** ${overallAvailable}
+      <:point:955639055511601152>**Utilisation:** ${overallUsage}
       `,
       true
     )
-    .addField("Node Js version", process.versions.node, false)
-    .addField("Uptime", "```" + timeformat(process.uptime()) + "```", false);
+    .addField("Node Js", process.versions.node, false)
+    .addField("En ligne depuis", "```" + timeformat(process.uptime()) + "```", false);
 
   // Buttons
   let components = [];
-  components.push(new MessageButton().setLabel("Invite Link").setURL(client.getInvite()).setStyle("LINK"));
+  components.push(new MessageButton().setLabel("Invitation").setURL(client.getInvite()).setStyle("LINK"));
 
   if (SUPPORT_SERVER) {
-    components.push(new MessageButton().setLabel("Support Server").setURL(SUPPORT_SERVER).setStyle("LINK"));
+    components.push(new MessageButton().setLabel("Serveur d'Assistance").setURL(SUPPORT_SERVER).setStyle("LINK"));
   }
 
   if (DASHBOARD.enabled) {

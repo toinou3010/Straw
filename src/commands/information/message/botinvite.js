@@ -5,8 +5,8 @@ const botinvite = require("../shared/botinvite");
 module.exports = class BotInvite extends Command {
   constructor(client) {
     super(client, {
-      name: "botinvite",
-      description: "gives you bot invite",
+      name: "invite",
+      description: "inviter le bot",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -26,9 +26,9 @@ module.exports = class BotInvite extends Command {
     const response = botinvite(message.client);
     try {
       await message.author.send(response);
-      return message.reply("Check your DM for my information! :envelope_with_arrow:");
+      return message.reply("Regarder le message que je vous ai envoyer en privée");
     } catch (ex) {
-      return message.reply("I cannot send you my information! Is your DM open?");
+      return message.reply("Tu as fermer tes MP?");
     }
   }
 };

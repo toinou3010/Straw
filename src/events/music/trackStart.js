@@ -13,13 +13,13 @@ module.exports = (client, player, track, payload) => {
   const channel = client.channels.cache.get(player.textChannel);
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: "Now Playing" })
+    .setAuthor({ name: "Musique en cours" })
     .setColor(client.config.EMBED_COLORS.BOT_EMBED)
-    .setDescription(`[${track.title}](${track.uri})`)
-    .addField("Song Duration", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
-    .setFooter({ text: `Requested By: ${track.requester.tag}` });
+    .setDescription(`<:point:955639055511601152>[${track.title}](${track.uri})`)
+    .addField("<:point:955639055511601152>Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+    .setFooter({ text: `Demander par: ${track.requester.tag}` });
 
   if (typeof track.displayThumbnail === "function") embed.setThumbnail(track.displayThumbnail("hqdefault"));
-  if (player.queue.totalSize > 0) embed.addField("Position in Queue", (player.queue.size - 0).toString(), true);
+  if (player.queue.totalSize > 0) embed.addField("<:point:955639055511601152>Position dans la liste", (player.queue.size - 0).toString(), true);
   sendMessage(channel, { embeds: [embed] });
 };

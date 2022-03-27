@@ -16,7 +16,7 @@ const cache = {};
 module.exports = class HelpCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "help",
+      name: "aide",
       description: "command help menu",
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
@@ -28,8 +28,8 @@ module.exports = class HelpCommand extends Command {
         enabled: true,
         options: [
           {
-            name: "command",
-            description: "name of the command",
+            name: "commande",
+            description: "nom de la commande",
             required: false,
             type: "STRING",
           },
@@ -49,7 +49,7 @@ module.exports = class HelpCommand extends Command {
     // !help
     if (!trigger) {
       if (cache[`${message.guildId}|${message.author.id}`]) {
-        return message.reply("You are already viewing the help menu.");
+        return message.reply("Tu regarde déja la page d'aide, Baka!.");
       }
       const response = await getHelpMenu(message);
       const sentMsg = await message.reply(response);
@@ -61,19 +61,19 @@ module.exports = class HelpCommand extends Command {
     if (cmd) return cmd.sendUsage(message.channel, data.prefix, trigger);
 
     // No matching command/category found
-    await message.reply("No matching command found");
+    await message.reply("Zut! Aucune commande trouver");
   }
 
   /**
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    let cmdName = interaction.options.getString("command");
+    let cmdName = interaction.options.getString("commande");
 
     // !help
     if (!cmdName) {
       if (cache[`${interaction.guildId}|${interaction.user.id}`]) {
-        return interaction.followUp("You are already viewing the help menu.");
+        return interaction.followUp("Tu regarde déja la page d'aide, Baka!");
       }
       const response = await getHelpMenu(interaction);
       const sentMsg = await interaction.followUp(response);
@@ -88,7 +88,7 @@ module.exports = class HelpCommand extends Command {
     }
 
     // No matching command/category found
-    await interaction.followUp("No matching command found");
+    await interaction.followUp("Zut! Aucune commande trouver");
   }
 };
 
@@ -104,14 +104,14 @@ async function getHelpMenu({ client, guild }) {
     const data = {
       label: value.name,
       value: key,
-      description: `View commands in ${value.name} category`,
+      description: `Voir les commandes de la catégorie ${value.name}`,
       emoji: value.emoji,
     };
     options.push(data);
   });
 
   const menuRow = new MessageActionRow().addComponents(
-    new MessageSelectMenu().setCustomId("help-menu").setPlaceholder("Choose the command category").addOptions(options)
+    new MessageSelectMenu().setCustomId("help-menu").setPlaceholder("Choisir une catégorie de commande").addOptions(options)
   );
 
   // Buttons Row
@@ -120,6 +120,9 @@ async function getHelpMenu({ client, guild }) {
     new MessageButton().setCustomId("previousBtn").setEmoji("⬅️").setStyle("SECONDARY").setDisabled(true),
     new MessageButton().setCustomId("nextBtn").setEmoji("➡️").setStyle("SECONDARY").setDisabled(true)
   );
+	if (SUPPORT_SERVER) {
+    components.push(new MessageButton().setLabel("🍣 Straw Café め").setURL(SUPPORT_SERVER).setStyle("LINK"));
+  }
 
   let buttonsRow = new MessageActionRow().addComponents(components);
 
@@ -127,11 +130,11 @@ async function getHelpMenu({ client, guild }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
-      "**About Me:**\n" +
-        `Hello I am ${guild.me.displayName}!\n` +
-        "A cool multipurpose discord bot which can serve all your needs\n\n" +
-        `**Invite Me:** [Here](${client.getInvite()})\n` +
-        `**Support Server:** [Join](${SUPPORT_SERVER})`
+      "**<:point:955639055511601152> À propos de moi:**\n" +
+        `Je suis Straw!\n` +
+        "Je serais la baby-sitters sur votre serveur pendant votre absences, Je sais presque tout faire, Je suis en maintenance mais mes commandes marche tres bien sauf `rank, giveaways`\n\n" +
+        `<:point:955639055511601152> **Invite Moi:** [Aller clique](${client.getInvite()})\n` +
+        `<:point:955639055511601152> **Serveur d'Assistance:** [Straw Café](${SUPPORT_SERVER})`
     );
 
   return {
@@ -210,7 +213,7 @@ function getSlashCategoryEmbeds(client, category) {
   if (category === "IMAGE") {
     client.slashCommands
       .filter((cmd) => cmd.category === category)
-      .forEach((cmd) => (collector += `\`/${cmd.name}\`\n ❯ ${cmd.description}\n\n`));
+      .forEach((cmd) => (collector += `\`/${cmd.name}\`\n <:point:955639055511601152> ${cmd.description}\n\n`));
 
     const availableFilters = client.slashCommands
       .get("filter")
@@ -223,12 +226,12 @@ function getSlashCategoryEmbeds(client, category) {
       .join(", ");
 
     collector +=
-      "**Available Filters:**\n" + `${availableFilters}` + `*\n\n**Available Generators**\n` + `${availableGens}`;
+      "**Filtres disponnible:**\n" + `${availableFilters}` + `*\n\n**Générateur disponnible**\n` + `${availableGens}`;
 
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
+      .setAuthor({ name: `${category} Commandes` })
       .setDescription(collector);
 
     return [embed];
@@ -241,8 +244,8 @@ function getSlashCategoryEmbeds(client, category) {
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
-      .setDescription("No commands in this category");
+      .setAuthor({ name: `${category} Commandes` })
+      .setDescription("Circuler y'as rien à voir");
 
     return [embed];
   }
@@ -257,8 +260,8 @@ function getSlashCategoryEmbeds(client, category) {
       const subCmds = cmd.slashCommand.options.filter((opt) => opt.type === "SUB_COMMAND");
       const subCmdsString = subCmds.map((s) => s.name).join(", ");
 
-      return `\`/${cmd.name}\`\n ❯ **Description**: ${cmd.description}\n ${
-        subCmds == 0 ? "" : `❯ **SubCommands [${subCmds.length}]**: ${subCmdsString}\n`
+      return `\`/${cmd.name}\`\n <:point:955639055511601152> **Description**: ${cmd.description}\n ${
+        subCmds == 0 ? "" : `<:point:955639055511601152> **SubCommands [${subCmds.length}]**: ${subCmdsString}\n`
       } `;
     });
 
@@ -269,9 +272,9 @@ function getSlashCategoryEmbeds(client, category) {
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
+      .setAuthor({ name: `${category} Commandes` })
       .setDescription(item.join("\n"))
-      .setFooter({ text: `page ${index + 1} of ${arrSplitted.length}` });
+      .setFooter({ text: `page ${index + 1} sur ${arrSplitted.length}` });
     arrEmbeds.push(embed);
   });
 
@@ -307,7 +310,7 @@ function getMsgCategoryEmbeds(client, category, prefix) {
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
+      .setAuthor({ name: `${category} Commandes` })
       .setDescription(collector);
 
     return [embed];
@@ -320,8 +323,8 @@ function getMsgCategoryEmbeds(client, category, prefix) {
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
-      .setDescription("No commands in this category");
+      .setAuthor({ name: `${category} Commandes` })
+      .setDescription("Circuler y'as rien a voir");
 
     return [embed];
   }
@@ -331,7 +334,7 @@ function getMsgCategoryEmbeds(client, category, prefix) {
 
   while (commands.length) {
     let toAdd = commands.splice(0, commands.length > CMDS_PER_PAGE ? CMDS_PER_PAGE : commands.length);
-    toAdd = toAdd.map((cmd) => `\`${prefix}${cmd.name}\`\n ❯ ${cmd.description}\n`);
+    toAdd = toAdd.map((cmd) => `\`${prefix}${cmd.name}\`\n <:point:955639055511601152> ${cmd.description}\n`);
     arrSplitted.push(toAdd);
   }
 
@@ -339,10 +342,10 @@ function getMsgCategoryEmbeds(client, category, prefix) {
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)
       .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Commands` })
+      .setAuthor({ name: `${category} Commandes` })
       .setDescription(item.join("\n"))
       .setFooter({
-        text: `page ${index + 1} of ${arrSplitted.length} | Type ${prefix}help <command> for more command information`,
+        text: `page ${index + 1} sur ${arrSplitted.length} | Tape ${prefix}aide <commande> pour plus d'information sue une commande, vous serais pas flic par hasard?`,
       });
     arrEmbeds.push(embed);
   });

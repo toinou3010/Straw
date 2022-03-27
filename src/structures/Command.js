@@ -124,20 +124,20 @@ class Command {
 
     // Owner commands
     if (this.category === "OWNER" && !OWNER_IDS.includes(message.author.id)) {
-      return message.reply("This command is only accessible to bot owners");
+      return message.reply("Commande réservé aux développeurs");
     }
 
     // user permissions
     if (message.member && this.userPermissions.length > 0) {
       if (!message.channel.permissionsFor(message.member).has(this.userPermissions)) {
-        return message.reply(`You need ${parsePermissions(this.userPermissions)} for this command`);
+        return message.reply(`Tu as besoin de la permission ${parsePermissions(this.userPermissions)} pour cet commande`);
       }
     }
 
     // bot permissions
     if (this.botPermissions.length > 0) {
       if (!message.channel.permissionsFor(message.guild.me).has(this.botPermissions)) {
-        return message.reply(`I need ${parsePermissions(this.botPermissions)} for this command`);
+        return message.reply(`J'ai besoin de la permission ${parsePermissions(this.botPermissions)} pour cet commande`);
       }
     }
 
@@ -152,14 +152,14 @@ class Command {
     if (this.cooldown > 0) {
       const remaining = this.getRemainingCooldown(message.author.id);
       if (remaining > 0) {
-        return message.reply(`You are on cooldown. You can again use the command in \`${timeformat(remaining)}\``);
+        return message.reply(`Arrête de me harceler patiente \`${timeformat(remaining)}\``);
       }
     }
 
     try {
       await this.messageRun(message, args, data);
     } catch (ex) {
-      await sendMessage(message.channel, "Oops! An error occurred while running the command");
+      await sendMessage(message.channel, "Oups, une erreur lors du lancement de la commande");
       this.client.logger.error("messageRun", ex);
     } finally {
       this.applyCooldown(message.author.id);
@@ -184,7 +184,7 @@ class Command {
     // Owner commands
     if (this.category === "OWNER" && !OWNER_IDS.includes(interaction.user.id)) {
       return interaction.reply({
-        content: `This command is only accessible to bot owners`,
+        content: `Cet commande est réservée aux développeurs`,
         ephemeral: true,
       });
     }
@@ -193,7 +193,7 @@ class Command {
     if (interaction.member && this.userPermissions.length > 0) {
       if (!interaction.member.permissions.has(this.userPermissions)) {
         return interaction.reply({
-          content: `You need ${parsePermissions(this.userPermissions)} for this command`,
+          content: `Tu as besoin de la permission ${parsePermissions(this.userPermissions)} pour cet commande`,
           ephemeral: true,
         });
       }
@@ -203,7 +203,7 @@ class Command {
     if (this.botPermissions.length > 0) {
       if (!interaction.guild.me.permissions.has(this.botPermissions)) {
         return interaction.reply({
-          content: `I need ${parsePermissions(this.botPermissions)} for this command`,
+          content: `J'ai besoin de la permission ${parsePermissions(this.botPermissions)} pour cet commande`,
           ephemeral: true,
         });
       }
@@ -214,7 +214,7 @@ class Command {
       const remaining = this.getRemainingCooldown(interaction.user.id);
       if (remaining > 0) {
         return interaction.reply({
-          content: `You are on cooldown. You can again use the command in \`${timeformat(remaining)}\``,
+          content: `Arrête de me harceler attend \`${timeformat(remaining)}\``,
           ephemeral: true,
         });
       }
@@ -225,7 +225,7 @@ class Command {
       const settings = await getSettings(interaction.guild);
       await this.interactionRun(interaction, { settings });
     } catch (ex) {
-      await interaction.followUp("Oops! An error occurred while running the command");
+      await interaction.followUp("Oups! Une erreur lors du lancement de la commande");
       this.client.logger.error("interactionRun", ex);
     } finally {
       this.applyCooldown(interaction.user.id);
@@ -238,19 +238,19 @@ class Command {
    * @param {string} invoke - alias that was used to trigger this command
    * @param {string} title - the embed title
    */
-  getCommandUsage(prefix = PREFIX, invoke = this.name, title = "Usage") {
+  getCommandUsage(prefix = PREFIX, invoke = this.name, title = "Utilisation") {
     let desc = "";
     if (this.command.subcommands.length > 0) {
       this.command.subcommands.forEach((sub) => {
-        desc += `\`${prefix}${invoke} ${sub.trigger}\`\n❯ ${sub.description}\n\n`;
+        desc += `\`${prefix}${invoke} ${sub.trigger}\`\n<:point:955639055511601152>${sub.description}\n\n`;
       });
       if (this.cooldown) {
-        desc += `**Cooldown:** ${timeformat(this.cooldown)}`;
+        desc += `**Temps d'attente :** ${timeformat(this.cooldown)}`;
       }
     } else {
       desc += `\`\`\`css\n${prefix}${invoke} ${this.command.usage}\`\`\``;
-      if (this.description !== "") desc += `\n**Help:** ${this.description}`;
-      if (this.cooldown) desc += `\n**Cooldown:** ${timeformat(this.cooldown)}`;
+      if (this.description !== "") desc += `\n**Aide :** ${this.description}`;
+      if (this.cooldown) desc += `\n**Temps d'attente :** ${timeformat(this.cooldown)}`;
     }
 
     const embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED).setDescription(desc);
@@ -275,14 +275,14 @@ class Command {
     if (this.slashCommand.options.find((o) => o.type === "SUB_COMMAND")) {
       const subCmds = this.slashCommand.options.filter((opt) => opt.type === "SUB_COMMAND");
       subCmds.forEach((sub) => {
-        desc += `\`/${this.name} ${sub.name}\`\n❯ ${sub.description}\n\n`;
+        desc += `\`/${this.name} ${sub.name}\`\n<:point:955639055511601152>${sub.description}\n\n`;
       });
     } else {
-      desc += `\`/${this.name}\`\n\n**Help:** ${this.description}`;
+      desc += `\`/${this.name}\`\n\n**Aide:** ${this.description}`;
     }
 
     if (this.cooldown) {
-      desc += `\n**Cooldown:** ${timeformat(this.cooldown)}`;
+      desc += `\n**Temps d'attente:** ${timeformat(this.cooldown)}`;
     }
 
     const embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED).setDescription(desc);

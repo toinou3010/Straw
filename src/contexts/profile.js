@@ -34,20 +34,19 @@ async function profile({ guild }, user) {
   const embed = new MessageEmbed()
     .setThumbnail(user.displayAvatarURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .addField("User Tag", user.tag, true)
-    .addField("ID", user.id, true)
-    .addField("Discord Registered", user.createdAt.toDateString(), false)
-    .addField("Cash", `${userData.coins} ${ECONOMY.CURRENCY}`, true)
-    .addField("Bank", `${userData.bank} ${ECONOMY.CURRENCY}`, true)
-    .addField("Net Worth", `${userData.coins + userData.bank}${ECONOMY.CURRENCY}`, true)
-    .addField("Reputation", `${userData.reputation.received}`, true)
-    .addField("Daily Streak", `${userData.daily.streak}`, true)
-    .addField("XP*", `${settings.ranking.enabled ? memberData.xp + " " : "Not Tracked"}`, true)
-    .addField("Level*", `${settings.ranking.enabled ? memberData.level + " " : "Not Tracked"}`, true)
-    .addField("Strikes*", memberData.strikes + " ", true)
-    .addField("Warnings*", memberData.warnings + " ", true)
-    .addField("Avatar-URL", user.displayAvatarURL({ format: "png" }))
-    .setFooter({ text: "Fields marked (*) are guild specific" });
+    .addField("<:point:955639055511601152>Pseudo", user.tag, true)
+    .addField("<:point:955639055511601152>ID", user.id, true)
+    .addField("<:point:955639055511601152>Inscris depuis", user.createdAt.toDateString(), false)
+    .addField("<:point:955639055511601152>Argent", `${userData.coins} ${ECONOMY.CURRENCY}`, true)
+    .addField("<:point:955639055511601152>Banque", `${userData.bank} ${ECONOMY.CURRENCY}`, true)
+    .addField("<:point:955639055511601152>Valeur not", `${userData.coins + userData.bank}${ECONOMY.CURRENCY}`, true)
+    .addField("<:point:955639055511601152>Reputation", `${userData.reputation.received}`, true)
+    .addField("<:point:955639055511601152>Payement par jour", `${userData.daily.streak}`, true)
+    .addField("<:point:955639055511601152>XP*", `${settings.ranking.enabled ? memberData.xp + " " : "Non tracer"}`, true)
+    .addField("<:point:955639055511601152>Niveau*", `${settings.ranking.enabled ? memberData.level + " " : "Non Tracer"}`, true)
+    .addField("<:point:955639055511601152>Strikes*", memberData.strikes + " ", true)
+    .addField("<:point:955639055511601152>Avertissement*", memberData.warnings + " ", true)
+    .setFooter({ text: "Les zone avec (*) sont spécifiques aux serveur" });
 
   return { embeds: [embed] };
 }

@@ -7,12 +7,12 @@ module.exports = class Play extends Command {
   constructor(client) {
     super(client, {
       name: "play",
-      description: "play a song from youtube",
+      description: "jouer de la musique sur discord",
       category: "MUSIC",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "<song-name>",
+        usage: "<musique>",
         minArgsCount: 1,
       },
       slashCommand: {
@@ -50,11 +50,11 @@ module.exports = class Play extends Command {
 };
 
 async function play({ member, guild, channel }, user, query) {
-  if (!member.voice.channel) return "🚫 You need to join a voice channel first";
+  if (!member.voice.channel) return "❀ Oh grand genie que vous êtes que votre grande sagesse vous guide jusqu'as un vocale, non serieux rejoin un vocale je suis pas spotify, Baka!";
   let player = guild.client.musicManager.get(guild.id);
 
   if (player && member.voice.channel !== guild.me.voice.channel) {
-    return "🚫 You must be in the same voice channel as mine";
+    return "❀ Tu doit être dans le même salon que moi";
   }
 
   try {
@@ -67,7 +67,7 @@ async function play({ member, guild, channel }, user, query) {
   } catch (ex) {
     if (ex.message === "No available nodes.") {
       guild.client.logger.debug("No available nodes!");
-      return "🚫 No available nodes! Try again later";
+      return "❀ J'ai rencontrer une erreur attendais le temps que je discute avec l'erreur et vous pouvais refaire la commande";
     }
   }
 
@@ -82,7 +82,7 @@ async function play({ member, guild, channel }, user, query) {
     }
   } catch (err) {
     guild.client.logger.error("Search Exception", err);
-    return "There was an error while searching";
+    return "❀ Erreur lors de la recherche";
   }
 
   let embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED);
@@ -91,24 +91,24 @@ async function play({ member, guild, channel }, user, query) {
   switch (res.loadType) {
     case "NO_MATCHES":
       if (!player.queue.current) player.destroy();
-      return `No results found matching ${query}`;
+      return `Aucun résultats pour ${query}`;
 
     case "TRACK_LOADED":
       track = res.tracks[0];
       player.queue.add(track);
       if (!player.playing && !player.paused && !player.queue.size) {
         player.play();
-        return "> 🎶 Adding song to queue";
+        return "> ❀ Ajout de musique a la liste";
       }
 
       embed
-        .setAuthor({ name: "Added Song to queue" })
+        .setAuthor({ name: "❀ Musique ajouter a la liste" })
         .setDescription(`[${track.title}](${track.uri})`)
-        .addField("Song Duration", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
-        .setFooter({ text: `Requested By: ${track.requester.tag}` });
+        .addField("<:point:955639055511601152>Durée :", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+        .setFooter({ text: `Demander par: ${track.requester.tag}` });
 
       if (typeof track.displayThumbnail === "function") embed.setThumbnail(track.displayThumbnail("hqdefault"));
-      if (player.queue.totalSize > 0) embed.addField("Position in Queue", (player.queue.size - 0).toString(), true);
+      if (player.queue.totalSize > 0) embed.addField("<:point:955639055511601152>Position dans la liste", (player.queue.size - 0).toString(), true);
       return { embeds: [embed] };
 
     case "PLAYLIST_LOADED":
@@ -118,11 +118,11 @@ async function play({ member, guild, channel }, user, query) {
       }
 
       embed
-        .setAuthor({ name: "Added Playlist to queue" })
+        .setAuthor({ name: "❀ Playlist ajouter a la liste" })
         .setDescription(res.playlist.name)
-        .addField("Enqueued", `${res.tracks.length} songs`, true)
-        .addField("Playlist duration", "`" + prettyMs(res.playlist.duration, { colonNotation: true }) + "`", true)
-        .setFooter({ text: `Requested By: ${res.tracks[0].requester.tag}` });
+        .addField("<:point:955639055511601152>Mis en liste", `${res.tracks.length} musique`, true)
+        .addField("<:point:955639055511601152>Durée de la playlist", "`" + prettyMs(res.playlist.duration, { colonNotation: true }) + "`", true)
+        .setFooter({ text: `Demander par: ${res.tracks[0].requester.tag}` });
 
       return { embeds: [embed] };
 
@@ -131,16 +131,16 @@ async function play({ member, guild, channel }, user, query) {
       player.queue.add(track);
       if (!player.playing && !player.paused && !player.queue.size) {
         player.play();
-        return "> 🎶 Adding song to queue";
+        return "> ❀ Ajout à la liste";
       }
 
       embed
-        .setAuthor({ name: "Added Song to queue" })
+        .setAuthor({ name: "❀ Ajouter à la liste" })
         .setDescription(`[${track.title}](${track.uri})`)
-        .addField("Song Duration", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
-        .setFooter({ text: `Requested By: ${track.requester.tag}` });
+        .addField("<:point:955639055511601152>Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+        .setFooter({ text: `Demander par: ${track.requester.tag}` });
 
-      if (player.queue.totalSize > 0) embed.addField("Position in Queue", (player.queue.size - 0).toString(), true);
+      if (player.queue.totalSize > 0) embed.addField("<:point:955639055511601152>Position dans la liste", (player.queue.size - 0).toString(), true);
       return { embeds: [embed] };
   }
 }

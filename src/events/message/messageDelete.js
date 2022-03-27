@@ -20,16 +20,16 @@ module.exports = async (client, message) => {
     if (!logChannel) return;
 
     const embed = new MessageEmbed()
-      .setAuthor({ name: "Ghost ping detected" })
+      .setAuthor({ name: "Mention Fantôme détectée" })
       .setDescription(
-        `**Message:**\n${message.content}\n\n` +
-          `**Author:** ${message.author.tag} \`${message.author.id}\`\n` +
-          `**Channel:** ${message.channel.toString()}`
+        `**<:point:955639055511601152>Message:**\n${message.content}\n\n` +
+          `**<:point:955639055511601152>Auteur:** ${message.author.tag} \`${message.author.id}\`\n` +
+          `**<:point:955639055511601152>Salon:** ${message.channel.toString()}`
       )
-      .addField("Members", members.size.toString(), true)
-      .addField("Roles", roles.size.toString(), true)
-      .addField("Everyone?", everyone.toString(), true)
-      .setFooter({ text: `Sent at: ${message.createdAt}` });
+      .addField("<:point:955639055511601152>Membres", members.size.toString(), true)
+      .addField("<:point:955639055511601152>Roles", roles.size.toString(), true)
+      .addField("<:point:955639055511601152>Everyone?", everyone.toString(), true)
+      .setFooter({ text: `Envoyé à ${message.createdAt}` });
 
     sendMessage(logChannel, { embeds: [embed] });
   }

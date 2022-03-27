@@ -5,14 +5,14 @@ const { musicValidations } = require("@utils/botUtils");
 module.exports = class Loop extends Command {
   constructor(client) {
     super(client, {
-      name: "loop",
-      description: "loops the song or queue",
+      name: "boucle",
+      description: "met en boucle le morceau ou la file d'attente",
       category: "MUSIC",
       validations: musicValidations,
       command: {
         enabled: true,
         minArgsCount: 1,
-        usage: "<queue|track>",
+        usage: "<liste|piste>",
       },
       slashCommand: {
         enabled: true,
@@ -44,7 +44,7 @@ module.exports = class Loop extends Command {
    */
   async messageRun(message, args) {
     const input = args[0].toLowerCase();
-    const type = input === "queue" ? "queue" : "track";
+    const type = input === "liste" ? "liste" : "piste";
     const response = toggleLoop(message, type);
     await message.reply(response);
   }
@@ -53,7 +53,7 @@ module.exports = class Loop extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const type = interaction.options.getString("type") || "track";
+    const type = interaction.options.getString("type") || "piste";
     const response = toggleLoop(interaction, type);
     await interaction.followUp(response);
   }
@@ -63,14 +63,14 @@ function toggleLoop({ client, guildId }, type) {
   const player = client.musicManager.get(guildId);
 
   // track
-  if (type === "track") {
+  if (type === "piste") {
     player.setTrackRepeat(!player.trackRepeat);
-    return `Track loop ${player.trackRepeat ? "enabled" : "disabled"}`;
+    return `Piste en boucle ${player.trackRepeat ? "activer" : "désactiver"}`;
   }
 
   // queue
-  else if (type === "queue") {
+  else if (type === "liste") {
     player.setQueueRepeat(!player.queueRepeat);
-    return `Queue loop ${player.queueRepeat ? "enabled" : "disabled"}`;
+    return `Liste en boucle ${player.queueRepeat ? "activer" : "désactiver"}`;
   }
 }

@@ -65,32 +65,32 @@ async function closeTicket(channel, closedBy, reason) {
 
     let content = "";
     reversed.forEach((m) => {
-      content += `[${new Date(m.createdAt).toLocaleString("en-US")}] - ${m.author.tag}\n`;
+      content += `[${new Date(m.createdAt).toLocaleString("fr-FR")}] - ${m.author.tag}\n`;
       if (m.cleanContent !== "") content += `${m.cleanContent}\n`;
       if (m.attachments.size > 0) content += `${m.attachments.map((att) => att.proxyURL).join(", ")}\n`;
       content += "\n";
     });
 
-    const logsUrl = await postToBin(content, `Ticket Logs for ${channel.name}`);
+    const logsUrl = await postToBin(content, `Logs Ticket pour ${channel.name}`);
     const ticketDetails = await parseTicketDetails(channel);
 
     const components = [];
     if (logsUrl) {
       components.push(
         new MessageActionRow().addComponents(
-          new MessageButton().setLabel("Transcript").setURL(logsUrl.short).setStyle("LINK")
+          new MessageButton().setLabel("Transcription").setURL(logsUrl.short).setStyle("LINK")
         )
       );
     }
 
     if (channel.deletable) await channel.delete();
 
-    const embed = new MessageEmbed().setAuthor({ name: "Ticket Closed" }).setColor(EMBED_COLORS.TICKET_CLOSE);
-    if (reason) embed.addField("Reason", reason, false);
+    const embed = new MessageEmbed().setAuthor({ name: "Ticket Fermer" }).setColor(EMBED_COLORS.TICKET_CLOSE);
+    if (reason) embed.addField("Raison", reason, false);
     embed
-      .setDescription(`**Title:** ${ticketDetails.title}`)
-      .addField("Opened By", ticketDetails.user ? ticketDetails.user.tag : "User left", true)
-      .addField("Closed By", closedBy ? closedBy.tag : "User left", true);
+      .setDescription(`**Titre:** ${ticketDetails.title}`)
+      .addField("Ouvert par", ticketDetails.user ? ticketDetails.user.tag : "Utilisateur partis", true)
+      .addField("Fermer par", closedBy ? closedBy.tag : "Utilisateur partis", true);
 
     // send embed to log channel
     if (config.ticket.log_channel) {
@@ -101,7 +101,7 @@ async function closeTicket(channel, closedBy, reason) {
     // send embed to user
     if (ticketDetails.user) {
       const dmEmbed = embed
-        .setDescription(`**Server:** ${channel.guild.name}\n**Title:** ${ticketDetails.title}`)
+        .setDescription(`**Serveur:** ${channel.guild.name}\n**Titre:** ${ticketDetails.title}`)
         .setThumbnail(channel.guild.iconURL());
       safeDM(ticketDetails.user, { embeds: [dmEmbed], components });
     }
@@ -123,7 +123,7 @@ async function closeAllTickets(guild, author) {
   let failed = 0;
 
   channels.forEach(async (ch) => {
-    const status = await closeTicket(ch, author, "Force close all open tickets");
+    const status = await closeTicket(ch, author, "Forcer la fermeture de tout les tickets");
     if (status.success) success += 1;
     else failed += 1;
   });
@@ -181,24 +181,23 @@ async function openTicket(guild, user, config) {
     const embed = new MessageEmbed()
       .setAuthor({ name: `Ticket #${ticketNumber}` })
       .setDescription(
-        `Hello ${user.toString()}\nSupport will be with you shortly\n\n**Ticket Reason:**\n${config.title}`
+        `Salut, ${user.toString()}\n🍣 L'assistance va bientôt vous contacter, vous pouvais prendre un café pour passer le temps\n\n**Raison du ticket:**\n${config.title}`
       )
-      .setFooter({ text: "You may close your ticket anytime by clicking the button below" });
 
     let buttonsRow = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("Close Ticket").setCustomId("TICKET_CLOSE").setEmoji("🔒").setStyle("PRIMARY")
+      new MessageButton().setLabel("Fermer").setCustomId("TICKET_CLOSE").setEmoji("🌸").setStyle("PRIMARY")
     );
 
     const sent = await sendMessage(tktChannel, { content: user.toString(), embeds: [embed], components: [buttonsRow] });
 
     const dmEmbed = new MessageEmbed()
       .setColor(EMBED_COLORS.TICKET_CREATE)
-      .setAuthor({ name: "Ticket Created" })
+      .setAuthor({ name: "Ticket Créer" })
       .setThumbnail(guild.iconURL())
-      .setDescription(`**Server:** ${guild.name}\n**Title:** ${config.title}`);
+      .setDescription(`**Serveur:** ${guild.name}\n**Titre:** ${config.title}`);
 
     const row = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("View Channel").setURL(sent.url).setStyle("LINK")
+      new MessageButton().setLabel("Voir le salon").setURL(sent.url).setStyle("LINK")
     );
 
     safeDM(user, { embeds: [dmEmbed], components: [row] });

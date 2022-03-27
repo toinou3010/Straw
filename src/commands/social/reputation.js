@@ -9,7 +9,7 @@ module.exports = class Reputation extends Command {
   constructor(client) {
     super(client, {
       name: "rep",
-      description: "give reputation to a user",
+      description: "donner une reputatiion à une personne",
       category: "SOCIAL",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -18,12 +18,12 @@ module.exports = class Reputation extends Command {
         aliases: ["reputation"],
         subcommands: [
           {
-            trigger: "view [user]",
-            description: "view reputation for a user",
+            trigger: "voir [utilisateur]",
+            description: "voir la reputation",
           },
           {
-            trigger: "give [user]",
-            description: "give reputation to a user",
+            trigger: "donner [utilisateur]",
+            description: "donne une reputation",
           },
         ],
       },
@@ -31,8 +31,8 @@ module.exports = class Reputation extends Command {
         enabled: true,
         options: [
           {
-            name: "view",
-            description: "view reputation for a user",
+            name: "voir",
+            description: "voir la reputation",
             type: "SUB_COMMAND",
             options: [
               {
@@ -70,7 +70,7 @@ module.exports = class Reputation extends Command {
     let response;
 
     // status
-    if (sub === "view") {
+    if (sub === "voir") {
       let target = message.author;
       if (args.length > 1) {
         const resolved = (await resolveMember(message, args[1])) || message.member;
@@ -80,15 +80,15 @@ module.exports = class Reputation extends Command {
     }
 
     // give
-    else if (sub === "give") {
+    else if (sub === "donner") {
       const target = await resolveMember(message, args[1]);
-      if (!target) return message.reply("Please provide a valid user to give reputation to");
+      if (!target) return message.reply("specifier un utilisateur valide");
       response = await giveReputation(message.author, target.user);
     }
 
     //
     else {
-      response = "Incorrect command usage";
+      response = "Utilisation de commande invalide";
     }
 
     await message.reply(response);
@@ -99,13 +99,13 @@ module.exports = class Reputation extends Command {
     let response;
 
     // status
-    if (sub === "view") {
+    if (sub === "voir") {
       const target = interaction.options.getUser("user") || interaction.user;
       response = await viewReputation(target);
     }
 
     // give
-    if (sub === "give") {
+    if (sub === "donner") {
       const target = interaction.options.getUser("user");
       response = await giveReputation(interaction.user, target);
     }
@@ -116,21 +116,21 @@ module.exports = class Reputation extends Command {
 
 async function viewReputation(target) {
   const userData = await getUser(target.id);
-  if (!userData) return `${target.tag} has no reputation yet`;
+  if (!userData) return `${target.tag} n'as aucune reputation`;
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: `Reputation for ${target.username}` })
+    .setAuthor({ name: `Reputation de ${target.username}` })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(target.displayAvatarURL())
-    .addField("Given", userData.reputation?.given.toString(), true)
-    .addField("Received", userData.reputation?.received.toString(), true);
+    .addField("Donner", userData.reputation?.given.toString(), true)
+    .addField("Reçu", userData.reputation?.received.toString(), true);
 
   return { embeds: [embed] };
 }
 
 async function giveReputation(user, target) {
-  if (target.bot) return "You cannot give reputation to bots";
-  if (target.id === user.id) return "You cannot give reputation to yourself";
+  if (target.bot) return "C'est un bot, Baka!";
+  if (target.id === user.id) return "Et bah non tu auras rien";
 
   const userData = await getUser(user.id);
   if (userData && userData.reputation.timestamp) {
@@ -138,7 +138,7 @@ async function giveReputation(user, target) {
     const diff = diffHours(new Date(), lastRep);
     if (diff < 24) {
       const nextUsage = lastRep.setHours(lastRep.getHours() + 24);
-      return `You can again run this command in \`${getRemainingTime(nextUsage)}\``;
+      return `Tu peut utiliser cet commande que dans \`${getRemainingTime(nextUsage)}\``;
     }
   }
 
@@ -154,7 +154,7 @@ async function giveReputation(user, target) {
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(`${target.toString()} +1 Rep!`)
-    .setFooter({ text: `By ${user.tag}` })
+    .setFooter({ text: `Par ${user.tag}` })
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

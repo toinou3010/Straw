@@ -7,18 +7,17 @@ module.exports = (member) => {
 
   const embed = new MessageEmbed()
     .setAuthor({
-      name: `User information for ${member.displayName}`,
+      name: `Information sur ${member.displayName}`,
       iconURL: member.user.displayAvatarURL(),
     })
     .setThumbnail(member.user.displayAvatarURL())
     .setColor(color)
-    .addField("User Tag", member.user.tag, true)
-    .addField("ID", member.id, true)
-    .addField("Guild Joined", member.joinedAt.toUTCString())
-    .addField("Discord Registered", member.user.createdAt.toUTCString())
-    .addField(`Roles [${member.roles.cache.size}]`, member.roles.cache.map((r) => r.name).join(", "), false)
-    .addField("Avatar-URL", member.user.displayAvatarURL({ format: "png" }))
-    .setFooter({ text: `Requested by ${member.user.tag}` })
+    .addField("<:point:955639055511601152>Pseudo", member.user.tag, true)
+    .addField("<:point:955639055511601152>ID", member.id, true)
+    .addField("<:point:955639055511601152>Sur le serveur depuis", member.joinedAt.toUTCString())
+   // .addField("Discord Registered", message.createdAt, true)
+    .addField(`<:point:955639055511601152>Roles [${member.roles.cache.size}]`, member.roles.cache.map((r) => r.name).join(", "), false)
+    .setFooter({ text: `Demander par ${member.user.tag}` })
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

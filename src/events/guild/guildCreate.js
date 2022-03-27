@@ -13,17 +13,17 @@ module.exports = async (client, guild) => {
   if (!client.joinLeaveWebhook) return;
 
   const embed = new MessageEmbed()
-    .setTitle("Guild Joined")
+    .setTitle("Serveur rejoin")
     .setThumbnail(guild.iconURL())
     .setColor(client.config.EMBED_COLORS.SUCCESS)
-    .addField("Name", guild.name, false)
-    .addField("ID", guild.id, false)
-    .addField("Owner", `${client.users.cache.get(guild.ownerId).tag} [\`${guild.ownerId}\`]`, false)
-    .addField("Members", `\`\`\`yaml\n${guild.memberCount}\`\`\``, false)
-    .setFooter({ text: `Guild #${client.guilds.cache.size}` });
+    .addField("<:point:955639055511601152>Nom :", guild.name, false)
+    .addField("<:point:955639055511601152>ID", guild.id, false)
+    .addField("<:point:955639055511601152>Propriétaire", `${client.users.cache.get(guild.ownerId).tag} [\`${guild.ownerId}\`]`, false)
+    .addField("<:point:955639055511601152>Membres", `\`\`\`yaml\n${guild.memberCount}\`\`\``, false)
+    .setFooter({ text: `<:point:955639055511601152>Serveur #${client.guilds.cache.size}` });
 
   client.joinLeaveWebhook.send({
-    username: "Join",
+    username: "Nouveau Serveur 🎏",
     avatarURL: client.user.displayAvatarURL(),
     embeds: [embed],
   });

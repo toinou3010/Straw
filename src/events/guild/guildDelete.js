@@ -24,17 +24,17 @@ module.exports = async (client, guild) => {
   }
 
   const embed = new MessageEmbed()
-    .setTitle("Guild Left")
+    .setTitle("Serveur quitté")
     .setThumbnail(guild.iconURL())
     .setColor(client.config.EMBED_COLORS.ERROR)
-    .addField("Name", guild.name || "NA", false)
-    .addField("ID", guild.id, false)
-    .addField("Owner", `${ownerTag} [\`${ownerId}\`]`, false)
-    .addField("Members", `\`\`\`yaml\n${guild.memberCount}\`\`\``, false)
-    .setFooter({ text: `Guild #${client.guilds.cache.size}` });
+    .addField("<:point:955639055511601152>Nom", guild.name || "<:point:955639055511601152>Inconnue", false)
+    .addField("<:point:955639055511601152>ID", guild.id, false)
+    .addField("<:point:955639055511601152>Owner", `${ownerTag} [\`${ownerId}\`]`, false)
+    .addField("<:point:955639055511601152>Membres", `\`\`\`yaml\n${guild.memberCount}\`\`\``, false)
+    .setFooter({ text: `<:point:955639055511601152>Serveur #${client.guilds.cache.size}` });
 
   client.joinLeaveWebhook.send({
-    username: "Leave",
+    username: "Serveur quitté 🍥",
     avatarURL: client.user.displayAvatarURL(),
     embeds: [embed],
   });

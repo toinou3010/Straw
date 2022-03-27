@@ -13,7 +13,7 @@ module.exports = async (client, message) => {
 
   // check for bot mentions
   if (message.content.includes(`${client.user.id}`)) {
-    sendMessage(message.channel, `My prefix is \`${settings.prefix}\``);
+    sendMessage(message.channel, `Mon prefix est : \`${settings.prefix}\``);
   }
 
   let isCommand = false;

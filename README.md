@@ -2,7 +2,6 @@
 
 ![Straw](https://i.imgur.com/GhlPuSZ.jpg)
 
-> An awesome multipurpose discord bot build using [discord.js v13](https://discord.js.org) with support for slash commands and context menus
 
 > Straw: [Invite Moi](https://discord.com/oauth2/authorize?client\_id=752922609733337190\&permissions=397602323830\&scope=bot%20applications.commands)
 >

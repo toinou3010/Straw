@@ -16,7 +16,7 @@ module.exports = class Giveaway extends Command {
   constructor(client) {
     super(client, {
       name: "giveaway",
-      description: "giveaway commands",
+      description: "commandes giveaway",
       category: "GIVEAWAY",
       command: {
         enabled: true,
@@ -24,23 +24,23 @@ module.exports = class Giveaway extends Command {
         subcommands: [
           {
             trigger: "start",
-            description: "start an interactive giveaway setup",
+            description: "lancer une installation interactive de cadeaux",
           },
           {
             trigger: "pause <messageId>",
-            description: "pause a giveaway",
+            description: "mettre en pause un giveaway",
           },
           {
             trigger: "resume <messageId>",
-            description: "resume a paused giveaway",
+            description: "reprise d'un giveaway pausé",
           },
           {
             trigger: "end <messageId>",
-            description: "end a giveaway",
+            description: "liste de tous les giveaway",
           },
           {
             trigger: "reroll <messageId>",
-            description: "reroll a giveaway",
+            description: "reroll un giveaway",
           },
           {
             trigger: "list",
@@ -122,7 +122,7 @@ module.exports = class Giveaway extends Command {
           },
           {
             name: "end",
-            description: "end a giveaway",
+            description: "terminer un giveaway",
             type: "SUB_COMMAND",
             options: [
               {
@@ -198,7 +198,7 @@ module.exports = class Giveaway extends Command {
     //
     if (sub === "start") {
       if (!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")) {
-        return message.reply("I am missing `Embed Links` permission to run an interactive setup");
+        return message.reply("Je n'ai pas l'autorisation d'exécuter un programme d'installation interactif avec l'option 'Embed Links'");
       }
       return await runInteractiveSetup(message);
     }

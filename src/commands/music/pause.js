@@ -6,7 +6,7 @@ module.exports = class Pause extends Command {
   constructor(client) {
     super(client, {
       name: "pause",
-      description: "pause the music player",
+      description: "mettre en pause une musique",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -38,8 +38,8 @@ module.exports = class Pause extends Command {
 
 function pause({ client, guildId }) {
   const player = client.musicManager.get(guildId);
-  if (player.paused) return "The player is already paused.";
+  if (player.paused) return "La musique est déjà en pause.";
 
   player.pause(true);
-  return "⏸️ Paused the music player.";
+  return "Musique mis en pause.";
 }

@@ -7,8 +7,8 @@ const moment = require("moment");
 module.exports = class UrbanCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "urban",
-      description: "searches the urban dictionary",
+      name: "dictionnaire",
+      description: "rechercher dans le dictionnaire",
       cooldown: 5,
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
@@ -21,7 +21,7 @@ module.exports = class UrbanCommand extends Command {
         enabled: true,
         options: [
           {
-            name: "word",
+            name: "mots",
             description: "the word for which you want to urban meaning",
             type: "STRING",
             required: true,
@@ -45,7 +45,7 @@ module.exports = class UrbanCommand extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const word = interaction.options.getString("word");
+    const word = interaction.options.getString("mots");
     const response = await urban(word);
     await interaction.followUp(response);
   }
@@ -56,19 +56,19 @@ async function urban(word) {
   if (!response.success) return MESSAGES.API_ERROR;
 
   const json = response.data;
-  if (!json.list[0]) return `Nothing found matching \`${word}\``;
+  if (!json.list[0]) return `Rien de trouver pour \`${word}\``;
 
   const data = json.list[0];
   const embed = new MessageEmbed()
     .setTitle(data.word)
     .setURL(data.permalink)
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setDescription(`**Definition**\`\`\`css\n${data.definition}\`\`\``)
-    .addField("Author", data.author, true)
+    .setDescription(`**Définition de**\`\`\`css\n${data.definition}\`\`\``)
+    .addField("Auteur", data.author, true)
     .addField("ID", data.defid.toString(), true)
     .addField("Likes / Dislikes", `👍 ${data.thumbs_up} | 👎 ${data.thumbs_down}`, true)
-    .addField("Example", data.example, false)
-    .setFooter({ text: `Created ${moment(data.written_on).fromNow()}` });
+    .addField("Exemple", data.example, false)
+    .setFooter({ text: `Créer le ${moment(data.written_on).fromNow()}` });
 
   return { embeds: [embed] };
 }

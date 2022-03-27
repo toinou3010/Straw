@@ -6,7 +6,7 @@ module.exports = class Queue extends Command {
   constructor(client) {
     super(client, {
       name: "queue",
-      description: "displays the current music queue",
+      description: "voir les musiques dans la liste",
       category: "MUSIC",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -49,10 +49,10 @@ module.exports = class Queue extends Command {
 
 function getQueue({ client, guild }, pgNo) {
   const player = client.musicManager.get(guild.id);
-  if (!player) return "🚫 There is no music playing in this guild.";
+  if (!player) return "Aucune musique dans la liste.";
 
   const queue = player.queue;
-  const embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED).setAuthor({ name: `Queue for ${guild.name}` });
+  const embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED).setAuthor({ name: `Liste pour ${guild.name}` });
 
   // change for the amount of tracks per page
   const multiple = 10;
@@ -63,13 +63,13 @@ function getQueue({ client, guild }, pgNo) {
 
   const tracks = queue.slice(start, end);
 
-  if (queue.current) embed.addField("Current", `[${queue.current.title}](${queue.current.uri})`);
-  if (!tracks.length) embed.setDescription(`No tracks in ${page > 1 ? `page ${page}` : "the queue"}.`);
+  if (queue.current) embed.addField("<:point:955639055511601152>En Cours", `[${queue.current.title}](${queue.current.uri})`);
+  if (!tracks.length) embed.setDescription(`<:point:955639055511601152>Aucune piste ${page > 1 ? `page ${page}` : "la liste"}.`);
   else embed.setDescription(tracks.map((track, i) => `${start + ++i} - [${track.title}](${track.uri})`).join("\n"));
 
   const maxPages = Math.ceil(queue.length / multiple);
 
-  embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
+  embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} sur ${maxPages}` });
 
   return { embeds: [embed] };
 }

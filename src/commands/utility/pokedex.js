@@ -8,7 +8,7 @@ module.exports = class Pokedex extends Command {
   constructor(client) {
     super(client, {
       name: "pokedex",
-      description: "shows pokemon information",
+      description: "voir les informations sur un pokemon",
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
       cooldown: 5,
@@ -22,7 +22,7 @@ module.exports = class Pokedex extends Command {
         options: [
           {
             name: "pokemon",
-            description: "pokemon name to get information for",
+            description: "nom du pokemon",
             type: "STRING",
             required: true,
           },
@@ -53,7 +53,7 @@ module.exports = class Pokedex extends Command {
 
 async function pokedex(pokemon) {
   const response = await getJson(`https://pokeapi.glitch.me/v1/pokemon/${pokemon}`);
-  if (response.status === 404) return "```The given pokemon is not found```";
+  if (response.status === 404) return "```Pokemon introuvable```";
   if (!response.success) return MESSAGES.API_ERROR;
 
   const json = response.data[0];
@@ -65,21 +65,21 @@ async function pokedex(pokemon) {
     .setDescription(
       stripIndent`
             ♢ **ID**: ${json.number}
-            ♢ **Name**: ${json.name}
-            ♢ **Species**: ${json.species}
+            ♢ **Nom**: ${json.name}
+            ♢ **Capacités**: ${json.species}
             ♢ **Type(s)**: ${json.types}
-            ♢ **Abilities(normal)**: ${json.abilities.normal}
-            ♢ **Abilities(hidden)**: ${json.abilities.hidden}
-            ♢ **Egg group(s)**: ${json.eggGroups}
-            ♢ **Gender**: ${json.gender}
-            ♢ **Height**: ${json.height} foot tall
-            ♢ **Weight**: ${json.weight}
-            ♢ **Current Evolution Stage**: ${json.family.evolutionStage}
-            ♢ **Evolution Line**: ${json.family.evolutionLine}
-            ♢ **Is Starter?**: ${json.starter}
-            ♢ **Is Legendary?**: ${json.legendary}
-            ♢ **Is Mythical?**: ${json.mythical}
-            ♢ **Is Generation?**: ${json.gen}
+            ♢ **Capacités(normale)**: ${json.abilities.normal}
+            ♢ **Capacités(cacher)**: ${json.abilities.hidden}
+            ♢ **Groupe d'Oeuf(s)**: ${json.eggGroups}
+            ♢ **Genre**: ${json.gender}
+            ♢ **Hauteur**: ${json.height} foot tall
+            ♢ **Poids**: ${json.weight}
+            ♢ **Stade d'évolution actuel**: ${json.family.evolutionStage}
+            ♢ **Evolution**: ${json.family.evolutionLine}
+            ♢ **Débutant?**: ${json.starter}
+            ♢ **Legendaire?**: ${json.legendary}
+            ♢ **Mythique?**: ${json.mythical}
+            ♢ **Generation?**: ${json.gen}
             `
     )
     .setFooter({ text: json.description });

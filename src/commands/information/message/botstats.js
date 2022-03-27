@@ -6,13 +6,13 @@ module.exports = class BotStats extends Command {
   constructor(client) {
     super(client, {
       name: "botstats",
-      description: "shows bot information",
+      description: "Information sur le bot",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       cooldown: 5,
       command: {
         enabled: true,
-        aliases: ["botstat", "botinfo"],
+        aliases: ["botstat", "stats"],
       },
       slashCommand: {
         enabled: false,

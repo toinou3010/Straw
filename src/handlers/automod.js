@@ -42,13 +42,13 @@ async function performAutomod(message, settings) {
 
   // Max mentions
   if (mentions.members.size > automod.max_mentions) {
-    embed.addField("Mentions", `${mentions.members.size}/${automod.max_mentions}`, true);
+    embed.addField("<:point:955639055511601152>Mentions", `${mentions.members.size}/${automod.max_mentions}`, true);
     strikesTotal += mentions.members.size - automod.max_mentions;
   }
 
   // Maxrole mentions
   if (mentions.roles.size > automod.max_role_mentions) {
-    embed.addField("RoleMentions", `${mentions.roles.size}/${automod.max_role_mentions}`, true);
+    embed.addField("<:point:955639055511601152>Mentions Role", `${mentions.roles.size}/${automod.max_role_mentions}`, true);
     strikesTotal += mentions.roles.size - automod.max_role_mentions;
   }
 
@@ -56,7 +56,7 @@ async function performAutomod(message, settings) {
   if (automod.max_lines > 0) {
     const count = content.split("\n").length;
     if (count > automod.max_lines) {
-      embed.addField("New Lines", `${count}/${automod.max_lines}`, true);
+      embed.addField("<:point:955639055511601152>Nouvelle Ligne", `${count}/${automod.max_lines}`, true);
       shouldDelete = true;
       strikesTotal += Math.ceil((count - automod.max_lines) / automod.max_lines);
     }
@@ -65,7 +65,7 @@ async function performAutomod(message, settings) {
   // Anti links
   if (automod.anti_links) {
     if (containsLink(content)) {
-      embed.addField("Links Found", "✓", true);
+      embed.addField("<:point:955639055511601152>Lien Trouvée", "<:zbstraw_lapincookie:954953232227106866>", true);
       shouldDelete = true;
       strikesTotal += 1;
     }
@@ -82,7 +82,7 @@ async function performAutomod(message, settings) {
           antiScamInfo.content === content &&
           Date.now() - antiScamInfo.timestamp < 2000
         ) {
-          embed.addField("AntiScam Detection", "✓", true);
+          embed.addField("<:point:955639055511601152>Anti-Arnaque", "<:zbstraw_lapincookie:954953232227106866>", true);
           shouldDelete = true;
           strikesTotal += 1;
         }
@@ -100,7 +100,7 @@ async function performAutomod(message, settings) {
   // Anti Invites
   if (!automod.anti_links && automod.anti_invites) {
     if (containsDiscordInvite(content)) {
-      embed.addField("Discord Invites", "✓", true);
+      embed.addField("<:point:955639055511601152>Publicité Discord", "<:zbstraw_lapincookie:954953232227106866>", true);
       shouldDelete = true;
       strikesTotal += 1;
     }
@@ -110,7 +110,7 @@ async function performAutomod(message, settings) {
   if (shouldDelete && message.deletable) {
     message
       .delete()
-      .then(() => sendMessage(channel, "> Auto-Moderation! Message deleted", 5))
+      .then(() => sendMessage(channel, "> Auto-Moderation! Message Supprimée !", 5))
       .catch(() => {});
   }
 
@@ -124,9 +124,9 @@ async function performAutomod(message, settings) {
       .setAuthor({ name: "Auto Moderation" })
       .setThumbnail(author.displayAvatarURL())
       .setColor(EMBED_COLORS.AUTOMOD)
-      .setDescription(`**Channel:** ${channel.toString()}\n**Content:**\n${content}`)
+      .setDescription(`<:point:955639055511601152>**Salon :** ${channel.toString()}\n**<:point:955639055511601152>Contenus :**\n${content}`)
       .setFooter({
-        text: `By ${author.tag} | ${author.id}`,
+        text: `Par ${author.tag} | ${author.id}`,
         iconURL: author.avatarURL(),
       });
 
@@ -138,16 +138,16 @@ async function performAutomod(message, settings) {
       .setThumbnail(message.guild.iconURL())
       .setAuthor({ name: "Auto Moderation" })
       .setDescription(
-        `You have received ${strikesTotal} strikes!\n\n` +
-          `**Guild:** ${message.guild.name}\n` +
-          `**Total Strikes:** ${memberDb.strikes} out of ${automod.strikes}`
+        `<:point:955639055511601152>Tu as reçu ${strikesTotal} avertissement!\n\n` +
+          `**<:point:955639055511601152>Serveur:** ${message.guild.name}\n` +
+          `**<:point:955639055511601152>Avertissement total:** ${memberDb.strikes} sur ${automod.strikes}`
       );
     embed.fields.forEach((field) => strikeEmbed.addField(field.name, field.value, true));
     safeDM(message.author, { embeds: [strikeEmbed] });
 
     // check if max strikes are received
     if (memberDb.strikes >= automod.strikes) {
-      await addModAction(message.guild.me, message.member, "Automod: Max strikes received", automod.action); // Add Moderation Action
+      await addModAction(message.guild.me, message.member, "Automoderation : Avertissement total reçu", automod.action); // Add Moderation Action
       memberDb.strikes = 0; // Reset Strikes
     }
 

@@ -12,23 +12,23 @@ async function handleTicketOpen(interaction) {
 
   if (status === "MISSING_PERMISSIONS") {
     return interaction.followUp(
-      "Cannot create ticket channel, missing `Manage Channel` permission. Contact server manager for help!"
+      "Impossible de créer un canal de tickets, il manque la permission `Gérer le salon`. Contactez le gestionnaire du serveur pour obtenir de l'aide !"
     );
   }
 
   if (status === "ALREADY_EXISTS") {
-    return interaction.followUp(`You already have an open ticket`);
+    return interaction.followUp(`Vous avez déjà un ticket ouvert, Baka!`);
   }
 
   if (status === "TOO_MANY_TICKETS") {
-    return interaction.followUp("There are too many open tickets. Try again later");
+    return interaction.followUp("Il y a trop de tickets ouverts. Réessayez plus tard");
   }
 
   if (status === "FAILED") {
-    return interaction.followUp("Failed to create ticket channel, an error occurred!");
+    return interaction.followUp("Échec de la création du canal de tickets, une erreur s'est produite !");
   }
 
-  await interaction.followUp(`Ticket created! 🔥`);
+  await interaction.followUp(`Ticket créer!`);
 }
 
 /**
@@ -37,9 +37,9 @@ async function handleTicketOpen(interaction) {
 async function handleTicketClose(interaction) {
   const status = await closeTicket(interaction.channel, interaction.user);
   if (status === "MISSING_PERMISSIONS") {
-    return interaction.followUp("Cannot close the ticket, missing permissions. Contact server manager for help!");
+    return interaction.followUp("Impossible de fermer le ticket, permissions manquantes. Contactez le gestionnaire du serveur pour obtenir de l'aide !");
   } else if (status == "ERROR") {
-    return interaction.followUp("Failed to close the ticket, an error occurred!");
+    return interaction.followUp("Impossible de fermer le ticket, une erreur s'est produite !");
   }
 }
 

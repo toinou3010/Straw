@@ -6,7 +6,7 @@ module.exports = class Avatar extends BaseContext {
   constructor(client) {
     super(client, {
       name: "avatar",
-      description: "displays avatar information about the user",
+      description: "afficher l'avatar d'un membre",
       type: "USER",
       enabled: true,
       ephemeral: true,

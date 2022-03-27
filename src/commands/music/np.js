@@ -8,7 +8,7 @@ module.exports = class Skip extends Command {
   constructor(client) {
     super(client, {
       name: "np",
-      description: "show's what track is currently being played",
+      description: "indique quelle piste est actuellement en cours de lecture",
       category: "MUSIC",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -41,17 +41,17 @@ module.exports = class Skip extends Command {
 
 function nowPlaying({ client, guildId }) {
   const player = client.musicManager.get(guildId);
-  if (!player || !player.queue.current) return "🚫 No music is being played!";
+  if (!player || !player.queue.current) return "Aucune musique n'est jouée !";
 
   const track = player.queue.current;
   const end = track.duration > 6.048e8 ? "🔴 LIVE" : new Date(track.duration).toISOString().slice(11, 19);
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "Now playing" })
+    .setAuthor({ name: "En Cours" })
     .setDescription(`[${track.title}](${track.uri})`)
-    .addField("Song Duration", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
-    .addField("Added By", track.requester.tag || "NA", true)
+    .addField("<:point:955639055511601152>Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+    .addField("<:point:955639055511601152>Ajoûter par", track.requester.tag || "Inconnue", true)
     .addField(
       "\u200b",
       new Date(player.position).toISOString().slice(11, 19) +

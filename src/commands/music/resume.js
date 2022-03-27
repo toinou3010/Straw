@@ -6,7 +6,7 @@ module.exports = class Resume extends Command {
   constructor(client) {
     super(client, {
       name: "resume",
-      description: "resumes the music player",
+      description: "résumé une musique en pause",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -38,7 +38,7 @@ module.exports = class Resume extends Command {
 
 function resumePlayer({ client, guildId }) {
   const player = client.musicManager.get(guildId);
-  if (!player.paused) return "The player is already resumed";
+  if (!player.paused) return "Musique déjà remis en cours";
   player.pause(false);
-  return "▶️ Resumed the music player";
+  return "Musique remis en cours";
 }

@@ -12,14 +12,14 @@ const choices = ["ar", "cs", "de", "en", "fa", "fr", "hi", "hr", "it", "ja", "ko
 module.exports = class TranslateCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "translate",
+      name: "traduire",
       description: "translate from one language to other",
       cooldown: 20,
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        aliases: ["tr"],
+        aliases: ["translate"],
         usage: "<iso-code> <message>",
         minArgsCount: 2,
       },
@@ -28,14 +28,14 @@ module.exports = class TranslateCommand extends Command {
         options: [
           {
             name: "language",
-            description: "translation language",
+            description: "language de traduction",
             type: "STRING",
             required: true,
             choices: choices.map((choice) => ({ name: GOOGLE_TRANSLATE[choice], value: choice })),
           },
           {
-            name: "text",
-            description: "the text that requires translation",
+            name: "texte",
+            description: "texte a traduire",
             type: "STRING",
             required: true,
           },
@@ -56,13 +56,13 @@ module.exports = class TranslateCommand extends Command {
       embed
         .setColor(EMBED_COLORS.WARNING)
         .setDescription(
-          "Invalid translation code. Visit [here](https://cloud.google.com/translate/docs/languages) to see list of supported translation codes"
+          "Code de traduction non valide. Visitez [ici](https://cloud.google.com/translate/docs/languages) pour consulter la liste des codes de traduction pris en charge."
         );
       return message.reply({ embeds: [embed] });
     }
 
     const input = args.join(" ");
-    if (!input) message.reply("Provide some valid translation text");
+    if (!input) message.reply("Fournir un texte de traduction valide");
 
     const response = await getTranslation(message.author, input, outputCode);
     await message.reply(response);
@@ -73,7 +73,7 @@ module.exports = class TranslateCommand extends Command {
    */
   async interactionRun(interaction) {
     const outputCode = interaction.options.getString("language");
-    const input = interaction.options.getString("text");
+    const input = interaction.options.getString("texte");
     const response = await getTranslation(interaction.user, input, outputCode);
     await interaction.followUp(response);
   }
@@ -81,11 +81,11 @@ module.exports = class TranslateCommand extends Command {
 
 async function getTranslation(author, input, outputCode) {
   const data = await translate(input, outputCode);
-  if (!data) return "Failed to translate your text";
+  if (!data) return "Échec de la traduction de votre texte";
 
   const embed = new MessageEmbed()
     .setAuthor({
-      name: `${author.username} says`,
+      name: `${author.username} à dit`,
       iconURL: author.avatarURL(),
     })
     .setColor(EMBED_COLORS.BOT_EMBED)

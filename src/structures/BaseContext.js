@@ -40,7 +40,7 @@ class BaseContext {
       const remaining = this.getRemainingCooldown(interaction.user.id);
       if (remaining > 0) {
         return interaction.reply({
-          content: `You are on cooldown. You can again use the command after ${timeformat(remaining)}`,
+          content: `Vous êtes en temps de repos. Vous pouvez à nouveau utiliser la commande après ${timeformat(remaining)}`,
           ephemeral: true,
         });
       }
@@ -49,7 +49,7 @@ class BaseContext {
     if (interaction.member && this.userPermissions.length > 0) {
       if (!interaction.member.permissions.has(this.userPermissions)) {
         return interaction.reply({
-          content: `You need ${parsePermissions(this.userPermissions)} for this command`,
+          content: `Tu as besoin de ${parsePermissions(this.userPermissions)} pour cet commande`,
           ephemeral: true,
         });
       }
@@ -59,7 +59,7 @@ class BaseContext {
       await interaction.deferReply({ ephemeral: this.ephemeral });
       await this.run(interaction);
     } catch (ex) {
-      interaction.followUp("Oops! An error occurred while running the command");
+      interaction.followUp("Oups ! Une erreur s'est produite lors de l'exécution de la commande, je vais chialer");
       this.client.logger.error("contextRun", ex);
     } finally {
       this.applyCooldown(interaction.user.id);
@@ -99,40 +99,40 @@ class BaseContext {
    * @private
    */
   static validateInfo(client, data) {
-    if (!client) throw new Error("A client must be specified");
+    if (!client) throw new Error("Un client doit être spécifier");
     if (typeof data !== "object") {
-      throw new TypeError("Context data must be an object");
+      throw new TypeError("Context de données doit être un objet");
     }
     if (typeof data.name !== "string" || data.name !== data.name.toLowerCase()) {
-      throw new Error("Context name must be a lowercase string.");
+      throw new Error("Le nom du contexte doit être une chaîne de caractères en minuscules.");
     }
     if (typeof data.description !== "string") {
-      throw new TypeError("Context description must be a string.");
+      throw new TypeError("La description du contexte doit être une chaîne de caractères.");
     }
     if (data.type !== "USER" && data.type !== "MESSAGE") {
-      throw new TypeError("Context type must be a either USER/MESSAGE.");
+      throw new TypeError("Le type de contexte doit être soit UTILISATEUR/MESSAGE.");
     }
     if (Object.prototype.hasOwnProperty.call(data, "enabled") && typeof data.enabled !== "boolean") {
-      throw new TypeError("Context enabled must be a boolean value");
+      throw new TypeError("Le contexte activé doit être une valeur booléenne.");
     }
     if (Object.prototype.hasOwnProperty.call(data, "ephemeral") && typeof data.ephemeral !== "boolean") {
-      throw new TypeError("Context enabled must be a boolean value");
+      throw new TypeError("Le contexte activé doit être une valeur booléenne.AAA");
     }
     if (
       Object.prototype.hasOwnProperty.call(data, "defaultPermission") &&
       typeof data.defaultPermission !== "boolean"
     ) {
-      throw new TypeError("Context defaultPermission must be a boolean value");
+      throw new TypeError("Contexte defaultPermission doit être une valeur booléenne");
     }
     if (Object.prototype.hasOwnProperty.call(data, "cooldown") && typeof data.cooldown !== "number") {
-      throw new TypeError("Context cooldown must be a number");
+      throw new TypeError("Le délai de récupération du contexte doit être un nombre");
     }
     if (data.userPermissions) {
       if (!Array.isArray(data.userPermissions)) {
-        throw new TypeError("Context userPermissions must be an Array of permission key strings.");
+        throw new TypeError("Le contexte userPermissions doit être un tableau de chaînes de clés de permission");
       }
       for (const perm of data.userPermissions) {
-        if (!permissions[perm]) throw new RangeError(`Invalid command userPermission: ${perm}`);
+        if (!permissions[perm]) throw new RangeError(`Commande non valide userPermission: ${perm}`);
       }
     }
   }

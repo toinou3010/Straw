@@ -8,21 +8,21 @@ module.exports = class CovidCommand extends Command {
   constructor(client) {
     super(client, {
       name: "covid",
-      description: "get covid statistics for a country",
+      description: "avoir les statistiques covid d'un pays",
       cooldown: 5,
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "<country>",
+        usage: "<pays>",
         minArgsCount: 1,
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "country",
-            description: "country name to get covid statistics for",
+            name: "pays",
+            description: "nom du pays auquel vous souhaiter voir les statistiques covid",
             type: "STRING",
             required: true,
           },
@@ -45,7 +45,7 @@ module.exports = class CovidCommand extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const country = interaction.options.getString("country");
+    const country = interaction.options.getString("pays");
     const response = await getCovid(country);
     await interaction.followUp(response);
   }
@@ -54,7 +54,7 @@ module.exports = class CovidCommand extends Command {
 async function getCovid(country) {
   const response = await getJson(`https://disease.sh/v2/countries/${country}`);
 
-  if (response.status === 404) return "```css\nCountry with the provided name is not found```";
+  if (response.status === 404) return "```css\nNom du pays spécifier introuvable, recommence Baka!```";
   if (!response.success) return MESSAGES.API_ERROR;
   const { data } = response;
 
@@ -63,16 +63,20 @@ async function getCovid(country) {
     .setTitle(`Covid - ${data?.country}`)
     .setThumbnail(data?.countryInfo.flag)
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .addField("Cases total", data?.cases.toString(), true)
-    .addField("Cases today", data?.todayCases.toString(), true)
-    .addField("Total deaths", data?.deaths.toString(), true)
-    .addField("Deaths today", data?.todayDeaths.toString(), true)
-    .addField("Recovered", data?.recovered.toString(), true)
-    .addField("Active", data?.active.toString(), true)
-    .addField("Critical stage", data?.critical.toString(), true)
-    .addField("Cases per 1 million", data?.casesPerOneMillion.toString(), true)
-    .addField("Deaths per 1 million", data?.deathsPerOneMillion.toString(), true)
-    .setFooter({ text: `Last updated on ${mg}` });
+    .addField("<:point:955639055511601152> Cas total", data?.cases.toString(), true)
+    .addField("<:point:955639055511601152> Cas du jour", data?.todayCases.toString(), true)
+    .addField("<:point:955639055511601152> Morts total", data?.deaths.toString(), true)
+    .addField("<:point:955639055511601152> Morts du jour", data?.todayDeaths.try {
+    	
+    } catch (error) {
+    	
+    }oString(), true)
+    .addField("<:point:955639055511601152> Guérris", data?.recovered.toString(), true)
+    .addField("<:point:955639055511601152> Active", data?.active.toString(), true)
+    .addField("<:point:955639055511601152> État critique", data?.critical.toString(), true)
+    .addField("<:point:955639055511601152> Cas par 1 million", data?.casesPerOneMillion.toString(), true)
+    .addField("<:point:955639055511601152> Morts par 1 million", data?.deathsPerOneMillion.toString(), true)
+    .setFooter({ text: `Dernier mis à jour le ${mg}` });
 
   return { embeds: [embed] };
 }

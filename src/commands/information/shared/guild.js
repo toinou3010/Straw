@@ -36,11 +36,11 @@ module.exports = async (guild) => {
 
   let { verificationLevel } = guild;
   switch (guild.verificationLevel) {
-    case "VERY_HIGH":
+    case "CITADELLE":
       verificationLevel = "┻�?┻ミヽ(ಠ益ಠ)ノ彡┻�?┻";
       break;
 
-    case "HIGH":
+    case "MOYEN":
       verificationLevel = "(╯°□°）╯︵ ┻�?┻";
       break;
 
@@ -49,10 +49,10 @@ module.exports = async (guild) => {
   }
 
   let desc = "";
-  desc = `${desc + "❯"} **Id:** ${id}\n`;
-  desc = `${desc + "❯"} **Name:** ${name}\n`;
-  desc = `${desc + "❯"} **Owner:** ${owner.user.tag}\n`;
-  desc = `${desc + "❯"} **Region:** ${preferredLocale}\n`;
+  desc = `${desc + "<:point:955639055511601152>"} **ID:** ${id}\n`;
+  desc = `${desc + "<:point:955639055511601152>"} **Nom:** ${name}\n`;
+  desc = `${desc + "<:point:955639055511601152>"} **Propriétaire:** ${owner.user.tag}\n`;
+  desc = `${desc + "<:point:955639055511601152>"} **Region:** ${preferredLocale}\n`;
   desc += "\n";
 
   const embed = new MessageEmbed()
@@ -60,21 +60,18 @@ module.exports = async (guild) => {
     .setThumbnail(guild.iconURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc)
-    .addField(`Server Members [${all}]`, `\`\`\`Members: ${users}\nBots: ${bots}\`\`\``, true)
-    .addField(`Online Stats [${onlineAll}]`, `\`\`\`Members: ${onlineUsers}\nBots: ${onlineBots}\`\`\``, true)
+    .addField(`<:point:955639055511601152>Membres Total [${all}]`, `\`\`\`Membres: ${users}\nBots: ${bots}\`\`\``, true)
+    .addField(`<:point:955639055511601152>En Ligne [${onlineAll}]`, `\`\`\`Membres: ${onlineUsers}\nBots: ${onlineBots}\`\`\``, true)
     .addField(
-      `Categories and channels [${totalChannels}]`,
-      `\`\`\`Categories: ${categories} | Text: ${textChannels} | Voice: ${voiceChannels} | Thread: ${threadChannels}\`\`\``,
+      `Categories et Salons [${totalChannels}]`,
+      `\`\`\`Categories: ${categories}\nTextuel: ${textChannels}\nVocale: ${voiceChannels}\nFil: ${threadChannels}\`\`\``,
       false
     )
-    .addField(`Roles [${rolesCount}]`, `\`\`\`${rolesString}\`\`\``, false)
-    .addField("Verification", `\`\`\`${verificationLevel}\`\`\``, true)
-    .addField("Boost Count", `\`\`\`${guild.premiumSubscriptionCount}\`\`\``, true)
-    .addField(
-      `Server Created [${createdAt.fromNow()}]`,
-      `\`\`\`${createdAt.format("dddd, Do MMMM YYYY")}\`\`\``,
-      false
-    );
+    .addField("<:point:955639055511601152>Verification", `\`\`\`${verificationLevel}\`\`\``, true)
+    .addField("<:point:955639055511601152>Boosts", `\`\`\`${guild.premiumSubscriptionCount}\`\`\``, true)
+   // .addField(
+    //  `Server Created `\${guild.createdAt.toUTCString().substr(0, 16)} (${checkDays(guild.createdAt)}), false
+ //   );
 
   if (guild.splashURL) embed.setImage(guild.splashURL);
 

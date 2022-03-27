@@ -66,11 +66,11 @@ async function logModeration(issuer, target, reason, type, data = {}) {
   switch (type.toUpperCase()) {
     case "PURGE":
       embed
-        .setAuthor({ name: `Moderation Case - ${type}` })
-        .addField("Issuer", `${issuer.displayName} [${issuer.id}]`, false)
-        .addField("Purge Type", data.purgeType, true)
-        .addField("Messages", data.deletedCount.toString(), true)
-        .addField("Channel", `#${data.channel.name} [${data.channel.id}]`, false);
+        .setAuthor({ name: `Cas de Modération - ${type}` })
+        .addField("<:point:955639055511601152>Issue par", `${issuer.displayName} [${issuer.id}]`, false)
+        .addField("<:point:955639055511601152>Type de purge", data.purgeType, true)
+        .addField("<:point:955639055511601152>Messages", data.deletedCount.toString(), true)
+        .addField("<:point:955639055511601152>Salon", `#${data.channel.name} [${data.channel.id}]`, false);
       break;
 
     case "TIMEOUT":
@@ -120,17 +120,17 @@ async function logModeration(issuer, target, reason, type, data = {}) {
 
   if (type.toUpperCase() !== "PURGE") {
     embed
-      .setAuthor({ name: `Moderation Case - ${type}` })
+      .setAuthor({ name: `Cas de Modération - ${type}` })
       .setThumbnail(target.user.displayAvatarURL())
-      .addField("Issuer", `${issuer.displayName} [${issuer.id}]`, false)
-      .addField("Member", `${target.displayName} [${target.id}]`, false)
-      .addField("Reason", reason || "No reason provided", true)
+      .addField("<:point:955639055511601152>Issue par", `${issuer.displayName} [${issuer.id}]`, false)
+      .addField("<:point:955639055511601152>Membre", `${target.displayName} [${target.id}]`, false)
+      .addField("<:point:955639055511601152>Raison", reason || "<:point:955639055511601152>Aucune raison", true)
       .setTimestamp(Date.now());
 
     if (type.toUpperCase() === "TIMEOUT") {
-      embed.addField("Expires", `<t:${Math.round(target.communicationDisabledUntilTimestamp / 1000)}:R>`, true);
+      embed.addField("<:point:955639055511601152>Expires", `<t:${Math.round(target.communicationDisabledUntilTimestamp / 1000)}:R>`, true);
     }
-    if (type.toUpperCase() === "MOVE") embed.addField("Moved to", data.channel.name, true);
+    if (type.toUpperCase() === "MOVE") embed.addField("<:point:955639055511601152>Deplacer dans", data.channel.name, true);
   }
 
   await addModLogToDb(issuer, target, reason, type.toUpperCase());
@@ -221,7 +221,7 @@ async function warnTarget(issuer, target, reason) {
 
     // check if max warnings are reached
     if (memberDb.warnings >= settings.max_warn.limit) {
-      await addModAction(issuer.guild.me, target, "Max warnings reached", settings.max_warn.action); // moderate
+      await addModAction(issuer.guild.me, target, "Le maximum d'avertissement atteinte", settings.max_warn.action); // moderate
       memberDb.warnings = 0; // reset warnings
     }
 
@@ -399,11 +399,11 @@ async function deafenTarget(issuer, target, reason) {
 
   try {
     await target.voice.setDeaf(true, reason);
-    logModeration(issuer, target, reason, "Deafen");
+    logModeration(issuer, target, reason, "Coupe micro");
     return true;
   } catch (ex) {
     error(`deafenTarget`, ex);
-    return `Failed to deafen ${target.user.tag}`;
+    return `Impossible de faire taire ${target.user.tag}`;
   }
 }
 
@@ -422,7 +422,7 @@ async function unDeafenTarget(issuer, target, reason) {
 
   try {
     await target.voice.setDeaf(false, reason);
-    logModeration(issuer, target, reason, "unDeafen");
+    logModeration(issuer, target, reason, "Reprise de parole");
     return true;
   } catch (ex) {
     error(`unDeafenTarget`, ex);
@@ -444,7 +444,7 @@ async function disconnectTarget(issuer, target, reason) {
 
   try {
     await target.voice.disconnect(reason);
-    logModeration(issuer, target, reason, "Disconnect");
+    logModeration(issuer, target, reason, "Deconnecter");
     return true;
   } catch (ex) {
     error(`unDeafenTarget`, ex);
@@ -470,7 +470,7 @@ async function moveTarget(issuer, target, reason, channel) {
 
   try {
     await target.voice.setChannel(channel, reason);
-    logModeration(issuer, target, reason, "Move", { channel });
+    logModeration(issuer, target, reason, "Déplacer", { channel });
     return true;
   } catch (ex) {
     error(`moveTarget`, ex);
