@@ -24,14 +24,14 @@ Straw est un bot multi-fonctions avec une magnifique decoration
 
 Strange possède une liste exhaustive de toutes les commandes utiles (**plus de 100**) qui sont classées comme suit
 
-* **Automod** : `antighostping', `antiinvites', `antilinks', `antiscam', `maxlines', `maxmentions'.
+* **Automod** : `antighostping, `antiinvites, `antilinks, `antiscam, `maxlines, `maxmentions.
 * **Admin** : `welcome`, `farewell`, `reaction-roles`
-* **Economie** : `quotidien`, `gamble`, `dépôt`, `retrait`, `transfert`
+* **Economie** : `quotidien`, `gamble`, `dépôt`, `retrait, `transfert`
 * **Fun** : `cat`, `doc`, `flipcoin`, `fliptext`
-* **Information** : `avatar', `roleinfo', `channelinfo', `guildinfo', `profile'.
-* **Invites** : `inviter', `invites', `invitesimport', `invitecodes'.
-* **Modération** : `warn', `kick', `softban', `ban', `mute', `unmute'.
-* **Musique** : `play', `pause', `resume', `stop', `skip', `queue', `np''.
+* **Information** : `avatar', `roleinfo', `channelinfo', `guildinfo, `profile.
+* **Invites** : `inviter, `invites, `invitesimport', `invitecodes.
+* **Modération** : `warn, `kick, `softban, `ban, `mute, `unmute.
+* **Musique** : `play, `pause, `resume', `stop, `skip, `queue', `np.
 * **Social** : `Liste de réputation`, `Donner une réputation`.
 * **Ticket** : setup, close, log, ...
 * **Utilitaire** : `proxies`, `translation`, `weather`, `covid`.
