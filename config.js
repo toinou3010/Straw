@@ -9,7 +9,7 @@ module.exports = {
     MESSAGE: ".aide | En Maintenance",
   },
   DASHBOARD: {
-    enabled: false,
+    enabled: true,
     baseURL: "https://straw-1.toinou3010.repl.co:8080",
     failureURL: "https://straw-1.toinou3010.repl.co:8080",
     port: "8080",
