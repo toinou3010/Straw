@@ -32,3 +32,16 @@ process.on("unhandledRejection", (err) => client.logger.error(`Unhandled excepti
 	// Lancement de Straw
   await client.login(process.env.BOT_TOKEN);
 })();
+
+
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello Express app!')
+});
+
+app.listen(3000, () => {
+  console.log('server started');
+});

@@ -5,8 +5,8 @@ const { findMatchingRoles } = require("@utils/guildUtils");
 module.exports = class AutoRole extends Command {
   constructor(client) {
     super(client, {
-      name: "autorole",
-      description: "setup role to be given when a member joins the server",
+      name: "roleauto",
+      description: "rôle de configuration à donner lorsqu'un membre rejoint le serveur",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -60,7 +60,7 @@ module.exports = class AutoRole extends Command {
       response = await setAutoRole(message, null, data.settings);
     } else {
       const roles = findMatchingRoles(message.guild, input);
-      if (roles.length === 0) response = "No matching roles found matching your query";
+      if (roles.length === 0) response = "Aucun rôle correspondant à votre requête n'a été trouvé";
       else response = await setAutoRole(message, roles[0], data.settings);
     }
 
@@ -80,10 +80,10 @@ module.exports = class AutoRole extends Command {
       let role = interaction.options.getRole("role");
       if (!role) {
         const role_id = interaction.options.getString("role_id");
-        if (!role_id) return interaction.followUp("Please provide a role or role id");
+        if (!role_id) return interaction.followUp("Veuillez fournir un rôle ou un identifiant de rôle");
 
         const roles = findMatchingRoles(interaction.guild, role_id);
-        if (roles.length === 0) return interaction.followUp("No matching roles found matching your query");
+        if (roles.length === 0) return interaction.followUp("Aucun rôle correspondant à votre requête n'a été trouvé");
         role = roles[0];
       }
 
@@ -104,14 +104,14 @@ module.exports = class AutoRole extends Command {
 
 async function setAutoRole({ guild }, role, settings) {
   if (role) {
-    if (!guild.me.permissions.has("MANAGE_ROLES")) return "I don't have the `MANAGE_ROLES` permission";
-    if (guild.me.roles.highest.position < role.position) return "I don't have the permissions to assign this role";
-    if (role.managed) return "Oops! This role is managed by an integration";
+    if (!guild.me.permissions.has("MANAGE_ROLES")) return "Je n'ai pas l'autorisation `MANAGE_ROLES`.";
+    if (guild.me.roles.highest.position < role.position) return "Je n'ai pas les permissions nécessaires pour attribuer ce rôle.";
+    if (role.managed) return "Oups ! Ce rôle est géré par une intégration";
   }
 
   if (!role) settings.autorole = null;
   else settings.autorole = role.id;
 
   await settings.save();
-  return `Configuration saved! Autorole is ${!role ? "disabled" : "setup"}`;
+  return `Configuration sauvegardée ! L'autorole est ${!role ? "désactiver" : "configuré"}`;
 }

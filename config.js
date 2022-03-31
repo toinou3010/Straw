@@ -39,7 +39,7 @@ module.exports = {
       UP_VOTE: "⬆️",
       DOWN_VOTE: "⬇️",
     },
-    DEFAULT_EMBED: "#BDAE99",
+    DEFAULT_EMBED: "#febf4b",
     APPROVED_EMBED: "#00ff00",
     DENIED_EMBED: "#ff0000",
   },
@@ -70,8 +70,8 @@ module.exports = {
   },
   /* Couleurs des embed */
   EMBED_COLORS: {
-    BOT_EMBED: "#BDAE99",
-    TRANSPARENT: "#BDAE99",
+    BOT_EMBED: "#febf4b",
+    TRANSPARENT: "#febf4b",
     SUCCESS: "#B2FF5B",
     ERROR: "#FFC387",
     WARNING: "#FFC387",

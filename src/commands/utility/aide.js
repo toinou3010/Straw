@@ -17,12 +17,12 @@ module.exports = class HelpCommand extends Command {
   constructor(client) {
     super(client, {
       name: "aide",
-      description: "command help menu",
+      description: "menu d'aide",
       category: "UTILITY",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[command]",
+        usage: "[commande]",
       },
       slashCommand: {
         enabled: true,
@@ -117,24 +117,23 @@ async function getHelpMenu({ client, guild }) {
   // Buttons Row
   let components = [];
   components.push(
-    new MessageButton().setCustomId("previousBtn").setEmoji("⬅️").setStyle("SECONDARY").setDisabled(true),
-    new MessageButton().setCustomId("nextBtn").setEmoji("➡️").setStyle("SECONDARY").setDisabled(true)
+    new MessageButton().setCustomId("previousBtn").setEmoji("<:gauche:957812033540223006>").setStyle("SECONDARY").setDisabled(true),
+    new MessageButton().setCustomId("nextBtn").setEmoji("<:droite:957812122820157540>").setStyle("SECONDARY").setDisabled(true)
   );
 	if (SUPPORT_SERVER) {
-    components.push(new MessageButton().setLabel("🍣 Straw Café め").setURL(SUPPORT_SERVER).setStyle("LINK"));
+    components.push(new MessageButton().setLabel("Straw Café ᯤ").setURL(SUPPORT_SERVER).setStyle("LINK"));
   }
 
   let buttonsRow = new MessageActionRow().addComponents(components);
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setThumbnail(client.user.displayAvatarURL())
-    .setDescription(
-      "**<:point:955639055511601152> À propos de moi:**\n" +
-        `Je suis Straw!\n` +
-        "Je serais la baby-sitters sur votre serveur pendant votre absences, Je sais presque tout faire, Je suis en maintenance mais mes commandes marche tres bien sauf `rank, giveaways`\n\n" +
-        `<:point:955639055511601152> **Invite Moi:** [Aller clique](${client.getInvite()})\n` +
-        `<:point:955639055511601152> **Serveur d'Assistance:** [Straw Café](${SUPPORT_SERVER})`
+    .setThumbnail("https://media.discordapp.net/attachments/945915643058847744/958647448870481940/istockphoto-1222667193-612x612.jpg")
+    .setDescription("**À propos de moi:**\n" +
+        `> Je suis Shibot, un bot multifonction pour aider sur votre serveur !\n` +
+        "> Je suis en maintenance certains de mes commandes ne sont pas 100% fonctionnel.\n\n" +
+        `<:point:957832841528479764>**Invite Moi:** [Aller clique](${client.getInvite()})\n` +
+        `<:point:957832841528479764>**Serveur d'Assistance:** [Straw Café](${SUPPORT_SERVER})`
     );
 
   return {
@@ -154,7 +153,7 @@ const waiter = (msg, userId, prefix) => {
 
   const collector = msg.channel.createMessageComponentCollector({
     filter: (reactor) => reactor.user.id === userId,
-    idle: IDLE_TIMEOUT * 1000,
+    idle: IDLE_TIMEOUT * 10000,
     dispose: true,
     time: 5 * 60 * 1000,
   });
@@ -260,8 +259,9 @@ function getSlashCategoryEmbeds(client, category) {
       const subCmds = cmd.slashCommand.options.filter((opt) => opt.type === "SUB_COMMAND");
       const subCmdsString = subCmds.map((s) => s.name).join(", ");
 
-      return `\`/${cmd.name}\`\n <:point:955639055511601152> **Description**: ${cmd.description}\n ${
-        subCmds == 0 ? "" : `<:point:955639055511601152> **SubCommands [${subCmds.length}]**: ${subCmdsString}\n`
+      return `\`/${cmd.name}\`\n 
+<:point:957832841528479764> **Description**: ${cmd.description}\n ${
+        subCmds == 0 ? "" : `<:point:957832841528479764> **SubCommands [${subCmds.length}]**: ${subCmdsString}\n`
       } `;
     });
 
@@ -334,7 +334,7 @@ function getMsgCategoryEmbeds(client, category, prefix) {
 
   while (commands.length) {
     let toAdd = commands.splice(0, commands.length > CMDS_PER_PAGE ? CMDS_PER_PAGE : commands.length);
-    toAdd = toAdd.map((cmd) => `\`${prefix}${cmd.name}\`\n <:point:955639055511601152> ${cmd.description}\n`);
+    toAdd = toAdd.map((cmd) => `<:point:957832841528479764>\`${prefix}${cmd.name}\`\n <:fleche:957833457436860426> ${cmd.description}\n`);
     arrSplitted.push(toAdd);
   }
 

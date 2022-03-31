@@ -8,13 +8,13 @@ module.exports = class MemeCommand extends Command {
   constructor(client) {
     super(client, {
       name: "meme",
-      description: "get a random meme",
+      description: "envoie des memes random",
       category: "FUN",
       botPermissions: ["EMBED_LINKS"],
       cooldown: 20,
       command: {
         enabled: true,
-        usage: "[category]",
+        usage: "[categorie]",
       },
       slashCommand: {
         enabled: true,
@@ -49,7 +49,7 @@ module.exports = class MemeCommand extends Command {
 
     const collector = message.channel.createMessageComponentCollector({
       filter: (reactor) => reactor.user.id === message.author.id,
-      time: this.cooldown * 1000,
+      time: this.cooldown * 10000,
       max: 3,
       dispose: true,
     });
@@ -117,17 +117,17 @@ module.exports = class MemeCommand extends Command {
 };
 
 async function getRandomEmbed(choice) {
-  const subReddits = ["meme", "Memes_Of_The_Dank", "memes", "dankmemes"];
+  const subReddits = ["FrenchMemes", "MemeFrancais"];
   let rand = choice ? choice : subReddits[getRandomInt(subReddits.length)];
 
   const response = await getJson(`https://www.reddit.com/r/${rand}/random/.json`);
   if (!response.success) {
-    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Failed to fetch meme. Try again!");
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Une erreur est survenue!");
   }
 
   const json = response.data;
   if (!Array.isArray(json) || json.length === 0) {
-    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription(`No meme found matching ${choice}`);
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription(`Aucun meme pour ${choice}`);
   }
 
   try {
@@ -141,9 +141,9 @@ async function getRandomEmbed(choice) {
     return new MessageEmbed()
       .setAuthor({ name: memeTitle, url: memeUrl })
       .setImage(memeImage)
-      .setColor("RANDOM")
+      .setColor("#febf4b")
       .setFooter({ text: `👍 ${memeUpvotes} | 💬 ${memeNumComments}` });
   } catch (error) {
-    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Failed to fetch meme. Try again!");
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Une erreur est survenue!");
   }
 }
