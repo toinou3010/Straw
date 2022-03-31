@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("module-alias/register");
+let port = process.env.PORT || 8080;
 
 const path = require("path");
 const { initializeMongoose } = require("@src/database/mongoose");
