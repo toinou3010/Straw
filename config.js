@@ -9,7 +9,7 @@ module.exports = {
     MESSAGE: ".aide | En Maintenance",
   },
   DASHBOARD: {
-    enabled: true,
+    enabled: false,
     baseURL: "http://localhost:8080",
     failureURL: "http://localhost:8080",
     port: "8080",
