@@ -1,5 +1,7 @@
 require("dotenv").config();
 require("module-alias/register");
+const express = require('express');
+const app = express();
 let port = process.env.PORT || 8080;
 
 const path = require("path");
