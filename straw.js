@@ -42,6 +42,6 @@ app.get('/', (req, res) => {
   res.send('Hello Express app!')
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 5000), () => {
   console.log('server started');
 });
