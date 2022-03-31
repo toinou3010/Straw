@@ -10,7 +10,9 @@
   },
   "scripts": {
     "dev": "nodemon .",
-    "start": "node ."
+    "start": "node .",
+    "production": "NODE_ENV=production&&npm start",
+    "development": "set NODE_ENV=development&&npm start"
   },
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
