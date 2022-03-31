@@ -1,6 +1,5 @@
 require("dotenv").config();
 require("module-alias/register");
-let port = process.env.PORT || 8080;
 
 const path = require("path");
 const { initializeMongoose } = require("@src/database/mongoose");
@@ -33,3 +32,8 @@ process.on("unhandledRejection", (err) => client.logger.error(`Unhandled excepti
 	// Lancement de Straw
   await client.login(process.env.BOT_TOKEN);
 })();
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
