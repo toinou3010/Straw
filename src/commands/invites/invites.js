@@ -9,19 +9,19 @@ module.exports = class InvitesCommand extends Command {
   constructor(client) {
     super(client, {
       name: "invites",
-      description: "montre le nombre d'invitations sur le serveur",
+      description: "shows number of invites in this server",
       category: "INVITE",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[@membre|id]",
+        usage: "[@member|id]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
             name: "user",
-            description: "nombre d'invitations fait par un membre",
+            description: "the user to get the invites for",
             type: "USER",
             required: false,
           },
@@ -53,18 +53,18 @@ module.exports = class InvitesCommand extends Command {
 };
 
 async function getInvites({ guild }, user, settings) {
-  if (!settings.invite.tracking) return `Le traçage des invitation est désactivé sur le serveur`;
+  if (!settings.invite.tracking) return `Invite tracking is disabled in this server`;
 
   const inviteData = (await getMember(guild.id, user.id)).invite_data;
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: `Invites de ${user.username}` })
+    .setAuthor({ name: `Invites for ${user.username}` })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(user.displayAvatarURL())
-    .setDescription(`${user.toString()} as ${getEffectiveInvites(inviteData)} invites`)
-    .addField("<:point:957832841528479764>Invites", `**${inviteData?.tracked + inviteData?.added || 0}**`, true)
-    .addField("<:point:957832841528479764>Faux Invites", `**${inviteData?.fake || 0}**`, true)
-    .addField("<:point:957832841528479764>Invites Perdu", `**${inviteData?.left || 0}**`, true);
+    .setDescription(`${user.toString()} has ${getEffectiveInvites(inviteData)} invites`)
+    .addField("Total Invites", `**${inviteData?.tracked + inviteData?.added || 0}**`, true)
+    .addField("Fake Invites", `**${inviteData?.fake || 0}**`, true)
+    .addField("Left Invites", `**${inviteData?.left || 0}**`, true);
 
   return { embeds: [embed] };
 }
