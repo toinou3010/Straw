@@ -9,7 +9,7 @@ const cacheInvite = (invite, isVanity) => ({
   code: invite.code,
   uses: invite.uses,
   maxUses: invite.maxUses,
-  inviterId: isVanity ? "Lien personnalisé" : invite.inviter?.id,
+  inviterId: isVanity ? "VANITY" : invite.inviter?.id,
 });
 
 /**
@@ -92,7 +92,7 @@ async function trackJoinedMember(member) {
 
   let inviterData = {};
   if (usedInvite) {
-    const inviterId = usedInvite.code === guild.vanityURLCode ? "Lien personnalisé" : usedInvite.inviterId;
+    const inviterId = usedInvite.code === guild.vanityURLCode ? "VANITY" : usedInvite.inviterId;
 
     // log invite data
     const memberDb = await getMember(guild.id, member.id);
