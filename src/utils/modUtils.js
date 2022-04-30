@@ -67,10 +67,10 @@ async function logModeration(issuer, target, reason, type, data = {}) {
     case "PURGE":
       embed
         .setAuthor({ name: `Cas de Modération - ${type}` })
-        .addField("<:point:955639055511601152>Issue par", `${issuer.displayName} [${issuer.id}]`, false)
-        .addField("<:point:955639055511601152>Type de purge", data.purgeType, true)
-        .addField("<:point:955639055511601152>Messages", data.deletedCount.toString(), true)
-        .addField("<:point:955639055511601152>Salon", `#${data.channel.name} [${data.channel.id}]`, false);
+        .addField("<:fleche:963265299992444998> Issue par", `<:fleche:963265299992444998> <@${issuer.id}>`, false)
+        .addField("<:fleche:963265299992444998> Type de purge", data.purgeType, true)
+        .addField("<:fleche:963265299992444998> Messages", data.deletedCount.toString(), true)
+        .addField("<:fleche:963265299992444998> Salon", `<:fleche:963265299992444998> <#${data.channel.id}>`, false);
       break;
 
     case "TIMEOUT":
@@ -122,15 +122,15 @@ async function logModeration(issuer, target, reason, type, data = {}) {
     embed
       .setAuthor({ name: `Cas de Modération - ${type}` })
       .setThumbnail(target.user.displayAvatarURL())
-      .addField("<:point:955639055511601152>Issue par", `${issuer.displayName} [${issuer.id}]`, false)
-      .addField("<:point:955639055511601152>Membre", `${target.displayName} [${target.id}]`, false)
-      .addField("<:point:955639055511601152>Raison", reason || "<:point:955639055511601152>Aucune raison", true)
+      .addField("<:fleche:963265299992444998> Issue par", `<:fleche:963265299992444998> <@${issuer.id}>`, false)
+      .addField("<:fleche:963265299992444998> Membre", `<:fleche:963265299992444998> <@${target.id}>`, false)
+      .addField("<:fleche:963265299992444998> Raison", reason || "<:fleche:963265299992444998> Aucune raison", true)
       .setTimestamp(Date.now());
 
     if (type.toUpperCase() === "TIMEOUT") {
-      embed.addField("<:point:955639055511601152>Expires", `<t:${Math.round(target.communicationDisabledUntilTimestamp / 1000)}:R>`, true);
+      embed.addField("<:fleche:963265299992444998> Expires", `<:fleche:963265299992444998> <t:${Math.round(target.communicationDisabledUntilTimestamp / 1000)}:R>`, true);
     }
-    if (type.toUpperCase() === "MOVE") embed.addField("<:point:955639055511601152>Deplacer dans", data.channel.name, true);
+    if (type.toUpperCase() === "MOVE") embed.addField("<:fleche:963265299992444998> Deplacer dans", data.channel.name, true);
   }
 
   await addModLogToDb(issuer, target, reason, type.toUpperCase());

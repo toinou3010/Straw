@@ -7,7 +7,7 @@ module.exports = class AutomodConfigCommand extends Command {
   constructor(client) {
     super(client, {
       name: "automodconfig",
-      description: "various automod configuration",
+      description: "diverses configurations d'automod ",
       category: "AUTOMOD",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -16,19 +16,19 @@ module.exports = class AutomodConfigCommand extends Command {
         subcommands: [
           {
             trigger: "status",
-            description: "check automod configuration for this guild",
+            description: "vérifier la configuration automod pour cette guilde ",
           },
           {
-            trigger: "strikes <number>",
-            description: "maximum number of strikes a member can receive before taking an action",
+            trigger: "strikes <nombre>",
+            description: "nombre de frappes",
           },
           {
             trigger: "action <MUTE|KICK|BAN>",
-            description: "set action to be performed after receiving maximum strikes",
+            description: "définir l'action à effectuer après avoir reçu le maximum de frappes ",
           },
           {
             trigger: "debug <ON|OFF>",
-            description: "turns on automod for messages sent by admins and moderators",
+            description: "active l'automod pour les messages envoyés par les administrateurs et les modérateurs ",
           },
         ],
       },
@@ -38,17 +38,17 @@ module.exports = class AutomodConfigCommand extends Command {
         options: [
           {
             name: "status",
-            description: "Check automod configuration",
+            description: "Vérifier la configuration de l'automod ",
             type: "SUB_COMMAND",
           },
           {
             name: "strikes",
-            description: "Set maximum number of strikes before taking an action",
+            description: "Définir le nombre maximum d'avertissements avant d'effectuer une action ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "amount",
-                description: "number of strikes (default 5)",
+                name: "montant",
+                description: "nombre de frappes (par défaut 5) ",
                 required: true,
                 type: "INTEGER",
               },
@@ -56,12 +56,12 @@ module.exports = class AutomodConfigCommand extends Command {
           },
           {
             name: "action",
-            description: "Set action to be performed after receiving maximum strikes",
+            description: "Définir l'action à effectuer après avoir reçu le maximum de frappes ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "action",
-                description: "action to perform",
+                description: "action à effectuer ",
                 type: "STRING",
                 required: true,
                 choices: [
@@ -83,12 +83,12 @@ module.exports = class AutomodConfigCommand extends Command {
           },
           {
             name: "debug",
-            description: "Enable/disable automod for messages sent by admins & moderators",
+            description: "Activer/désactiver l'automod pour les messages envoyés par les administrateurs et les modérateurs ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "configuration status",
+                description: "état de la configuration ",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -126,7 +126,7 @@ module.exports = class AutomodConfigCommand extends Command {
     else if (input === "strikes") {
       const strikes = args[1];
       if (isNaN(strikes) || Number.parseInt(strikes) < 1) {
-        return message.reply("Strikes must be a valid number greater than 0");
+        return message.reply("Les avertissements doivent être un nombre valide supérieur à 0 ");
       }
       response = await setStrikes(settings, strikes);
     }
@@ -134,18 +134,18 @@ module.exports = class AutomodConfigCommand extends Command {
     else if (input === "action") {
       const action = args[1].toUpperCase();
       if (!action || !["MUTE", "KICK", "BAN"].includes(action))
-        return message.reply("Not a valid action. Action can be `Mute`/`Kick`/`Ban`");
+        return message.reply("Pas une action valide. L'action peut être `Mute`/`Kick`/`Ban`");
       response = await setAction(settings, message.guild, action);
     }
 
     else if (input === "debug") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.reply("Statut invalide. La valeur doit être  `on/off`");
       response = await setDebug(settings, status);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Utilisation de la commande invalide ! ";
     await message.reply(response);
   }
 
@@ -161,7 +161,7 @@ module.exports = class AutomodConfigCommand extends Command {
 
     // status
     if (sub === "status") response = await getStatus(settings, interaction.guild);
-    else if (sub === "strikes") response = await setStrikes(settings, interaction.options.getInteger("amount"));
+    else if (sub === "strikes") response = await setStrikes(settings, interaction.options.getInteger("montant"));
     else if (sub === "action")
       response = await setAction(settings, interaction.guild, interaction.options.getString("action"));
     else if (sub === "debug") response = await setDebug(settings, interaction.options.getString("status"));
@@ -176,20 +176,20 @@ async function getStatus(settings, guild) {
 
   const logChannel = settings.modlog_channel
     ? guild.channels.cache.get(settings.modlog_channel).toString()
-    : "Not Configured";
+    : "Pas configuré";
 
-  row.push(["Max Lines", automod.max_lines || "NA"]);
-  row.push(["Max Mentions", automod.max_mentions || "NA"]);
-  row.push(["Max Role Mentions", automod.max_role_mentions || "NA"]);
-  row.push(["Anti-Links", automod.anti_links ? "✓" : "✕"]);
+  row.push(["Lignes maximales ", automod.max_lines || "NA"]);
+  row.push(["Nombre maximal de mentions ", automod.max_mentions || "NA"]);
+  row.push(["Nombre maximal de mentions de rôle ", automod.max_role_mentions || "NA"]);
+  row.push(["Anti-liens ", automod.anti_links ? "✓" : "✕"]);
   row.push(["Anti-Invites", automod.anti_invites ? "✓" : "✕"]);
-  row.push(["Anti-Scam", automod.anti_scam ? "✓" : "✕"]);
+  row.push(["Anti-arnaque ", automod.anti_scam ? "✓" : "✕"]);
   row.push(["Anti-Ghostping", automod.anti_ghostping ? "✓" : "✕"]);
 
   const asciiTable = table(row, {
     singleLine: true,
     header: {
-      content: "Automod Configuration",
+      content: "Configuration automatique",
       alignment: "center",
     },
     columns: [
@@ -203,8 +203,8 @@ async function getStatus(settings, guild) {
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription("```" + asciiTable + "```")
-    .addField("Log Channel", logChannel, true)
-    .addField("Max Strikes", automod.strikes.toString(), true)
+    .addField("Canal de journalisation ", logChannel, true)
+    .addField("Frappes maximales ", automod.strikes.toString(), true)
     .addField("Action", automod.action, true);
 
   return { embeds: [embed] };
@@ -213,36 +213,36 @@ async function getStatus(settings, guild) {
 async function setStrikes(settings, strikes) {
   settings.automod.strikes = strikes;
   await settings.save();
-  return `Configuration saved! Maximum strikes is set to ${strikes}`;
+  return `Configuration enregistrée ! Le nombre maximal d'avertissements est défini sur  ${strikes}`;
 }
 
 async function setAction(settings, guild, action) {
   if (action === "MUTE") {
     if (!guild.me.permissions.has("MODERATE_MEMBERS")) {
-      return "I do not permission to timeout members";
+      return "Je n'autorise pas les membres à expirer ";
     }
   }
 
   if (action === "KICK") {
     if (!guild.me.permissions.has("KICK_MEMBERS")) {
-      return "I do not have permission to kick members";
+      return "Je n'ai pas la permission d'expulser des membres ";
     }
   }
 
   if (action === "BAN") {
     if (!guild.me.permissions.has("BAN_MEMBERS")) {
-      return "I do not have permission to ban members";
+      return "Je n'ai pas la permission d'exclure des membres ";
     }
   }
 
   settings.automod.action = action;
   await settings.save();
-  return `Configuration saved! Automod action is set to ${action}`;
+  return `Je n'ai pas la permission d'exclure des membresConfiguration enregistrée ! L'action Automod est définie sur  ${action}`;
 }
 
 async function setDebug(settings, input) {
   const status = input.toLowerCase() === "on" ? true : false;
   settings.automod.debug = status;
   await settings.save();
-  return `Configuration saved! Automod debug is now ${status ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! Le débogage d'Automod est maintenant  ${status ? "activé " : "désactivé "}`;
 }

@@ -43,12 +43,12 @@ module.exports = class Giveaway extends Command {
             description: "reroll un giveaway",
           },
           {
-            trigger: "list",
-            description: "list all giveaways",
+            trigger: "liste",
+            description: "lister tout les giveaways",
           },
           {
             trigger: "edit",
-            description: "edit a giveaway",
+            description: "editer un giveaway",
           },
         ],
       },
@@ -58,37 +58,37 @@ module.exports = class Giveaway extends Command {
         options: [
           {
             name: "start",
-            description: "start a giveaway",
+            description: "commencer un giveaway",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "channel",
-                description: "the channel to start the giveaway in",
+                description: "Le salon où le giveaway seras lancer",
                 type: "CHANNEL",
                 channelTypes: ["GUILD_TEXT"],
                 required: true,
               },
               {
-                name: "duration",
-                description: "the duration of the giveaway in minutes",
+                name: "duree",
+                description: "la durée du giveaway en minutes",
                 type: "INTEGER",
                 required: true,
               },
               {
-                name: "prize",
-                description: "the prize of the giveaway",
+                name: "prix",
+                description: "Le prix qui seras donner aux gagnant",
                 type: "STRING",
                 required: true,
               },
               {
-                name: "winners",
-                description: "the number of winners",
+                name: "gagnant",
+               description: "Le nombre de gagnant",
                 type: "INTEGER",
                 required: true,
               },
               {
-                name: "host",
-                description: "the host of the giveaway",
+                name: "par",
+                description: "La personne qui gère le giveaway",
                 type: "USER",
                 required: false,
               },
@@ -96,12 +96,12 @@ module.exports = class Giveaway extends Command {
           },
           {
             name: "pause",
-            description: "pause a giveaway",
+            description: "mettre un giveaway en pause",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "message_id",
-                description: "the message id of the giveaway",
+                description: "L'ID du message du giveaway",
                 type: "STRING",
                 required: true,
               },

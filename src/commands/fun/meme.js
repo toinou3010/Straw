@@ -38,7 +38,7 @@ module.exports = class MemeCommand extends Command {
     const choice = args[0];
 
     const buttonRow = new MessageActionRow().addComponents(
-      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("🔁")
+      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("<:recharger:963284695313948742>")
     );
     const embed = await getRandomEmbed(choice);
 
@@ -80,7 +80,7 @@ module.exports = class MemeCommand extends Command {
     const choice = interaction.options.getString("category");
 
     const buttonRow = new MessageActionRow().addComponents(
-      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("🔁")
+      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("<:recharger:963284695313948742>")
     );
     const embed = await getRandomEmbed(choice);
 
@@ -141,7 +141,7 @@ async function getRandomEmbed(choice) {
     return new MessageEmbed()
       .setAuthor({ name: memeTitle, url: memeUrl })
       .setImage(memeImage)
-      .setColor("#febf4b")
+      .setColor("#303136")
       .setFooter({ text: `👍 ${memeUpvotes} | 💬 ${memeNumComments}` });
   } catch (error) {
     return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Une erreur est survenue!");

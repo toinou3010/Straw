@@ -9,19 +9,19 @@ module.exports = class InvitesCommand extends Command {
   constructor(client) {
     super(client, {
       name: "invites",
-      description: "shows number of invites in this server",
+      description: "montre le nombre d'invitations dans ce serveur",
       category: "INVITE",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[@member|id]",
+        usage: "[@membre|id]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "the user to get the invites for",
+            name: "utilisateur",
+            description: "l'utilisateur pour obtenir les invitations pour",
             type: "USER",
             required: false,
           },
@@ -46,25 +46,25 @@ module.exports = class InvitesCommand extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const user = interaction.options.getUser("user") || interaction.user;
+    const user = interaction.options.getUser("utilisateur") || interaction.user;
     const response = await getInvites(interaction, user, data.settings);
     await interaction.followUp(response);
   }
 };
 
 async function getInvites({ guild }, user, settings) {
-  if (!settings.invite.tracking) return `Invite tracking is disabled in this server`;
+  if (!settings.invite.tracking) return `Le suivi des invitations est désactivé sur ce serveur`;
 
   const inviteData = (await getMember(guild.id, user.id)).invite_data;
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: `Invites for ${user.username}` })
+    .setAuthor({ name: `Invitations pour ${user.username}` })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(user.displayAvatarURL())
-    .setDescription(`${user.toString()} has ${getEffectiveInvites(inviteData)} invites`)
-    .addField("Total Invites", `**${inviteData?.tracked + inviteData?.added || 0}**`, true)
-    .addField("Fake Invites", `**${inviteData?.fake || 0}**`, true)
-    .addField("Left Invites", `**${inviteData?.left || 0}**`, true);
+    .setDescription(`${user.toString()} as ${getEffectiveInvites(inviteData)} invites`)
+    .addField("<:stats:963567717611339897> Invitations", `**${inviteData?.tracked + inviteData?.added || 0}**`, true)
+    .addField("<:stats:963567717611339897> Faux Invites", `**${inviteData?.fake || 0}**`, true)
+    .addField("<:stats:963567717611339897> Membres Partis", `**${inviteData?.left || 0}**`, true);
 
   return { embeds: [embed] };
 }

@@ -14,7 +14,7 @@ module.exports = class UrbanCommand extends Command {
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "<word>",
+        usage: "<mot>",
         minArgsCount: 1,
       },
       slashCommand: {
@@ -22,7 +22,7 @@ module.exports = class UrbanCommand extends Command {
         options: [
           {
             name: "mots",
-            description: "the word for which you want to urban meaning",
+            description: "le mot à chercher",
             type: "STRING",
             required: true,
           },

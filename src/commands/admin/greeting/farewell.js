@@ -8,8 +8,8 @@ const { sendMessage } = require("@utils/botUtils");
 module.exports = class Farewell extends Command {
   constructor(client) {
     super(client, {
-      name: "farewell",
-      description: "setup farewell message",
+      name: "aurevoir",
+      description: "configurer le message d'aurevoir",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -18,31 +18,31 @@ module.exports = class Farewell extends Command {
         subcommands: [
           {
             trigger: "status <on|off>",
-            description: "enable or disable farewell message",
+            description: "activer ou désactiver le message d'adieu ",
           },
           {
-            trigger: "channel <#channel>",
-            description: "configure farewell message",
+            trigger: "salon <#salon>",
+            description: "salon",
           },
           {
             trigger: "preview",
-            description: "preview the configured farewell message",
+            description: "prévisualiser le message d'adieu configuré ",
           },
           {
             trigger: "desc <text>",
-            description: "set embed description",
+            description: "définir la description intégrée ",
           },
           {
             trigger: "thumbnail <ON|OFF>",
-            description: "enable/disable embed thumbnail",
+            description: "activer/désactiver l'intégration de la vignette ",
           },
           {
             trigger: "color <hexcolor>",
-            description: "set embed color",
+            description: "définir la couleur d'intégration ",
           },
           {
             trigger: "footer <text>",
-            description: "set embed footer content",
+            description: "définir le contenu du pied de page intégré ",
           },
         ],
       },
@@ -52,12 +52,12 @@ module.exports = class Farewell extends Command {
         options: [
           {
             name: "status",
-            description: "enable or disable farewell message",
+            description: "activer ou désactiver le message d'adieu ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "enabled or disabled",
+                description: "activé ou désactivé ",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -75,17 +75,17 @@ module.exports = class Farewell extends Command {
           },
           {
             name: "preview",
-            description: "preview the configured farewell message",
+            description: "prévisualiser le message d'adieu configuré ",
             type: "SUB_COMMAND",
           },
           {
-            name: "channel",
-            description: "set farewell channel",
+            name: "salon",
+            description: "définir la chaîne d'adieu ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "channel",
-                description: "channel name",
+                name: "salon",
+                description: "nom du salon",
                 type: "CHANNEL",
                 channelTypes: ["GUILD_TEXT"],
                 required: true,
@@ -94,25 +94,25 @@ module.exports = class Farewell extends Command {
           },
           {
             name: "desc",
-            description: "set embed description",
+            description: "définir la description intégrée ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "content",
-                description: "description content",
+                name: "contenu",
+                description: "contenu descriptif ",
                 type: "STRING",
                 required: true,
               },
             ],
           },
           {
-            name: "thumbnail",
-            description: "configure embed thumbnail",
+            name: "vignette",
+            description: "configurer la miniature intégrée ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "thumbnail status",
+                description: "état des vignettes ",
                 type: "STRING",
                 required: true,
                 choices: [
@@ -129,13 +129,13 @@ module.exports = class Farewell extends Command {
             ],
           },
           {
-            name: "color",
-            description: "set embed color",
+            name: "couleur",
+            description: "définir la couleur d'intégration ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "hex-code",
-                description: "hex color code",
+                description: "code couleur hexadécimal ",
                 type: "STRING",
                 required: true,
               },
@@ -143,12 +143,12 @@ module.exports = class Farewell extends Command {
           },
           {
             name: "footer",
-            description: "set embed footer",
+            description: "définir le bas de page intégré ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "content",
-                description: "footer content",
+                name: "contenu",
+                description: "contenu du bas de page ",
                 type: "STRING",
                 required: true,
               },
@@ -177,46 +177,46 @@ module.exports = class Farewell extends Command {
     // status
     else if (type === "status") {
       const status = args[1]?.toUpperCase();
-      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Statut invalide. La valeur doit être **on/off**");
       response = await setStatus(settings, status);
     }
 
     // channel
-    else if (type === "channel") {
+    else if (type === "salon") {
       const channel = message.mentions.channels.first();
       response = await setChannel(settings, channel);
     }
 
     // desc
     else if (type === "desc") {
-      if (args.length < 2) return message.reply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.reply("Arguments insuffisants ! Veuillez fournir un contenu valide ");
       const desc = args.slice(1).join(" ");
       response = await setDescription(settings, desc);
     }
 
     // thumbnail
-    else if (type === "thumbnail") {
+    else if (type === "vignette") {
       const status = args[1]?.toUpperCase();
-      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Statut invalide. La valeur doit être **on/off** ");
       response = await setThumbnail(settings, status);
     }
 
     // color
-    else if (type === "color") {
+    else if (type === "couleur") {
       const color = args[1];
-      if (!color || !isHex(color)) return message.reply("Invalid color. Value must be a valid hex color");
+      if (!color || !isHex(color)) return message.reply("Couleur invalide. La valeur doit être une couleur hexadécimale valide ");
       response = await setColor(settings, color);
     }
 
     // footer
     else if (type === "footer") {
-      if (args.length < 2) return message.reply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.reply("Arguments insuffisants ! Veuillez fournir un contenu valide ");
       const content = args.slice(1).join(" ");
       response = await setFooter(settings, content);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Utilisation de la commande non valide !";
     return message.reply(response);
   }
 
@@ -239,28 +239,28 @@ module.exports = class Farewell extends Command {
         response = await setStatus(settings, interaction.options.getString("status"));
         break;
 
-      case "channel":
-        response = await setChannel(settings, interaction.options.getChannel("channel"));
+      case "salon":
+        response = await setChannel(settings, interaction.options.getChannel("salon"));
         break;
 
       case "desc":
-        response = await setDescription(settings, interaction.options.getString("content"));
+        response = await setDescription(settings, interaction.options.getString("cotenu"));
         break;
 
       case "thumbnail":
         response = await setThumbnail(settings, interaction.options.getString("status"));
         break;
 
-      case "color":
-        response = await setColor(settings, interaction.options.getString("color"));
+      case "couleur":
+        response = await setColor(settings, interaction.options.getString("couleur"));
         break;
 
       case "footer":
-        response = await setFooter(settings, interaction.options.getString("content"));
+        response = await setFooter(settings, interaction.options.getString("contenu"));
         break;
 
       default:
-        response = "Invalid subcommand";
+        response = "Sous-commande invalide ";
     }
 
     return interaction.followUp(response);
@@ -268,56 +268,56 @@ module.exports = class Farewell extends Command {
 };
 
 async function sendPreview(settings, member) {
-  if (!settings.farewell?.enabled) return "Farewell message not enabled in this server";
+  if (!settings.farewell?.enabled) return "Message d'adieu non activé sur ce serveur ";
 
   const targetChannel = member.guild.channels.cache.get(settings.farewell.channel);
-  if (!targetChannel) return "No channel is configured to send farewell message";
+  if (!targetChannel) return "Aucun canal n'est configuré pour envoyer un message d'adieu ";
 
   const response = await buildGreeting(member, "FAREWELL", settings.farewell);
   await sendMessage(targetChannel, response);
 
-  return `Sent farewell preview to ${targetChannel.toString()}`;
+  return `Envoyé un aperçu d'adieu à  ${targetChannel.toString()}`;
 }
 
 async function setStatus(settings, status) {
   const enabled = status.toUpperCase() === "ON" ? true : false;
   settings.farewell.enabled = enabled;
   await settings.save();
-  return `Configuration saved! Farewell message ${status ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! Un message d'adieu ${status ? "activé" : "désactivé"}`;
 }
 
 async function setChannel(settings, channel) {
   if (!canSendEmbeds(channel)) {
     return (
-      "Ugh! I cannot send greeting to that channel? I need the `Write Messages` and `Embed Links` permissions in " +
+      "Pouah! Je ne peux pas envoyer de message d'accueil à ce canal ? J'ai besoin des autorisations **Écrire des messages` et `Intégrer des liens** dans " +
       channel.toString()
     );
   }
   settings.farewell.channel = channel.id;
   await settings.save();
-  return `Configuration saved! Farewell message will be sent to ${channel ? channel.toString() : "Not found"}`;
+  return `Configuration enregistrée ! Un message d'adieu sera envoyé à ${channel ? channel.toString() : "Pas trouvé "}`;
 }
 
 async function setDescription(settings, desc) {
   settings.farewell.embed.description = desc;
   await settings.save();
-  return "Configuration saved! Farewell message updated";
+  return "Configuration enregistrée ! Message d'adieu mis à jour ";
 }
 
 async function setThumbnail(settings, status) {
   settings.farewell.embed.thumbnail = status.toUpperCase() === "ON" ? true : false;
   await settings.save();
-  return "Configuration saved! Farewell message updated";
+  return "Configuration enregistrée ! Message d'adieu mis à jour ";
 }
 
 async function setColor(settings, color) {
   settings.farewell.embed.color = color;
   await settings.save();
-  return "Configuration saved! Farewell message updated";
+  return "Configuration enregistrée ! Message d'adieu mis à jour ";
 }
 
 async function setFooter(settings, content) {
   settings.farewell.embed.footer = content;
   await settings.save();
-  return "Configuration saved! Farewell message updated";
+  return "Configuration enregistrée ! Message d'adieu mis à jour ";
 }

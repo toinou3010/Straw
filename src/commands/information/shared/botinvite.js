@@ -6,7 +6,7 @@ module.exports = (client) => {
     .setAuthor({ name: "Liens" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
-    .setDescription("<:point:955639055511601152>Voici les liens utiles");
+    .setDescription("<:liens:963573935973203988> Voici les liens utiles\n\n<:plus2:963282449209630730> [Invite Moi](https://discord.com/oauth2/authorize?client_id=855107430693077033&scope=bot+applications.commands&permissions=275380301174)\n<:discord:963262544997404702> [Assistance](https://discord.gg/3sGyHNE3X9)");
 
   // Buttons
   let components = [];

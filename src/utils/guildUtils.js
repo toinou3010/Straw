@@ -56,7 +56,7 @@ function getMatchingChannels(guild, query) {
  * @param {string} name
  */
 async function setVoiceChannelName(vc, name) {
-  if (vc.manageable) vc.setName(name).catch((err) => vc.client.logger.log("Set Name error: ", err));
+  if (vc.manageable) vc.setName(name).catch((err) => vc.client.logger.log("Erreur de définition du nom : ", err));
 }
 
 /**

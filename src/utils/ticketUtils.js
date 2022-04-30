@@ -71,7 +71,7 @@ async function closeTicket(channel, closedBy, reason) {
       content += "\n";
     });
 
-    const logsUrl = await postToBin(content, `Logs Ticket pour ${channel.name}`);
+    const logsUrl = await postToBin(content, `Logs Ticket pour  ${channel.name}`);
     const ticketDetails = await parseTicketDetails(channel);
 
     const components = [];
@@ -181,11 +181,11 @@ async function openTicket(guild, user, config) {
     const embed = new MessageEmbed()
       .setAuthor({ name: `Ticket #${ticketNumber}` })
       .setDescription(
-        `Salut, ${user.toString()}\n🍣 L'assistance va bientôt vous contacter, vous pouvais prendre un café pour passer le temps\n\n**Raison du ticket:**\n${config.title}`
+        `Salut, ${user.toString()}\nL'assistance va bientôt vous contacter, vous pouvais prendre un café pour passer le temps\n\n**Raison du ticket:**\n${config.title}`
       )
 
     let buttonsRow = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("Fermer").setCustomId("TICKET_CLOSE").setEmoji("🌸").setStyle("PRIMARY")
+      new MessageButton().setLabel("Fermer").setCustomId("TICKET_CLOSE").setEmoji("❌").setStyle("PRIMARY")
     );
 
     const sent = await sendMessage(tktChannel, { content: user.toString(), embeds: [embed], components: [buttonsRow] });

@@ -19,7 +19,7 @@ class Command {
    */
 
   /**
-   * @typedef {"ADMIN"|"ANIME"|"AUTOMOD"|"ECONOMY"|"FUN"|"IMAGE"|"INFORMATION"|"INVITE"|"MODERATION"|"MUSIC"|"NONE"|"OWNER"|"SOCIAL"|"TICKET"|"UTILITY"} CommandCategory
+   * @typedef {"ADMIN"|"ANIME"|"AUTOMOD"|"ECONOMIE"|"FUN"|"IMAGE"|"INFORMATION"|"INVITE"|"MODERATION"|"MUSIQUE"|"AUCUNE"|"OWNER"|"SOCIAL"|"TICKET"|"UTILES"} CommandCategory
    */
 
   /**
@@ -100,7 +100,7 @@ class Command {
 
       this.slashCommand.ephemeral = Object.prototype.hasOwnProperty.call(data.slashCommand, "ephemeral")
         ? data.slashCommand.ephemeral
-        : false;
+        : true;
 
       this.slashCommand.options = data.slashCommand.options || [];
     }

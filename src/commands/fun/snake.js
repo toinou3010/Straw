@@ -40,7 +40,7 @@ module.exports = class SnakeCommand extends Command {
 async function startSnakeGame(data) {
   const snakeGame = new SnakeGame({
     title: "Snake Game",
-    color: "BLUE",
+    color: "#303136",
     timestamp: true,
     gameOverTitle: "Game Over",
   });

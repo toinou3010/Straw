@@ -1,34 +1,29 @@
 const { Command } = require("@src/structures");
-const { CommandInteraction, MessageEmbed, Message } = require("discord.js");
+const { MessageEmbed, Message, CommandInteraction, MessageActionRow, MessageButton } = require("discord.js");
+const { EMBED_COLORS } = require("@root/config.js");
 const { getJson } = require("@utils/httpUtils");
-const { EMBED_COLORS } = require("@root/config");
-const NekosLife = require("nekos.life");
-const neko = new NekosLife();
+const { getRandomInt } = require("@utils/miscUtils");
 
-const choices = ["hug", "kiss", "cuddle", "pat", "poke", "slap", "smug", "tickle", "wink"];
-
-module.exports = class Reaction extends Command {
+module.exports = class MemeCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "react",
-      description: "anime reactions",
-      enabled: true,
-      category: "ANIME",
-      cooldown: 5,
+      name: "anime",
+      description: "envoie des animes random",
+      category: "FUN",
+      botPermissions: ["EMBED_LINKS"],
+      cooldown: 20,
       command: {
         enabled: true,
-        minArgsCount: 1,
-        usage: "[reaction]",
+        usage: "[categorie]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
             name: "category",
-            description: "reaction type",
+            description: "meme category",
             type: "STRING",
-            required: true,
-            choices: choices.map((ch) => ({ name: ch, value: ch })),
+            required: false,
           },
         ],
       },
@@ -40,13 +35,42 @@ module.exports = class Reaction extends Command {
    * @param {string[]} args
    */
   async messageRun(message, args) {
-    const category = args[0].toLowerCase();
-    if (!choices.includes(category)) {
-      return message.reply(`Invalid choice: \`${category}\`.\nAvailable reactions: ${choices.join(", ")}`);
-    }
+    const choice = args[0];
 
-    const embed = await genReaction(category, message.author);
-    await message.reply({ embeds: [embed] });
+    const buttonRow = new MessageActionRow().addComponents(
+      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("<:recharger:963284695313948742>")
+    );
+    const embed = await getRandomEmbed(choice);
+
+    const sentMsg = await message.reply({
+      embeds: [embed],
+      components: [buttonRow],
+    });
+
+    const collector = message.channel.createMessageComponentCollector({
+      filter: (reactor) => reactor.user.id === message.author.id,
+      time: this.cooldown * 10000,
+      max: 3,
+      dispose: true,
+    });
+
+    collector.on("collect", async (response) => {
+      if (response.customId !== "regenMemeBtn") return;
+      await response.deferUpdate();
+
+      const embed = await getRandomEmbed(choice);
+      await sentMsg.edit({
+        embeds: [embed],
+        components: [buttonRow],
+      });
+    });
+
+    collector.on("end", () => {
+      buttonRow.components.forEach((button) => button.setDisabled(true));
+      return sentMsg.edit({
+        components: [buttonRow],
+      });
+    });
   }
 
   /**
@@ -54,35 +78,72 @@ module.exports = class Reaction extends Command {
    */
   async interactionRun(interaction) {
     const choice = interaction.options.getString("category");
-    const embed = await genReaction(choice, interaction.user);
-    await interaction.followUp({ embeds: [embed] });
+
+    const buttonRow = new MessageActionRow().addComponents(
+      new MessageButton().setCustomId("regenMemeBtn").setStyle("SECONDARY").setEmoji("<:recharger:963284695313948742>")
+    );
+    const embed = await getRandomEmbed(choice);
+
+    await interaction.followUp({
+      embeds: [embed],
+      components: [buttonRow],
+    });
+
+    const collector = interaction.channel.createMessageComponentCollector({
+      filter: (reactor) => reactor.user.id === interaction.user.id,
+      time: this.cooldown * 1000,
+      max: 3,
+      dispose: true,
+    });
+
+    collector.on("collect", async (response) => {
+      if (response.customId !== "regenMemeBtn") return;
+      await response.deferUpdate();
+
+      const embed = await getRandomEmbed(choice);
+      await interaction.editReply({
+        embeds: [embed],
+        components: [buttonRow],
+      });
+    });
+
+    collector.on("end", () => {
+      buttonRow.components.forEach((button) => button.setDisabled(true));
+      return interaction.editReply({
+        components: [buttonRow],
+      });
+    });
   }
 };
 
-const genReaction = async (category, user) => {
+async function getRandomEmbed(choice) {
+  const subReddits = ["AnimeFR"];
+  let rand = choice ? choice : subReddits[getRandomInt(subReddits.length)];
+
+  const response = await getJson(`https://www.reddit.com/r/${rand}/random/.json`);
+  if (!response.success) {
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Une erreur est survenue!");
+  }
+
+  const json = response.data;
+  if (!Array.isArray(json) || json.length === 0) {
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription(`Aucun meme pour ${choice}`);
+  }
+
   try {
-    let imageUrl;
-
-    // some-random api
-    if (category === "wink") {
-      const response = await getJson("https://some-random-api.ml/animu/wink");
-      if (!response.success) throw new Error("API error");
-      imageUrl = response.data.link;
-    }
-
-    // neko api
-    else {
-      imageUrl = (await neko.sfw[category]()).url;
-    }
+    let permalink = json[0].data.children[0].data.permalink;
+    let memeUrl = `https://reddit.com${permalink}`;
+    let memeImage = json[0].data.children[0].data.url;
+    let memeTitle = json[0].data.children[0].data.title;
+    let memeUpvotes = json[0].data.children[0].data.ups;
+    let memeNumComments = json[0].data.children[0].data.num_comments;
 
     return new MessageEmbed()
-      .setImage(imageUrl)
-      .setColor("RANDOM")
-      .setFooter({ text: `Requested By ${user.tag}` });
-  } catch (ex) {
-    return new MessageEmbed()
-      .setColor(EMBED_COLORS.ERROR)
-      .setDescription("Failed to fetch meme. Try again!")
-      .setFooter({ text: `Requested By ${user.tag}` });
+      .setAuthor({ name: memeTitle, url: memeUrl })
+      .setImage(memeImage)
+      .setColor("#303136")
+      .setFooter({ text: `👍 ${memeUpvotes} | 💬 ${memeNumComments}` });
+  } catch (error) {
+    return new MessageEmbed().setColor(EMBED_COLORS.ERROR).setDescription("Une erreur est survenue!");
   }
-};
+}

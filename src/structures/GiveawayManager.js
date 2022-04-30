@@ -12,7 +12,7 @@ module.exports = class extends GiveawaysManager {
           botsCanWin: false,
           embedColor: EMBED_COLORS.GIVEAWAYS,
           embedColorEnd: EMBED_COLORS.GIVEAWAYS,
-          reaction: "🎉",
+          reaction: "<:tada:964050758037291028>",
         },
       },
       false

@@ -4,8 +4,8 @@ const { Message, CommandInteraction } = require("discord.js");
 module.exports = class Automod extends Command {
   constructor(client) {
     super(client, {
-      name: "automod",
-      description: "various automod configuration",
+      name: "automoderation",
+      description: "protéger votre serveur",
       category: "AUTOMOD",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -14,31 +14,31 @@ module.exports = class Automod extends Command {
         subcommands: [
           {
             trigger: "antighostping <ON|OFF>",
-            description: "Logs ghost mentions in your server",
+            description: "Affiche dans un salon les personnes qui ghostping sur ton serveur",
           },
           {
             trigger: "antiinvites <ON|OFF>",
-            description: "Allow or disallow sending discord invites in message",
+            description: "Active ou Désactive l'envoie d'invitation discord",
           },
           {
-            trigger: "antilinks <ON|OFF>",
-            description: "Allow or disallow sending links in message",
+            trigger: "antiliens <ON|OFF>",
+            description: "Activer ou Désactiver l'envoie de lien",
           },
           {
-            trigger: "antiscam <ON|OFF>",
-            description: "Enable or disable antiscam detection",
+            trigger: "antiarnaque <ON|OFF>",
+            description: "Active ou désactive la protection contre les arnaqueurs",
           },
           {
-            trigger: "maxlines <number>",
-            description: "Sets maximum lines allowed per message [0 to disable]",
+            trigger: "lignemax <nombre>",
+            description: "Définit le nombre maximum de lignes autorisées par message [0 pour désactiver]",
           },
           {
-            trigger: "maxmentions <number>",
-            description: "Sets maximum member mentions allowed per message [0 to disable]",
+            trigger: "maxmentions <nombre>",
+            description: "Définit le nombre maximum de mentions de membres autorisées par message [0 pour désactiver]",
           },
           {
-            trigger: "maxrolementions <number>",
-            description: "Sets maximum role mentions allowed per message [0 to disable]",
+            trigger: "maxrolementions <nombre>",
+            description: "Définit le nombre maximum de mentions de rôle autorisées par message [0 à désactiver]",
           },
         ],
       },
@@ -48,12 +48,12 @@ module.exports = class Automod extends Command {
         options: [
           {
             name: "antighostping",
-            description: "Logs ghost mentions in your server",
+            description: "Enregistre les mentions fantômes sur votre serveur",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "configuration status",
+                description: "état de la configuration",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -71,12 +71,12 @@ module.exports = class Automod extends Command {
           },
           {
             name: "antiinvites",
-            description: "Allow or disallow sending discord invites in message",
+            description: "Autoriser ou non l'envoi d'invitations discord dans le message",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "configuration status",
+                description: "état de la configuration",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -93,13 +93,13 @@ module.exports = class Automod extends Command {
             ],
           },
           {
-            name: "antilinks",
-            description: "Allow or disallow sending links in message",
+            name: "antiliens",
+            description: "Autoriser ou non l'envoi de liens dans le message",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "configuration status",
+                description: "état de la configuration",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -116,13 +116,13 @@ module.exports = class Automod extends Command {
             ],
           },
           {
-            name: "antiscam",
-            description: "Enable or disable antiscam detection",
+            name: "antiarnaque",
+            description: "Activer ou désactiver la détection anti-arnaque ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "status",
-                description: "configuration status",
+                description: "état de la configuration",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -139,13 +139,13 @@ module.exports = class Automod extends Command {
             ],
           },
           {
-            name: "maxlines",
-            description: "Sets maximum lines allowed per message",
+            name: "lignemax",
+            description: "Définit le nombre maximum de lignes autorisées par message",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "amount",
-                description: "configuration amount (0 to disable)",
+                name: "montant",
+                description: "montant de la configuration (0 pour désactiver)",
                 required: true,
                 type: "INTEGER",
               },
@@ -153,12 +153,12 @@ module.exports = class Automod extends Command {
           },
           {
             name: "maxmentions",
-            description: "Sets maximum user mentions allowed per message",
+            description: "Définit le nombre maximum de mentions d'utilisateur autorisées par message",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "amount",
-                description: "configuration amount (0 to disable)",
+                name: "montant",
+                description: "montant de la configuration (0 pour désactiver)",
                 required: true,
                 type: "INTEGER",
               },
@@ -166,12 +166,12 @@ module.exports = class Automod extends Command {
           },
           {
             name: "maxrolementions",
-            description: "Sets maximum role mentions allowed per message",
+            description: "Définit le nombre maximum de mentions de rôle autorisées par message",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "amount",
-                description: "configuration amount (0 to disable)",
+                name: "montant",
+                description: "montant de la configuration (0 pour désactiver)",
                 required: true,
                 type: "INTEGER",
               },
@@ -194,36 +194,36 @@ module.exports = class Automod extends Command {
     let response;
     if (sub == "antighostping") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.reply("Statut non valide. La valeur doit être `on/off`");
       response = await antighostPing(settings, status);
     }
 
     //
     else if (sub === "antiinvites") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.reply("Statut non valide. La valeur doit être `on/off`");
       response = await antiInvites(settings, status);
     }
 
     //
-    else if (sub == "antilinks") {
+    else if (sub == "antiliens") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.reply("Statut non valide. La valeur doit être `on/off`");
       response = await antilinks(settings, status);
     }
 
     //
-    else if (sub == "antiscam") {
+    else if (sub == "antiarnaque") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.reply("Statut non valide. La valeur doit être `on/off`");
       response = await antiScam(settings, status);
     }
 
     //
-    else if (sub === "maxlines") {
+    else if (sub === "lignemax") {
       const max = args[1];
       if (isNaN(max) || Number.parseInt(max) < 1) {
-        return message.reply("Max Lines must be a valid number greater than 0");
+        return message.reply("Les lignes max doit être un nombre valide supérieur à 0");
       }
       response = await maxLines(settings, max);
     }
@@ -232,7 +232,7 @@ module.exports = class Automod extends Command {
     else if (sub === "maxmentions") {
       const max = args[1];
       if (isNaN(max) || Number.parseInt(max) < 1) {
-        return message.reply("Max Mentions must be a valid number greater than 0");
+        return message.reply("Le nombre de mentions maximum doit être un nombre valide supérieur à 0");
       }
       response = await maxMentions(settings, max);
     }
@@ -241,13 +241,13 @@ module.exports = class Automod extends Command {
     else if (sub === "maxrolementions") {
       const max = args[1];
       if (isNaN(max) || Number.parseInt(max) < 1) {
-        return message.reply("Max Role Mentions must be a valid number greater than 0");
+        return message.reply("Le nombre maximum de mentions de role doit être un nombre valide supérieur à 0");
       }
       response = await maxRoleMentions(settings, max);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Utilisation d'une commande non valide !";
 
     await message.reply(response);
   }
@@ -263,12 +263,12 @@ module.exports = class Automod extends Command {
     let response;
     if (sub == "antighostping") response = await antighostPing(settings, interaction.options.getString("status"));
     else if (sub === "antiinvites") response = await antiInvites(settings, interaction.options.getString("status"));
-    else if (sub == "antilinks") response = await antilinks(settings, interaction.options.getString("status"));
-    else if (sub == "antiscam") response = await antiScam(settings, interaction.options.getString("status"));
-    else if (sub === "maxlines") response = await maxLines(settings, interaction.options.getInteger("amount"));
-    else if (sub === "maxmentions") response = await maxMentions(settings, interaction.options.getInteger("amount"));
+    else if (sub == "antiliens") response = await antilinks(settings, interaction.options.getString("status"));
+    else if (sub == "antiarnaque") response = await antiScam(settings, interaction.options.getString("status"));
+    else if (sub === "lignemax") response = await maxLines(settings, interaction.options.getInteger("montant"));
+    else if (sub === "maxmentions") response = await maxMentions(settings, interaction.options.getInteger("montant"));
     else if (sub === "maxrolementions") {
-      response = await maxRoleMentions(settings, interaction.options.getInteger("amount"));
+      response = await maxRoleMentions(settings, interaction.options.getInteger("montant"));
     }
 
     await interaction.followUp(response);
@@ -279,15 +279,15 @@ async function antighostPing(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_ghostping = status;
   await settings.save();
-  return `Configuration saved! Antighost ping is now ${status ? "enabled" : "disabled"}`;
+  return `Configuration sauvegardée ! L'interdiction de ping fantome est maintenant ${status ? "activer" : "désactiver"}`;
 }
 
 async function antiInvites(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_invites = status;
   await settings.save();
-  return `Messages ${
-    status ? "with discord invites will now be automatically deleted" : "will not be filtered for discord invites now"
+  return `Les messages ${
+    status ? "avec les invitations discord seront désormais automatiquement supprimées" : "ne seront pas filtrés pour les invitations discord maintenant"
   }`;
 }
 
@@ -295,51 +295,51 @@ async function antilinks(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_links = status;
   await settings.save();
-  return `Messages ${status ? "with links will now be automatically deleted" : "will not be filtered for links now"}`;
+  return `Les messages ${status ? "avec des liens seront désormais automatiquement supprimés" : "ne seront pas filtrés pour les liens maintenant"}`;
 }
 
 async function antiScam(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_scam = status;
   await settings.save();
-  return `Antiscam detection is now ${status ? "enabled" : "disabled"}`;
+  return `La détection d'anti-arnaque est maintenant ${status ? "activer" : "désactiver"}`;
 }
 
 async function maxLines(settings, input) {
   const lines = Number.parseInt(input);
-  if (isNaN(lines)) return "Please enter a valid number input";
+  if (isNaN(lines)) return "Veuillez saisir un numéro valide";
 
   settings.automod.max_lines = lines;
   await settings.save();
   return `${
     input === 0
-      ? "Maximum line limit is disabled"
-      : `Messages longer than \`${input}\` lines will now be automatically deleted`
+      ? "La limite de ligne maximale est désactivée"
+      : `Les messages plus longs que \`${input}\` lignes seront maintenant automatiquement supprimées`
   }`;
 }
 
 async function maxMentions(settings, input) {
   const mentions = Number.parseInt(input);
-  if (isNaN(mentions)) return "Please enter a valid number input";
+  if (isNaN(mentions)) return "Veuillez saisir un numéro valide";
 
   settings.automod.max_mentions = mentions;
   await settings.save();
   return `${
     input === 0
-      ? "Maximum user mentions limit is disabled"
-      : `Messages having more than \`${input}\` user mentions will now be automatically deleted`
+      ? "La limite maximale de mentions d'utilisateurs est désactivée"
+      : `Les messages ayant plus de \`${input}\` mentions d'utilisateurs seront désormais automatiquement supprimées`
   }`;
 }
 
 async function maxRoleMentions(settings, input) {
   const mentions = Number.parseInt(input);
-  if (isNaN(mentions)) return "Please enter a valid number input";
+  if (isNaN(mentions)) return "Veuillez saisir un numéro valide";
 
   settings.automod.max_role_mentions = mentions;
   await settings.save();
   return `${
     input === 0
-      ? "Maximum role mentions limit is disabled"
-      : `Messages having more than \`${input}\` role mentions will now be automatically deleted`
+      ? "La limite maximale des mentions de rôle est désactivée"
+      : `Les messages ayant plus de \`${input}\` mentions de rôle seront désormais automatiquement supprimées`
   }`;
 }

@@ -26,10 +26,10 @@ module.exports = (client) => {
   const overallUsage = `${Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)}%`;
 
   let desc = "";
-  desc += `❒ Total serveur: ${guilds}\n`;
-  desc += `❒ Total utilisateurs: ${users}\n`;
-  desc += `❒ Total salons: ${channels}\n`;
-  desc += `❒ Ping: ${client.ws.ping} ms\n`;
+  desc += `<:parapluie:963279429864419380> Total serveur: ${guilds}\n`;
+  desc += `<:parapluie:963279429864419380> Total utilisateurs: ${users}\n`;
+  desc += `<:parapluie:963279429864419380> Total salons: ${channels}\n`;
+  desc += `<:wifi:963572473994031154> Ping: ${client.ws.ping} ms\n`;
   desc += "\n";
 
   const embed = new MessageEmbed()
@@ -38,34 +38,34 @@ module.exports = (client) => {
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(desc)
     .addField(
-      "CPU:",
+      "<:processeur:963279496411250689> CPU:",
       stripIndent`
-        <:point:955639055511601152>**OS:** ${platform} [${architecture}]
-        <:point:955639055511601152>**Coeurs:** ${cores}
-        <:point:955639055511601152>**Utilisation:** ${cpuUsage}
+        <:fleche:963265299992444998> **OS:** ${platform} [${architecture}]
+        <:fleche:963265299992444998> **Coeurs:** ${cores}
+        <:fleche:963265299992444998> **Utilisation:** ${cpuUsage}
         `,
       true
     )
     .addField(
-      "RAM Bot:",
+      "<:stats:963567717611339897> RAM Bot:",
       stripIndent`
-        <:point:955639055511601152>**Utilisé:** ${botUsed}
-        <:point:955639055511601152>**Disponible:** ${botAvailable}
-        <:point:955639055511601152>**Utilisation:** ${botUsage}
+        <:fleche:963265299992444998> **Utilisé:** ${botUsed}
+        <:fleche:963265299992444998> **Disponible:** ${botAvailable}
+        <:fleche:963265299992444998> **Utilisation:** ${botUsage}
         `,
       true
     )
     .addField(
-      "RAM Total:",
+      "<:stats:963567717611339897> RAM Total:",
       stripIndent`
-      <:point:955639055511601152>**Utilisé:** ${overallUsed}
-      <:point:955639055511601152>**Disponible:** ${overallAvailable}
-      <:point:955639055511601152>**Utilisation:** ${overallUsage}
+      <:fleche:963265299992444998> **Utilisé:** ${overallUsed}
+      <:fleche:963265299992444998> **Disponible:** ${overallAvailable}
+      <:fleche:963265299992444998> **Utilisation:** ${overallUsage}
       `,
       true
     )
-    .addField("Node Js", process.versions.node, false)
-    .addField("En ligne depuis", "```" + timeformat(process.uptime()) + "```", false);
+    .addField("<:javascript:963571763357298729> Node Js", process.versions.node, false)
+    .addField("<:horloge:963571834547208232> En ligne depuis", "```" + timeformat(process.uptime()) + "```", false);
 
   // Buttons
   let components = [];

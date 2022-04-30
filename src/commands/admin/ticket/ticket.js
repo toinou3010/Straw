@@ -19,7 +19,7 @@ module.exports = class Ticket extends Command {
   constructor(client) {
     super(client, {
       name: "ticket",
-      description: "various ticketing commands",
+      description: "diverses commandes de billetterie ",
       category: "TICKET",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -28,31 +28,31 @@ module.exports = class Ticket extends Command {
         subcommands: [
           {
             trigger: "setup",
-            description: "start an interactive ticket setup",
+            description: "démarrer une configuration de ticket interactif ",
           },
           {
-            trigger: "log <#channel>",
-            description: "setup log channel for tickets",
+            trigger: "log <#salon>",
+            description: "configurer le salon de journalisation pour les tickets ",
           },
           {
-            trigger: "limit <number>",
-            description: "set maximum number of concurrent open tickets",
+            trigger: "limite <nombre>",
+            description: "définir le nombre maximum de tickets ouverts simultanés ",
           },
           {
-            trigger: "close",
-            description: "close the ticket",
+            trigger: "fermer",
+            description: "fermer le ticket ",
           },
           {
-            trigger: "closeall",
-            description: "close all open tickets",
+            trigger: "toutfermer",
+            description: "fermer tous les tickets ouverts ",
           },
           {
-            trigger: "add <userId|roleId>",
-            description: "add user/role to the ticket",
+            trigger: "add <ID|roleID>",
+            description: "add utilisateur/rôle au ticket ",
           },
           {
-            trigger: "remove <userId|roleId>",
-            description: "remove user/role from the ticket",
+            trigger: "remove <ID|roleID>",
+            description: "supprimer l'utilisateur/le rôle du ticket ",
           },
         ],
       },
@@ -61,31 +61,31 @@ module.exports = class Ticket extends Command {
         options: [
           {
             name: "setup",
-            description: "setup a new ticket message",
+            description: "configurer un nouveau message de ticket ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "channel",
-                description: "the channel where ticket creation message must be sent",
+                name: "salon",
+                description: "le salon où le message de création de ticket doit être envoyé ",
                 type: "CHANNEL",
                 channelTypes: ["GUILD_TEXT"],
                 required: true,
               },
               {
-                name: "title",
-                description: "the title for the ticket message",
+                name: "titre",
+                description: "le titre du message du ticket ",
                 type: "STRING",
                 required: true,
               },
               {
                 name: "role",
-                description: "the role's which can have access to newly opened tickets",
+                description: "les rôles qui peuvent avoir accès aux tickets nouvellement ouverts ",
                 type: "ROLE",
                 required: false,
               },
               {
-                name: "color",
-                description: "hex color for the ticket embed",
+                name: "couleur",
+                description: "couleur hexadécimale pour l'intégration du ticket ",
                 type: "STRING",
                 required: false,
               },
@@ -93,12 +93,12 @@ module.exports = class Ticket extends Command {
           },
           {
             name: "log",
-            description: "setup log channel for tickets",
+            description: "configurer le salon de journalisation pour les tickets ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "channel",
-                description: "channel where ticket logs must be sent",
+                name: "salon",
+                description: "salon où les journaux de tickets doivent être envoyés ",
                 type: "CHANNEL",
                 channelTypes: ["GUILD_TEXT"],
                 required: true,
@@ -106,36 +106,36 @@ module.exports = class Ticket extends Command {
             ],
           },
           {
-            name: "limit",
-            description: "set maximum number of concurrent open tickets",
+            name: "limite",
+            description: "définir le nombre maximum de tickets ouverts simultanés ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "amount",
-                description: "max number of tickets",
+                name: "montant",
+                description: "nombre maximum de billets ",
                 type: "INTEGER",
                 required: true,
               },
             ],
           },
           {
-            name: "close",
-            description: "closes the ticket [used in ticket channel only]",
+            name: "fermer",
+            description: "ferme le ticket [utilisé uniquement dans le canal de tickets] ",
             type: "SUB_COMMAND",
           },
           {
-            name: "closeall",
-            description: "closes all open tickets",
+            name: "toutfermer",
+            description: "ferme tous les tickets ouverts ",
             type: "SUB_COMMAND",
           },
           {
             name: "add",
-            description: "add user to the current ticket channel [used in ticket channel only]",
+            description: "ajouter un utilisateur au canal de tickets actuel [utilisé uniquement dans le canal de tickets] ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "user_id",
-                description: "the id of the user to add",
+                description: "l'identifiant de l'utilisateur à ajouter ",
                 type: "STRING",
                 required: true,
               },
@@ -143,12 +143,12 @@ module.exports = class Ticket extends Command {
           },
           {
             name: "remove",
-            description: "remove user from the ticket channel [used in ticket channel only]",
+            description: "supprimer l'utilisateur du canal de tickets [utilisé uniquement dans le canal de tickets] ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "user",
-                description: "the user to remove",
+                description: "l'utilisateur à supprimer ",
                 type: "USER",
                 required: true,
               },
@@ -171,46 +171,46 @@ module.exports = class Ticket extends Command {
     // Setup
     if (input === "setup") {
       if (!message.guild.me.permissions.has("MANAGE_CHANNELS")) {
-        return message.reply("I am missing `Manage Channels` to create ticket channels");
+        return message.reply("Il me manque **Gérer les canaux** pour créer des canaux de tickets ");
       }
       if (!message.channel.permissionsFor(message.guild.me).has("EMBED_LINKS")) {
-        return message.reply("I am missing `Embed Links` permission to run an interactive setup");
+        return message.reply("Il me manque l'autorisation **Intégrer des liens** pour exécuter une configuration interactive ");
       }
       return runInteractiveSetup(message);
     }
 
     // log ticket
     else if (input === "log") {
-      if (args.length < 2) return message.reply("Please provide a channel where ticket logs must be sent");
+      if (args.length < 2) return message.reply("Veuillez fournir un salon où les journaux de tickets doivent être envoyés ");
       const target = getMatchingChannels(message.guild, args[1]);
-      if (target.length === 0) return message.reply("Could not find any matching channel");
+      if (target.length === 0) return message.reply("mImpossible de trouver un salon correspondant ");
       response = await setupLogChannel(target[0], data.settings);
     }
 
     // Set limit
-    else if (input === "limit") {
-      if (args.length < 2) return message.reply("Please provide a number");
+    else if (input === "limite") {
+      if (args.length < 2) return message.reply("Veuillez fournir un numéro ");
       const limit = args[1];
-      if (isNaN(limit)) return message.reply("Please provide a number input");
+      if (isNaN(limit)) return message.reply("Veuillez saisir un nombre ");
       response = await setupLimit(message, limit, data.settings);
     }
 
     // Close ticket
-    else if (input === "close") {
+    else if (input === "fermer") {
       response = await close(message, message.author);
       if (!response) return;
     }
 
     // Close all tickets
-    else if (input === "closeall") {
-      let sent = await message.reply("Closing tickets ...");
+    else if (input === "tout fermer") {
+      let sent = await message.reply("D'accord veuillez patienter...");
       response = await closeAll(message);
       return sent.editable ? sent.edit(response) : message.channel.send(response);
     }
 
     // Add user to ticket
     else if (input === "add") {
-      if (args.length < 2) return message.reply("Please provide a user or role to add to the ticket");
+      if (args.length < 2) return message.reply("Veuillez fournir un utilisateur ou un rôle à ajouter au ticket ");
       let inputId;
       if (message.mentions.users.size > 0) inputId = message.mentions.users.first().id;
       else if (message.mentions.roles.size > 0) inputId = message.mentions.roles.first().id;
@@ -220,7 +220,7 @@ module.exports = class Ticket extends Command {
 
     // Remove user from ticket
     else if (input === "remove") {
-      if (args.length < 2) return message.reply("Please provide a user or role to remove");
+      if (args.length < 2) return message.reply("Veuillez fournir un utilisateur ou un rôle à supprimer ");
       let inputId;
       if (message.mentions.users.size > 0) inputId = message.mentions.users.first().id;
       else if (message.mentions.roles.size > 0) inputId = message.mentions.roles.first().id;
@@ -230,7 +230,7 @@ module.exports = class Ticket extends Command {
 
     // Invalid input
     else {
-      return message.reply("Incorrect command usage");
+      return message.reply("Utilisation incorrecte de la commande ");
     }
 
     if (response) await message.reply(response);
@@ -246,22 +246,22 @@ module.exports = class Ticket extends Command {
 
     // setup
     if (sub === "setup") {
-      const channel = interaction.options.getChannel("channel");
-      const title = interaction.options.getString("title");
+      const channel = interaction.options.getChannel("salon");
+      const title = interaction.options.getString("titre");
       const role = interaction.options.getRole("role");
-      const color = interaction.options.getString("color");
+      const color = interaction.options.getString("couleur");
 
       if (!interaction.guild.me.permissions.has("MANAGE_CHANNELS")) {
-        return interaction.followUp("I am missing `Manage Channels` to create ticket channels");
+        return interaction.followUp("Il me manque **Gérer les salons** pour créer des salons de tickets ");
       }
 
-      if (color && !isHex(color)) return interaction.followUp("Please provide a valid hex color");
+      if (color && !isHex(color)) return interaction.followUp("Veuillez fournir une couleur hexadécimale valide ");
       if (role && (role.managed || interaction.guild.me.roles.highest.position < role.position)) {
-        return interaction.followUp("I do not have permissions to manage this role");
+        return interaction.followUp("Je n'ai pas les autorisations pour gérer ce rôle ");
       }
 
       if (!canSendEmbeds(channel)) {
-        return interaction.followUp(`I need do not have permissions to send embeds in ${channel}`);
+        return interaction.followUp(`Je n'ai pas besoin d'autorisations pour envoyer des intégrations dans  ${channel}`);
       }
 
       response = await setupTicket(interaction.guild, channel, title, role, color);
@@ -269,23 +269,23 @@ module.exports = class Ticket extends Command {
 
     // Log channel
     else if (sub === "log") {
-      const channel = interaction.options.getChannel("channel");
+      const channel = interaction.options.getChannel("salon");
       response = await setupLogChannel(channel, data.settings);
     }
 
     // Limit
-    else if (sub === "limit") {
-      const limit = interaction.options.getInteger("amount");
+    else if (sub === "limite") {
+      const limit = interaction.options.getInteger("montant");
       response = await setupLimit(interaction, limit, data.settings);
     }
 
     // Close
-    else if (sub === "close") {
+    else if (sub === "fermer") {
       response = await close(interaction, interaction.user);
     }
 
     // Close all
-    else if (sub === "closeall") {
+    else if (sub === "toutfermer") {
       response = await closeAll(interaction);
     }
 
@@ -312,9 +312,9 @@ async function runInteractiveSetup({ channel, guild, author }) {
   const filter = (m) => m.author.id === author.id;
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: "Ticket Setup" })
+    .setAuthor({ name: "Configuration du ticket " })
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setFooter({ text: "Type cancel to cancel setup" });
+    .setFooter({ text: "Tapez Annuler pour annuler la configuration " });
 
   let targetChannel;
   let title;
@@ -322,48 +322,48 @@ async function runInteractiveSetup({ channel, guild, author }) {
   try {
     // wait for channel
     await channel.send({
-      embeds: [embed.setDescription("Please `mention the channel` in which the ticket message must be sent")],
+      embeds: [embed.setDescription("Veuillez **mentionner le canal** dans lequel le message du ticket doit être envoyé ")],
     });
     let reply = (await channel.awaitMessages({ filter, max: 1, time: SETUP_TIMEOUT })).first();
-    if (reply.content.toLowerCase() === "cancel") return reply.reply("Ticket setup has been cancelled");
+    if (reply.content.toLowerCase() === "annuler") return reply.reply("La configuration du ticket a été annulée ");
     targetChannel = reply.mentions.channels.first();
-    if (!targetChannel) return reply.reply("Ticket setup has been cancelled. You did not mention a channel");
+    if (!targetChannel) return reply.reply("La configuration du ticket a été annulée. Vous n'avez pas mentionné de chaîne");
     if (!targetChannel.isText() && !targetChannel.permissionsFor(guild.me).has(SETUP_PERMS)) {
       return reply.reply(
-        `Ticket setup has been cancelled.\nI need ${parsePermissions(SETUP_PERMS)} in ${targetChannel}`
+        `La configuration du ticket a été annulée.\nJ'ai besoin  ${parsePermissions(SETUP_PERMS)} dans ${targetChannel}`
       );
     }
 
     // wait for title
-    await channel.send({ embeds: [embed.setDescription("Please enter the `title` of the ticket")] });
+    await channel.send({ embeds: [embed.setDescription("Veuillez entrer le **titre** du billet ")] });
     reply = (await channel.awaitMessages({ filter, max: 1, time: SETUP_TIMEOUT })).first();
-    if (reply.content.toLowerCase() === "cancel") return reply.reply("Ticket setup has been cancelled");
+    if (reply.content.toLowerCase() === "annuler") return reply.reply("La configuration du ticket a été annulée ");
     title = reply.content;
 
     // wait for roles
     const desc =
-      "What roles should have access to view the newly created tickets?\n" +
-      "Please type the name of a existing role in this server.\n\n" +
-      "Alternatively you can type `none`";
+      "Quels rôles doivent avoir accès pour afficher les tickets nouvellement créés ?\n " +
+      "Veuillez saisir le nom d'un rôle existant sur ce serveur.\n\n " +
+      "Sinon, vous pouvez taper **aucun**;
 
     await channel.send({ embeds: [embed.setDescription(desc)] });
     reply = (await channel.awaitMessages({ filter, max: 1, time: SETUP_TIMEOUT })).first();
     const query = reply.content.toLowerCase();
 
-    if (query === "cancel") return reply.reply("Ticket setup has been cancelled");
-    if (query !== "none") {
+    if (query === "annuler") return reply.reply("La configuration du ticket a été annulée ");
+    if (query !== "aucun") {
       const roles = findMatchingRoles(guild, query);
       if (roles.length === 0) {
-        return reply.reply(`Uh oh, I couldn't find any roles called ${query}! Ticket setup has been cancelled`);
+        return reply.reply(`Uh oh, je n'ai trouvé aucun rôle appelé  ${query}! La configuration du ticket a été annulée `);
       }
       role = roles[0];
       if (role.managed || guild.me.roles.highest.position < role.position) {
-        return reply.reply("Ticket setup has been cancelled. I do not have permission to manage this role");
+        return reply.reply("La configuration du ticket a été annulée. Je n'ai pas la permission de gérer ce rôle ");
       }
-      await reply.reply(`Alright! \`${role.name}\` can now view the newly created tickets`);
+      await reply.reply(`Très bien!  \`${role.name}\` peut maintenant voir les tickets nouvellement créés `);
     }
   } catch (ex) {
-    return channel.send("No answer for 30 seconds, setup has cancelled");
+    return channel.send("Pas de réponse pendant 30 secondes, la configuration a été annulée ");
   }
 
   const response = await setupTicket(guild, targetChannel, title, role);
@@ -373,14 +373,14 @@ async function runInteractiveSetup({ channel, guild, author }) {
 async function setupTicket(guild, channel, title, role, color) {
   try {
     const embed = new MessageEmbed()
-      .setAuthor({ name: "Support Ticket" })
+      .setAuthor({ name: "Billet d'assistance " })
       .setDescription(title)
-      .setFooter({ text: "You can only have 1 open ticket at a time!" });
+      .setFooter({ text: "Vous ne pouvez avoir qu'un seul ticket ouvert à la fois ! " });
 
     if (color) embed.setColor(color);
 
     const row = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("Open a ticket").setCustomId("TICKET_CREATE").setStyle("SUCCESS")
+      new MessageButton().setLabel("Ouvrire").setCustomId("TICKET_CREATE").setStyle("SUCCESS")
     );
 
     const tktMessage = await channel.send({ embeds: [embed], components: [row] });
@@ -389,47 +389,47 @@ async function setupTicket(guild, channel, title, role, color) {
     await createNewTicket(guild.id, channel.id, tktMessage.id, title, role?.id);
 
     // send success
-    return "Configuration saved! Ticket message is now setup 🎉";
+    return "Configuration enregistrée ! Le message du ticket est maintenant configuré 🎉 ";
   } catch (ex) {
     guild.client.logger.error("ticketSetup", ex);
-    return "Unexpected error occurred! Setup failed";
+    return "Une erreur inattendue s'est produite! La configuration a échoué ";
   }
 }
 
 async function setupLogChannel(target, settings) {
-  if (!canSendEmbeds(target)) return `Oops! I do have have permission to send embed to ${target}`;
+  if (!canSendEmbeds(target)) return `Oups! J'ai l'autorisation d'envoyer une intégration à  ${target}`;
 
   settings.ticket.log_channel = target.id;
   await settings.save();
 
-  return `Configuration saved! Ticket logs will be sent to ${target.toString()}`;
+  return `Configuration enregistrée ! Les journaux de tickets seront envoyés à  ${target.toString()}`;
 }
 
 async function setupLimit(limit, settings) {
-  if (Number.parseInt(limit, 10) < 5) return "Ticket limit cannot be less than 5";
+  if (Number.parseInt(limit, 10) < 5) return "La limite de billets ne peut pas être inférieure à 5 ";
 
   settings.ticket.limit = limit;
   await settings.save();
 
-  return `Configuration saved. You can now have a maximum of \`${limit}\` open tickets`;
+  return `Configuration enregistrée. Vous pouvez maintenant avoir un maximum de  \`${limit}\` billets ouverts `;
 }
 
 async function close({ channel }, author) {
-  if (!isTicketChannel(channel)) return "This command can only be used in ticket channels";
-  const status = await closeTicket(channel, author, "Closed by a moderator");
-  if (status === "MISSING_PERMISSIONS") return "I do not have permission to close tickets";
-  if (status === "ERROR") return "An error occurred while closing the ticket";
+  if (!isTicketChannel(channel)) return "Cette commande ne peut être utilisée que dans les canaux de tickets ";
+  const status = await closeTicket(channel, author, "Fermé par un modérateur ");
+  if (status === "MISSING_PERMISSIONS") return "Je n'ai pas la permission de fermer les billets ";
+  if (status === "ERROR") return "Une erreur s'est produite lors de la fermeture du ticket ";
   return null;
 }
 
 async function closeAll({ guild }) {
   const stats = await closeAllTickets(guild);
-  return `Completed! Success: \`${stats[0]}\` Failed: \`${stats[1]}\``;
+  return `Terminé! Succès : \`${stats[0]}\` Manqué : \`${stats[1]}\``;
 }
 
 async function addToTicket({ channel }, inputId) {
-  if (!isTicketChannel(channel)) return "This command can only be used in ticket channel";
-  if (!inputId || isNaN(inputId)) return "Oops! You need to input a valid userId/roleId";
+  if (!isTicketChannel(channel)) return "Cette commande ne peut être utilisée que dans le canal de ticket ";
+  if (!inputId || isNaN(inputId)) return "Oups! Vous devez saisir un ID utilisateur/roleId valide ";
 
   try {
     await channel.permissionOverwrites.create(inputId, {
@@ -437,23 +437,23 @@ async function addToTicket({ channel }, inputId) {
       SEND_MESSAGES: true,
     });
 
-    return "Done";
+    return "Fait";
   } catch (ex) {
-    return "Failed to add user/role. Did you provide a valid ID?";
+    return "Échec de l'ajout de l'utilisateur/du rôle. Avez-vous fourni une pièce d'identité valide ? ";
   }
 }
 
 async function removeFromTicket({ channel }, inputId) {
-  if (!isTicketChannel(channel)) return "This command can only be used in ticket channel";
-  if (!inputId || isNaN(inputId)) return "Oops! You need to input a valid userId/roleId";
+  if (!isTicketChannel(channel)) return "Cette commande ne peut être utilisée que dans le canal de ticket ";
+  if (!inputId || isNaN(inputId)) return "Oups! Vous devez saisir un ID utilisateur/roleId valide ";
 
   try {
     channel.permissionOverwrites.create(inputId, {
       VIEW_CHANNEL: false,
       SEND_MESSAGES: false,
     });
-    return "Done";
+    return "Fait";
   } catch (ex) {
-    return "Failed to remove user/role. Did you provide a valid ID?";
+    return "Échec de la suppression de l'utilisateur/du rôle. Avez-vous fourni une pièce d'identité valide ? ";
   }
 }
