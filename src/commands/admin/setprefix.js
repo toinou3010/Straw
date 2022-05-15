@@ -5,12 +5,12 @@ module.exports = class SetPrefix extends Command {
   constructor(client) {
     super(client, {
       name: "setprefix",
-      description: "sets a new prefix for this server",
+      description: "définit un nouveau préfixe pour ce serveur",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "<new-prefix>",
+        usage: "<prefix>",
         minArgsCount: 1,
       },
       slashCommand: {
@@ -18,8 +18,8 @@ module.exports = class SetPrefix extends Command {
         ephemeral: true,
         options: [
           {
-            name: "newprefix",
-            description: "the new prefix to set",
+            name: "prefix",
+            description: "le nouveau préfixe à définir ",
             type: "STRING",
             required: true,
           },
@@ -44,15 +44,15 @@ module.exports = class SetPrefix extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const response = await setNewPrefix(interaction.options.getString("newprefix"), data.settings);
+    const response = await setNewPrefix(interaction.options.getString("prefix"), data.settings);
     await interaction.followUp(response);
   }
 };
 
 async function setNewPrefix(newPrefix, settings) {
-  if (newPrefix.length > 2) return "Prefix length cannot exceed `2` characters";
+  if (newPrefix.length > 2) return "La longueur du préfixe ne peut pas dépasser '2' caractères ";
   settings.prefix = newPrefix;
   await settings.save();
 
-  return `New prefix is set to \`${newPrefix}\``;
+  return `Le nouveau préfixe est défini sur \`${newPrefix}\``;
 }

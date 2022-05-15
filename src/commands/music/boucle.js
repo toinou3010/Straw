@@ -5,7 +5,7 @@ const { musicValidations } = require("@utils/botUtils");
 module.exports = class Loop extends Command {
   constructor(client) {
     super(client, {
-      name: "boucle",
+      name: "loop",
       description: "met en boucle le morceau ou la file d'attente",
       category: "MUSIC",
       validations: musicValidations,

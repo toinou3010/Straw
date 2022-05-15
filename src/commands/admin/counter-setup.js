@@ -6,13 +6,13 @@ module.exports = class CounterSetup extends Command {
   constructor(client) {
     super(client, {
       name: "counter",
-      description: "setup counter channel in the guild",
+      description: "configurer le contre-canal dans la guilde ",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       botPermissions: ["MANAGE_CHANNELS"],
       command: {
         enabled: true,
-        usage: "<type> <channel-name>",
+        usage: "<type> <nom-du-salon>",
         minArgsCount: 1,
       },
       slashCommand: {
@@ -21,17 +21,17 @@ module.exports = class CounterSetup extends Command {
         options: [
           {
             name: "type",
-            description: "type of counter channel",
+            description: "type de voie de comptage ",
             type: "STRING",
             required: true,
             choices: [
               {
-                name: "users",
-                value: "USERS",
+                name: "utilisateurs",
+                value: "UTILISATEURS",
               },
               {
-                name: "members",
-                value: "MEMBERS",
+                name: "membres",
+                value: "MEMBRES",
               },
               {
                 name: "bots",
@@ -40,8 +40,8 @@ module.exports = class CounterSetup extends Command {
             ],
           },
           {
-            name: "name",
-            description: "name of the counter channel",
+            name: "nom",
+            description: "nom du salon",
             type: "STRING",
             required: true,
           },
@@ -57,10 +57,10 @@ module.exports = class CounterSetup extends Command {
    */
   async messageRun(message, args, data) {
     const type = args[0].toUpperCase();
-    if (!type || !["USERS", "MEMBERS", "BOTS"].includes(type)) {
-      return message.reply("Incorrect arguments are passed! Counter types: `users/members/bots`");
+    if (!type || !["UTILISATEURS", "MEMBRES", "BOTS"].includes(type)) {
+      return message.reply("Des arguments incorrects sont passés ! Type de compteur : `utilisateurs/membres/bots`");
     }
-    if (args.length < 2) return message.reply("Incorrect Usage! You did not provide name");
+    if (args.length < 2) return message.reply("Utilisation incorrecte ! Vous n'avez pas fourni de nom ");
     args.shift();
     let channelName = args.join(" ");
 
@@ -74,7 +74,7 @@ module.exports = class CounterSetup extends Command {
    */
   async interactionRun(interaction, data) {
     const type = interaction.options.getString("type");
-    const name = interaction.options.getString("name");
+    const name = interaction.options.getString("nom");
 
     const response = await setupCounter(interaction.guild, type.toUpperCase(), name, data.settings);
     return interaction.followUp(response);
@@ -85,8 +85,8 @@ async function setupCounter(guild, type, name, settings) {
   let channelName = name;
 
   const stats = await getMemberStats(guild);
-  if (type === "USERS") channelName += ` : ${stats[0]}`;
-  else if (type === "MEMBERS") channelName += ` : ${stats[2]}`;
+  if (type === "UTILISATEURS") channelName += ` : ${stats[0]}`;
+  else if (type === "MEMBRES") channelName += ` : ${stats[2]}`;
   else if (type === "BOTS") channelName += ` : ${stats[1]}`;
 
   const vc = await guild.channels.create(channelName, {
@@ -118,5 +118,5 @@ async function setupCounter(guild, type, name, settings) {
   settings.data.bots = stats[1];
   await settings.save();
 
-  return "Configuration saved! Counter channel created";
+  return "Configuration enregistrée ! Canal compteur créé";
 }

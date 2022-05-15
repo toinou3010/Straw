@@ -18,7 +18,7 @@ module.exports = class Queue extends Command {
         options: [
           {
             name: "page",
-            description: "page number",
+            description: "page numéro",
             type: "INTEGER",
             required: false,
           },
@@ -63,8 +63,8 @@ function getQueue({ client, guild }, pgNo) {
 
   const tracks = queue.slice(start, end);
 
-  if (queue.current) embed.addField("<:point:955639055511601152>En Cours", `[${queue.current.title}](${queue.current.uri})`);
-  if (!tracks.length) embed.setDescription(`<:point:955639055511601152>Aucune piste ${page > 1 ? `page ${page}` : "la liste"}.`);
+  if (queue.current) embed.addField("<:fleche:975406471774888006> En Cours", `[${queue.current.title}](${queue.current.uri})`);
+  if (!tracks.length) embed.setDescription(`<:fleche:975406471774888006> Aucune piste ${page > 1 ? `page ${page}` : "la liste"}.`);
   else embed.setDescription(tracks.map((track, i) => `${start + ++i} - [${track.title}](${track.uri})`).join("\n"));
 
   const maxPages = Math.ceil(queue.length / multiple);

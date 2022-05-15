@@ -21,8 +21,8 @@ module.exports = class Rank extends Command {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "target user",
+            name: "utilisateur",
+            description: "utilisateur cible",
             type: "USER",
             required: false,
           },
@@ -47,7 +47,7 @@ module.exports = class Rank extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const user = interaction.options.getUser("user") || interaction.user;
+    const user = interaction.options.getUser("utilisateur") || interaction.user;
     const member = await interaction.guild.members.fetch(user);
     const response = await getRank(interaction, member, data.settings);
     await interaction.followUp(response);
@@ -56,10 +56,10 @@ module.exports = class Rank extends Command {
 
 async function getRank({ guild }, member, settings) {
   const { user } = member;
-  if (!settings.ranking.enabled) return "Ranking is disabled on this server";
+  if (!settings.ranking.enabled) return "Le classement est désactivé sur ce serveur ";
 
   const memberDb = await getMember(guild.id, user.id);
-  if (!memberDb.xp) return `${user.tag} is not ranked yet!`;
+  if (!memberDb.xp) return `${user.tag} n'est pas encore classé !`;
 
   const lb = await getXpLb(guild.id, 100);
   let pos = -1;
@@ -83,8 +83,8 @@ async function getRank({ guild }, member, settings) {
   if (pos !== -1) url.searchParams.append("rank", pos);
 
   const response = await getBuffer(url.href);
-  if (!response.success) return "Failed to generate rank-card";
+  if (!response.success) return "Impossible de générer la carte de classement ";
 
-  const attachment = new MessageAttachment(response.buffer, "rank.png");
+  const attachment = new MessageAttachment(response.buffer, "classement.png");
   return { files: [attachment] };
 }

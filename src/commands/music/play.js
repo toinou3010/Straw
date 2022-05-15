@@ -54,7 +54,7 @@ async function play({ member, guild, channel }, user, query) {
   let player = guild.client.musicManager.get(guild.id);
 
   if (player && member.voice.channel !== guild.me.voice.channel) {
-    return "❀ Tu doit être dans le même salon que moi";
+    return "Tu doit être dans le même salon que moi";
   }
 
   try {
@@ -67,7 +67,7 @@ async function play({ member, guild, channel }, user, query) {
   } catch (ex) {
     if (ex.message === "No available nodes.") {
       guild.client.logger.debug("No available nodes!");
-      return "❀ J'ai rencontrer une erreur attendais le temps que je discute avec l'erreur et vous pouvais refaire la commande";
+      return "J'ai rencontrer une erreur attendais le temps que je discute avec l'erreur et vous pouvais refaire la commande";
     }
   }
 
@@ -82,7 +82,7 @@ async function play({ member, guild, channel }, user, query) {
     }
   } catch (err) {
     guild.client.logger.error("Search Exception", err);
-    return "❀ Erreur lors de la recherche";
+    return "Erreur lors de la recherche";
   }
 
   let embed = new MessageEmbed().setColor(EMBED_COLORS.BOT_EMBED);
@@ -98,17 +98,17 @@ async function play({ member, guild, channel }, user, query) {
       player.queue.add(track);
       if (!player.playing && !player.paused && !player.queue.size) {
         player.play();
-        return "> ❀ Ajout de musique a la liste";
+        return "> Ajout de musique a la liste";
       }
 
       embed
-        .setAuthor({ name: "❀ Musique ajouter a la liste" })
+        .setAuthor({ name: "Musique ajouter a la liste" })
         .setDescription(`[${track.title}](${track.uri})`)
-        .addField("<:point:955639055511601152>Durée :", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+        .addField("<:fleche:975406471774888006> Durée :", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
         .setFooter({ text: `Demander par: ${track.requester.tag}` });
 
       if (typeof track.displayThumbnail === "function") embed.setThumbnail(track.displayThumbnail("hqdefault"));
-      if (player.queue.totalSize > 0) embed.addField("<:point:955639055511601152>Position dans la liste", (player.queue.size - 0).toString(), true);
+      if (player.queue.totalSize > 0) embed.addField("<:fleche:975406471774888006> Position dans la liste", (player.queue.size - 0).toString(), true);
       return { embeds: [embed] };
 
     case "PLAYLIST_LOADED":
@@ -118,10 +118,10 @@ async function play({ member, guild, channel }, user, query) {
       }
 
       embed
-        .setAuthor({ name: "❀ Playlist ajouter a la liste" })
+        .setAuthor({ name: "Playlist ajouter a la liste" })
         .setDescription(res.playlist.name)
-        .addField("<:point:955639055511601152>Mis en liste", `${res.tracks.length} musique`, true)
-        .addField("<:point:955639055511601152>Durée de la playlist", "`" + prettyMs(res.playlist.duration, { colonNotation: true }) + "`", true)
+        .addField("<:fleche:975406471774888006> Mis en liste", `${res.tracks.length} musique`, true)
+        .addField("<:fleche:975406471774888006> Durée de la playlist", "`" + prettyMs(res.playlist.duration, { colonNotation: true }) + "`", true)
         .setFooter({ text: `Demander par: ${res.tracks[0].requester.tag}` });
 
       return { embeds: [embed] };
@@ -131,16 +131,16 @@ async function play({ member, guild, channel }, user, query) {
       player.queue.add(track);
       if (!player.playing && !player.paused && !player.queue.size) {
         player.play();
-        return "> ❀ Ajout à la liste";
+        return "> Ajout à la liste";
       }
 
       embed
-        .setAuthor({ name: "❀ Ajouter à la liste" })
+        .setAuthor({ name: "Ajouter à la liste" })
         .setDescription(`[${track.title}](${track.uri})`)
-        .addField("<:point:955639055511601152>Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+        .addField("<:fleche:975406471774888006> Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
         .setFooter({ text: `Demander par: ${track.requester.tag}` });
 
-      if (player.queue.totalSize > 0) embed.addField("<:point:955639055511601152>Position dans la liste", (player.queue.size - 0).toString(), true);
+      if (player.queue.totalSize > 0) embed.addField("<:fleche:975406471774888006> Position dans la liste", (player.queue.size - 0).toString(), true);
       return { embeds: [embed] };
   }
 }

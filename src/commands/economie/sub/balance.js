@@ -9,9 +9,9 @@ module.exports = async (user) => {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: user.username })
     .setThumbnail(user.displayAvatarURL())
-    .addField("Wallet", `${economy?.coins || 0}${ECONOMY.CURRENCY}`, true)
-    .addField("Bank", `${economy?.bank || 0}${ECONOMY.CURRENCY}`, true)
-    .addField("Net Worth", `${(economy?.coins || 0) + (economy?.bank || 0)}${ECONOMY.CURRENCY}`, true);
+    .addField("Porte monnaie ", `${economy?.coins || 0}${ECONOMY.CURRENCY}`, true)
+    .addField("Banque ", `${economy?.bank || 0}${ECONOMY.CURRENCY}`, true)
+    .addField("Valeur nette ", `${(economy?.coins || 0) + (economy?.bank || 0)}${ECONOMY.CURRENCY}`, true);
 
   return { embeds: [embed] };
 };

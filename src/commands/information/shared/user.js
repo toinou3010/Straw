@@ -12,11 +12,11 @@ module.exports = (member) => {
     })
     .setThumbnail(member.user.displayAvatarURL())
     .setColor(color)
-    .addField("<:point:955639055511601152>Pseudo", member.user.tag, true)
-    .addField("<:point:955639055511601152>ID", member.id, true)
-    .addField("<:point:955639055511601152>Sur le serveur depuis", member.joinedAt.toUTCString())
+    .addField("<:fleche:963265299992444998> Pseudo", member.user.tag, true)
+    .addField("<:fleche:963265299992444998> ID", member.id, true)
+    .addField("<:fleche:963265299992444998> Sur le serveur depuis", member.joinedAt.toUTCString())
    // .addField("Discord Registered", message.createdAt, true)
-    .addField(`<:point:955639055511601152>Roles [${member.roles.cache.size}]`, member.roles.cache.map((r) => r.name).join(", "), false)
+    .addField(`<:fleche:963265299992444998> Roles [${member.roles.cache.size}]`, member.roles.cache.map((r) => r.name).join(", "), false)
     .setFooter({ text: `Demander par ${member.user.tag}` })
     .setTimestamp(Date.now());
 

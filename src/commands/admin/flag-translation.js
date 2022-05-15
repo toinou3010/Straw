@@ -5,7 +5,7 @@ module.exports = class FlagTranslation extends Command {
   constructor(client) {
     super(client, {
       name: "flagtranslation",
-      description: "configure flag translation in the server",
+      description: "configurer la traduction des drapeaux dans le serveur ",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -19,8 +19,8 @@ module.exports = class FlagTranslation extends Command {
         ephemeral: true,
         options: [
           {
-            name: "status",
-            description: "enabled or disabled",
+            name: "statut",
+            description: "activé ou désactivé ",
             required: true,
             type: "STRING",
             choices: [
@@ -46,7 +46,7 @@ module.exports = class FlagTranslation extends Command {
    */
   async messageRun(message, args, data) {
     const status = args[0].toLowerCase();
-    if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+    if (!["on", "off"].includes(status)) return message.reply("Statut invalide. La valeur doit être  `on/off`");
 
     const response = await setFlagTranslation(status, data.settings);
     await message.reply(response);
@@ -57,7 +57,7 @@ module.exports = class FlagTranslation extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const response = await setFlagTranslation(interaction.options.getString("status"), data.settings);
+    const response = await setFlagTranslation(interaction.options.getString("statut"), data.settings);
     await interaction.followUp(response);
   }
 };
@@ -68,5 +68,5 @@ async function setFlagTranslation(input, settings) {
   settings.flag_translation.enabled = status;
   await settings.save();
 
-  return `Configuration saved! Flag translation is now ${status ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! La traduction du drapeau est maintenant ${status ? "activée" : "desactivée"}`;
 }

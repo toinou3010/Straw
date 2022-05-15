@@ -6,12 +6,12 @@ module.exports = class ModLog extends Command {
   constructor(client) {
     super(client, {
       name: "modlog",
-      description: "enable or disable moderation logs",
+      description: "activer ou désactiver les journaux de modération ",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "<#channel|off>",
+        usage: "<#salon|off>",
         minArgsCount: 1,
       },
       slashCommand: {
@@ -19,8 +19,8 @@ module.exports = class ModLog extends Command {
         ephemeral: true,
         options: [
           {
-            name: "channel",
-            description: "channels to send mod logs",
+            name: "salon",
+            description: "salon pour envoyer des journaux de moderation",
             required: false,
             type: "CHANNEL",
             channelTypes: ["GUILD_TEXT"],
@@ -39,9 +39,9 @@ module.exports = class ModLog extends Command {
     const input = args[0].toLowerCase();
     let targetChannel;
 
-    if (input === "none" || input === "off" || input === "disable") targetChannel = null;
+    if (input === "acun" || input === "off" || input === "desactive") targetChannel = null;
     else {
-      if (message.mentions.channels.size === 0) return message.reply("Incorrect command usage");
+      if (message.mentions.channels.size === 0) return message.reply("Utilisation incorrecte de la commande");
       targetChannel = message.mentions.channels.first();
     }
 
@@ -54,7 +54,7 @@ module.exports = class ModLog extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const response = await setChannel(interaction.options.getChannel("channel"), data.settings);
+    const response = await setChannel(interaction.options.getChannel("salon"), data.settings);
     return interaction.followUp(response);
   }
 };
@@ -62,10 +62,10 @@ module.exports = class ModLog extends Command {
 async function setChannel(targetChannel, settings) {
   if (targetChannel) {
     if (!canSendEmbeds(targetChannel))
-      return "Ugh! I cannot send logs to that channel? I need the `Write Messages` and `Embed Links` permissions in that channel";
+      return "Pouah! Je ne peux pas envoyer de journaux à ce canal ? J'ai besoin des autorisations `Write Messages` et `Embed Links` dans ce canal ";
   }
 
   settings.modlog_channel = targetChannel?.id;
   await settings.save();
-  return `Configuration saved! Modlog channel ${targetChannel ? "updated" : "removed"}`;
+  return `Configuration enregistrée ! Chaîne Modlog ${targetChannel ? "mis à jour" : "retirer"}`;
 }

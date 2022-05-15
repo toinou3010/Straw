@@ -36,7 +36,7 @@ module.exports = class Reputation extends Command {
             type: "SUB_COMMAND",
             options: [
               {
-                name: "user",
+                name: "utilisateur",
                 description: "the user to check reputation for",
                 type: "USER",
                 required: false,
@@ -49,7 +49,7 @@ module.exports = class Reputation extends Command {
             type: "SUB_COMMAND",
             options: [
               {
-                name: "user",
+                name: "utilisateur",
                 description: "the user to check reputation for",
                 type: "USER",
                 required: true,
@@ -100,13 +100,13 @@ module.exports = class Reputation extends Command {
 
     // status
     if (sub === "voir") {
-      const target = interaction.options.getUser("user") || interaction.user;
+      const target = interaction.options.getUser("utilisateur") || interaction.user;
       response = await viewReputation(target);
     }
 
     // give
     if (sub === "donner") {
-      const target = interaction.options.getUser("user");
+      const target = interaction.options.getUser("utilisateur");
       response = await giveReputation(interaction.user, target);
     }
 

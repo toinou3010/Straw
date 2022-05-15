@@ -6,14 +6,14 @@ const userInfo = require("../shared/user");
 module.exports = class UserInfo extends Command {
   constructor(client) {
     super(client, {
-      name: "userinfo",
-      description: "information sur un membre",
+      name: "info",
+      description: "informations sur un membre",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
         usage: "[@member|id]",
-        aliases: ["info", "memberinfo"],
+        aliases: ["infos", "infomembre"],
       },
       slashCommand: {
         enabled: false,

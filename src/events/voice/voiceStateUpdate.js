@@ -18,6 +18,6 @@ module.exports = async (client, oldState, newState) => {
       if (!oldState.channel.members.size - 1)
         // if there's still 1 member,
         client.musicManager.get(guild.id) && client.musicManager.get(guild.id).destroy();
-    }, MUSIC.IDLE_TIME * 1000);
+    }, MUSIC.IDLE_TIME * 10000);
   }
 };

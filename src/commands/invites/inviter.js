@@ -10,19 +10,19 @@ module.exports = class InviterCommand extends Command {
   constructor(client) {
     super(client, {
       name: "inviter",
-      description: "shows inviter information",
+      description: "affiche les informations de l'invitant ",
       category: "INVITE",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[@member|id]",
+        usage: "[@membre|id]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "the user to get the inviter information for",
+            name: "utilisateur",
+            description: "à l'utilisateur d'obtenir les informations d'invitation pour ",
             type: "USER",
             required: false,
           },
@@ -47,30 +47,30 @@ module.exports = class InviterCommand extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const user = interaction.options.getUser("user") || interaction.user;
+    const user = interaction.options.getUser("utilisateur") || interaction.user;
     const response = await getInviter(interaction, user, data.settings);
     await interaction.followUp(response);
   }
 };
 
 async function getInviter({ guild }, user, settings) {
-  if (!settings.invite.tracking) return `Invite tracking is disabled in this server`;
+  if (!settings.invite.tracking) return `Le suivi des invitations est désactivé sur ce serveur `;
 
   const inviteData = (await getMember(guild.id, user.id)).invite_data;
-  if (!inviteData || !inviteData.inviter) return `Cannot track how \`${user.tag}\` joined`;
+  if (!inviteData || !inviteData.inviter) return `Impossible de savoir comment \`${user.tag}\` as rejoin`;
 
   const inviter = await guild.client.users.fetch(inviteData.inviter, false, true);
   const inviterData = (await getMember(guild.id, inviteData.inviter)).invite_data;
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: `Invite data for ${user.username}` })
+    .setAuthor({ name: `Inviter des données pour  ${user.username}` })
     .setDescription(
       stripIndent`
-      Inviter: \`${inviter?.tag || "Deleted User"}\`
-      Inviter ID: \`${inviteData.inviter}\`
-      Invite Code: \`${inviteData.code}\`
-      Inviter Invites: \`${getEffectiveInvites(inviterData)}\`
+      Inviteur : \`${inviter?.tag || "Utilisateur supprimé "}\`
+      ID de l'inviteur : \`${inviteData.inviter}\`
+      Code d'invitation : \`${inviteData.code}\`
+      Invitations: \`${getEffectiveInvites(inviterData)}\`
       `
     );
 

@@ -6,13 +6,13 @@ const channelInfo = require("../shared/channel");
 module.exports = class ChannelInfo extends Command {
   constructor(client) {
     super(client, {
-      name: "channelinfo",
+      name: "infosalon",
       description: "shows information about a channel",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[#channel|id]",
+        usage: "[#salon|id]",
         aliases: ["chinfo"],
       },
       slashCommand: {
@@ -36,8 +36,8 @@ module.exports = class ChannelInfo extends Command {
     else if (args.length > 0) {
       const search = args.join(" ");
       const tcByName = getMatchingChannels(message.guild, search);
-      if (tcByName.length === 0) return message.reply(`No channels found matching \`${search}\`!`);
-      if (tcByName.length > 1) return message.reply(`Multiple channels found matching \`${search}\`!`);
+      if (tcByName.length === 0) return message.reply(`Aucune chaîne trouvée correspondant \`${search}\`!`);
+      if (tcByName.length > 1) return message.reply(`Plusieurs chaînes trouvées correspondantes \`${search}\`!`);
       [targetChannel] = tcByName;
     } else {
       targetChannel = message.channel;

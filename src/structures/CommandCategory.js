@@ -29,11 +29,6 @@ module.exports = {
     image: "",
     emoji: "<:credit:963282093759139840>",
   },
-  IMAGE: {
-    name: "Image",
-    image: "",
-    emoji: "<:photo:963279411514322955>",
-  },
   INVITE: {
     name: "Invite",
     image: "",

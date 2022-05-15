@@ -51,10 +51,10 @@ module.exports = async (guild) => {
   }
 
   let desc = "";
-  desc = `${desc + "❯"} **Id:** ${id}\n`;
-  desc = `${desc + "❯"} **Name:** ${name}\n`;
-  desc = `${desc + "❯"} **Owner:** ${owner.user.tag}\n`;
-  desc = `${desc + "❯"} **Region:** ${preferredLocale}\n`;
+  desc = `${desc + "❯"} **ID :** ${id}\n`;
+  desc = `${desc + "❯"} **Nom :** ${name}\n`;
+  desc = `${desc + "❯"} **Propriétaire :** ${owner.user.tag}\n`;
+  desc = `${desc + "❯"} **Région :** ${preferredLocale}\n`;
   desc += "\n";
 
   const embed = new MessageEmbed()
@@ -62,18 +62,18 @@ module.exports = async (guild) => {
     .setThumbnail(guild.iconURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc)
-    .addField(`Server Members [${all}]`, `\`\`\`Members: ${users}\nBots: ${bots}\`\`\``, true)
-    .addField(`Online Stats [${onlineAll}]`, `\`\`\`Members: ${onlineUsers}\nBots: ${onlineBots}\`\`\``, true)
+    .addField(`Membres du serveur  [${all}]`, `\`\`\`Membres : ${users}\nRobots : ${bots}\`\`\``, true)
+    .addField(`Statistiques en ligne  [${onlineAll}]`, `\`\`\`Membres : ${onlineUsers}\nRobots : ${onlineBots}\`\`\``, true)
     .addField(
-      `Categories and channels [${totalChannels}]`,
-      `\`\`\`Categories: ${categories} | Text: ${textChannels} | Voice: ${voiceChannels} | Thread: ${threadChannels}\`\`\``,
+      `Catégories et salons [${totalChannels}]`,
+      `\`\`\`Categories : ${categories} | Textuel: ${textChannels} | Vocale : ${voiceChannels} | Fil de discussion: ${threadChannels}\`\`\``,
       false
     )
     .addField(`Roles [${rolesCount}]`, `\`\`\`${rolesString}\`\`\``, false)
     .addField("Verification", `\`\`\`${verificationLevel}\`\`\``, true)
-    .addField("Boost Count", `\`\`\`${guild.premiumSubscriptionCount}\`\`\``, true)
+    .addField("Boosts", `\`\`\`${guild.premiumSubscriptionCount}\`\`\``, true)
     .addField(
-      `Server Created [${createdAt.fromNow()}]`,
+      `Serveur créé  [${createdAt.fromNow()}]`,
       `\`\`\`${createdAt.format("dddd, Do MMMM YYYY")}\`\`\``,
       false
     );

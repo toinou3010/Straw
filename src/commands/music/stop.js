@@ -6,7 +6,7 @@ module.exports = class Stop extends Command {
   constructor(client) {
     super(client, {
       name: "stop",
-      description: "stop the music player",
+      description: "arrêter le lecteur de musique ",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -39,5 +39,5 @@ module.exports = class Stop extends Command {
 function stop({ client, guildId }) {
   const player = client.musicManager.get(guildId);
   player.destroy();
-  return "🎶 The music player is stopped and queue has been cleared";
+  return "Le lecteur de musique est arrêté et la file d'attente a été vidée ";
 }

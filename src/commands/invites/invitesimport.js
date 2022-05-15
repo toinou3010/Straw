@@ -7,20 +7,20 @@ module.exports = class InvitesImportCommand extends Command {
   constructor(client) {
     super(client, {
       name: "invitesimport",
-      description: "add existing guild invites to users",
+      description: "ajouter des invitations de guilde existantes aux utilisateurs ",
       category: "INVITE",
       botPermissions: ["MANAGE_GUILD"],
       userPermissions: ["MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "[@member]",
+        usage: "[@membre]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "the user to import invites for",
+            name: "utilisateur",
+            description: "l'utilisateur d'importer des invitations pour ",
             type: "USER",
             required: false,
           },
@@ -43,14 +43,14 @@ module.exports = class InvitesImportCommand extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const user = interaction.options.getUser("user");
+    const user = interaction.options.getUser("utilisateur");
     const response = await importInvites(interaction, user);
     await interaction.followUp(response);
   }
 };
 
 async function importInvites({ guild }, user) {
-  if (user && user.bot) return "Oops! You cannot import invites for bots";
+  if (user && user.bot) return "Oups! Vous ne pouvez pas importer d'invitations pour les bots ";
 
   const invites = await guild.invites.fetch({ cache: false });
 
@@ -73,5 +73,5 @@ async function importInvites({ guild }, user) {
     await memberDb.save();
   }
 
-  return `Done! Previous invites added to ${user ? user.tag : "all members"}`;
+  return `Fait! Invitations précédentes ajoutées à  ${user ? user.tag : "tous les membres "}`;
 }

@@ -14,16 +14,16 @@ const parse = async (content, member, inviterData = {}) => {
     inviteData.tracked + inviteData.added - inviteData.fake - inviteData.left || 0;
 
   if (content.includes("{inviter:")) {
-    const inviterId = inviterData.member_id || "Inconnue";
-    if (inviterId !== "Lien personnalisé" && inviterId !== "Inconnue") {
+    const inviterId = inviterData.member_id || "NA";
+    if (inviterId !== "VANITY" && inviterId !== "NA") {
       try {
         const inviter = await member.client.users.fetch(inviterId);
         inviteData.name = inviter.username;
         inviteData.tag = inviter.tag;
       } catch (ex) {
         member.client.logger.error(`Parsing inviterId: ${inviterId}`, ex);
-        inviteData.name = "Inconnue";
-        inviteData.tag = "Inconnue";
+        inviteData.name = "NA";
+        inviteData.tag = "NA";
       }
     } else {
       inviteData.name = inviterId;
@@ -67,8 +67,8 @@ const buildGreeting = async (member, type, config, inviterData) => {
   if (!config.content && !config.embed.description && !config.embed.footer) {
     content =
       type === "WELCOME"
-        ? `<:point:955639055511601152>Bienvenue sur le serveur, ${member.displayName} 🎉`
-        : `<:point:955639055511601152>${member.user.tag} As quitter le serveur`;
+        ? `Bienvenue, ${member.displayName} 🎉`
+        : `${member.user.tag} nous as quitter 👋`;
     return { content };
   }
 

@@ -6,7 +6,7 @@ module.exports = class InviteTracker extends Command {
   constructor(client) {
     super(client, {
       name: "invitetracker",
-      description: "enable or disable invite tracking in the server",
+      description: "activer ou désactiver le suivi des invitations sur le serveur ",
       category: "INVITE",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -19,8 +19,8 @@ module.exports = class InviteTracker extends Command {
         enabled: true,
         options: [
           {
-            name: "status",
-            description: "configuration status",
+            name: "statut",
+            description: "état de la configuration ",
             required: true,
             type: "STRING",
             choices: [
@@ -46,7 +46,7 @@ module.exports = class InviteTracker extends Command {
    */
   async messageRun(message, args, data) {
     const status = args[0].toLowerCase();
-    if (!["on", "off"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+    if (!["on", "off"].includes(status)) return message.reply("Statut invalide. La valeur doit être `on/off`");
     const response = await setStatus(message, status, data.settings);
     await message.reply(response);
   }
@@ -56,7 +56,7 @@ module.exports = class InviteTracker extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const status = interaction.options.getString("status");
+    const status = interaction.options.getString("statut");
     const response = await setStatus(interaction, status, data.settings);
     await interaction.followUp(response);
   }
@@ -67,7 +67,7 @@ async function setStatus({ guild }, input, settings) {
 
   if (status) {
     if (!guild.me.permissions.has(["MANAGE_GUILD", "MANAGE_CHANNELS"])) {
-      return "Oops! I am missing `Manage Server`, `Manage Channels` permission!\nI cannot track invites";
+      return "Oups! Il me manque l'autorisation `Gérer le serveur`, `Gérer les salons` !\nJe ne peux pas suivre les invitations ";
     }
 
     const channelMissing = guild.channels.cache
@@ -75,7 +75,7 @@ async function setStatus({ guild }, input, settings) {
       .map((ch) => ch.name);
 
     if (channelMissing.length > 1) {
-      return `I may not be able to track invites properly\nI am missing \`Manage Channel\` permission in the following channels \`\`\`${channelMissing.join(
+      return `Je ne suis peut-être pas en mesure de suivre correctement les invitations\nIl me manque l'autorisation \`Gérer le salon\` dans le salon suivant  \`\`\`${channelMissing.join(
         ", "
       )}\`\`\``;
     }
@@ -88,5 +88,5 @@ async function setStatus({ guild }, input, settings) {
   settings.invite.tracking = status;
   await settings.save();
 
-  return `Configuration saved! Invite tracking is now ${status ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! Le suivi des invitations est maintenant ${status ? "activé" : "desactivé"}`;
 }

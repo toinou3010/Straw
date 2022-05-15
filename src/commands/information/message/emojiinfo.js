@@ -5,8 +5,8 @@ const emojiInfo = require("../shared/emoji");
 module.exports = class EmojiInfo extends Command {
   constructor(client) {
     super(client, {
-      name: "emojiinfo",
-      description: "shows info about an emoji",
+      name: "infoemoji",
+      description: "affiche des informations sur un emoji",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {

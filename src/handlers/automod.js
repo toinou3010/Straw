@@ -42,13 +42,13 @@ async function performAutomod(message, settings) {
 
   // Max mentions
   if (mentions.members.size > automod.max_mentions) {
-    embed.addField("<:point:955639055511601152>Mentions", `${mentions.members.size}/${automod.max_mentions}`, true);
+    embed.addField("<:fleche:963265299992444998> ", `${mentions.members.size}/${automod.max_mentions}`, true);
     strikesTotal += mentions.members.size - automod.max_mentions;
   }
 
   // Maxrole mentions
   if (mentions.roles.size > automod.max_role_mentions) {
-    embed.addField("<:point:955639055511601152>Mentions Role", `${mentions.roles.size}/${automod.max_role_mentions}`, true);
+    embed.addField("<:fleche:963265299992444998> Mentions Role", `${mentions.roles.size}/${automod.max_role_mentions}`, true);
     strikesTotal += mentions.roles.size - automod.max_role_mentions;
   }
 
@@ -56,7 +56,7 @@ async function performAutomod(message, settings) {
   if (automod.max_lines > 0) {
     const count = content.split("\n").length;
     if (count > automod.max_lines) {
-      embed.addField("<:point:955639055511601152>Nouvelle Ligne", `${count}/${automod.max_lines}`, true);
+      embed.addField("<:fleche:963265299992444998> Nouvelle Ligne", `${count}/${automod.max_lines}`, true);
       shouldDelete = true;
       strikesTotal += Math.ceil((count - automod.max_lines) / automod.max_lines);
     }
@@ -65,7 +65,7 @@ async function performAutomod(message, settings) {
   // Anti links
   if (automod.anti_links) {
     if (containsLink(content)) {
-      embed.addField("<:point:955639055511601152>Lien Trouvée", "<:zbstraw_lapincookie:954953232227106866>", true);
+      embed.addField("<:fleche:963265299992444998> Lien Trouvée", "<:fleche:963265299992444998> ", true);
       shouldDelete = true;
       strikesTotal += 1;
     }
@@ -82,7 +82,7 @@ async function performAutomod(message, settings) {
           antiScamInfo.content === content &&
           Date.now() - antiScamInfo.timestamp < 2000
         ) {
-          embed.addField("<:point:955639055511601152>Anti-Arnaque", "<:zbstraw_lapincookie:954953232227106866>", true);
+          embed.addField("<:fleche:963265299992444998> Anti-Arnaque", "<:fleche:963265299992444998> ", true);
           shouldDelete = true;
           strikesTotal += 1;
         }
@@ -100,7 +100,7 @@ async function performAutomod(message, settings) {
   // Anti Invites
   if (!automod.anti_links && automod.anti_invites) {
     if (containsDiscordInvite(content)) {
-      embed.addField("<:point:955639055511601152>Publicité Discord", "<:zbstraw_lapincookie:954953232227106866>", true);
+      embed.addField("<:fleche:963265299992444998> Publicité Discord", "<:fleche:963265299992444998>", true);
       shouldDelete = true;
       strikesTotal += 1;
     }
@@ -124,7 +124,7 @@ async function performAutomod(message, settings) {
       .setAuthor({ name: "Auto Moderation" })
       .setThumbnail(author.displayAvatarURL())
       .setColor(EMBED_COLORS.AUTOMOD)
-      .setDescription(`<:point:955639055511601152>**Salon :** ${channel.toString()}\n**<:point:955639055511601152>Contenus :**\n${content}`)
+      .setDescription(`<:fleche:963265299992444998> **Salon :** ${channel.toString()}\n**<:fleche:963265299992444998> Contenus :**\n${content}`)
       .setFooter({
         text: `Par ${author.tag} | ${author.id}`,
         iconURL: author.avatarURL(),
@@ -138,9 +138,9 @@ async function performAutomod(message, settings) {
       .setThumbnail(message.guild.iconURL())
       .setAuthor({ name: "Auto Moderation" })
       .setDescription(
-        `<:point:955639055511601152>Tu as reçu ${strikesTotal} avertissement!\n\n` +
-          `**<:point:955639055511601152>Serveur:** ${message.guild.name}\n` +
-          `**<:point:955639055511601152>Avertissement total:** ${memberDb.strikes} sur ${automod.strikes}`
+        `<:fleche:963265299992444998> Tu as reçu ${strikesTotal} avertissement!\n\n` +
+          `**<:fleche:963265299992444998> Serveur:** ${message.guild.name}\n` +
+          `**<:fleche:963265299992444998> Avertissement total:** ${memberDb.strikes} sur ${automod.strikes}`
       );
     embed.fields.forEach((field) => strikeEmbed.addField(field.name, field.value, true));
     safeDM(message.author, { embeds: [strikeEmbed] });

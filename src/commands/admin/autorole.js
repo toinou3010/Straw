@@ -96,7 +96,7 @@ module.exports = class AutoRole extends Command {
     }
 
     // default
-    else response = "Invalid subcommand";
+    else response = "Sous-commande invalide";
 
     await interaction.followUp(response);
   }

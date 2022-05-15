@@ -3,10 +3,10 @@ const { getUser } = require("@schemas/User");
 const { EMBED_COLORS, ECONOMY } = require("@root/config");
 
 module.exports = async (user, coins) => {
-  if (isNaN(coins) || coins <= 0) return "Please enter a valid amount of coins to deposit";
+  if (isNaN(coins) || coins <= 0) return "Veuillez saisir un nombre valide de pièces à déposer ";
   const userDb = await getUser(user.id);
 
-  if (coins > userDb.bank) return `You only have ${userDb.bank}${ECONOMY.CURRENCY} coins in your bank`;
+  if (coins > userDb.bank) return `Vous n'avez que  ${userDb.bank}${ECONOMY.CURRENCY} pièces dans votre banque `;
 
   userDb.bank -= coins;
   userDb.coins += coins;
@@ -14,11 +14,11 @@ module.exports = async (user, coins) => {
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "New Balance" })
+    .setAuthor({ name: "Nouvel équilibre " })
     .setThumbnail(user.displayAvatarURL())
-    .addField("Wallet", `${userDb.coins}${ECONOMY.CURRENCY}`, true)
-    .addField("Bank", `${userDb.bank}${ECONOMY.CURRENCY}`, true)
-    .addField("Net Worth", `${userDb?.coins + userDb?.bank}${ECONOMY.CURRENCY}`, true);
+    .addField("Porte monnaie ", `${userDb.coins}${ECONOMY.CURRENCY}`, true)
+    .addField("Banque ", `${userDb.bank}${ECONOMY.CURRENCY}`, true)
+    .addField("Valeur nette ", `${userDb?.coins + userDb?.bank}${ECONOMY.CURRENCY}`, true);
 
   return { embeds: [embed] };
 };

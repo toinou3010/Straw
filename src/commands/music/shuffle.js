@@ -6,7 +6,7 @@ module.exports = class Shuffle extends Command {
   constructor(client) {
     super(client, {
       name: "shuffle",
-      description: "shuffle the queue",
+      description: "mélanger la file d'attente ",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -39,5 +39,5 @@ module.exports = class Shuffle extends Command {
 function shuffle({ client, guildId }) {
   const player = client.musicManager.get(guildId);
   player.queue.shuffle();
-  return "🎶 Queue has been shuffled";
+  return "La file d'attente a été mélangée ";
 }

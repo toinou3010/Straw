@@ -7,12 +7,12 @@ module.exports = class UserInfo extends Command {
   constructor(client) {
     super(client, {
       name: "avatar",
-      description: "shows a users avatar information",
+      description: "affiche des informations sur l'avatar d'un utilisateur",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "[@member|id]",
+        usage: "[@membre|id]",
       },
       slashCommand: {
         enabled: false,

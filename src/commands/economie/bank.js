@@ -9,8 +9,8 @@ const withdraw = require("./sub/withdraw");
 module.exports = class BankCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "bank",
-      description: "access to bank operations",
+      name: "banque",
+      description: "accès aux opérations bancaires ",
       category: "ECONOMY",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -19,19 +19,19 @@ module.exports = class BankCommand extends Command {
         subcommands: [
           {
             trigger: "balance",
-            description: "check your balance",
+            description: "vérifier votre solde ",
           },
           {
-            trigger: "deposit <coins>",
-            description: "deposit coins to your bank account",
+            trigger: "deposer <pieces>",
+            description: "déposer des pièces sur votre compte bancaire ",
           },
           {
-            trigger: "withdraw <coins>",
-            description: "withdraw coins from your bank account",
+            trigger: "retirer <pieces>",
+            description: "retirer des pièces de votre compte bancaire ",
           },
           {
-            trigger: "transfer <user> <coins>",
-            description: "transfer coins to another user",
+            trigger: "transfere <utilisateur> <pieces>",
+            description: "transférer des pièces à un autre utilisateur ",
           },
         ],
       },
@@ -40,57 +40,57 @@ module.exports = class BankCommand extends Command {
         options: [
           {
             name: "balance",
-            description: "check your coin balance",
+            description: "vérifier votre solde de pièces ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "user",
-                description: "name of the user",
+                name: "utilisateur",
+                description: "nom de l'utilisateur ",
                 type: "USER",
                 required: false,
               },
             ],
           },
           {
-            name: "deposit",
-            description: "deposit coins to your bank account",
+            name: "deposer",
+            description: "déposer des pièces sur votre compte bancaire ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "coins",
-                description: "number of coins to deposit",
+                name: "pieces",
+                description: "nombre de pièces à déposer ",
                 type: "INTEGER",
                 required: true,
               },
             ],
           },
           {
-            name: "withdraw",
-            description: "withdraw coins from your bank account",
+            name: "retirer",
+            description: "retirer des pièces de votre compte bancaire ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "coins",
-                description: "number of coins to withdraw",
+                name: "pieces",
+                description: "nombre de pièces à retirer ",
                 type: "INTEGER",
                 required: true,
               },
             ],
           },
           {
-            name: "transfer",
-            description: "transfer coins to other user",
+            name: "transfere",
+            description: "transférer des pièces à un autre utilisateur ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "user",
-                description: "the user to whom coins must be transferred",
+                name: "utilisateur",
+                description: "l'utilisateur à qui les pièces doivent être transférées ",
                 type: "USER",
                 required: true,
               },
               {
-                name: "coins",
-                description: "the amount of coins to transfer",
+                name: "pieces",
+                description: "le montant de pièces à transférer ",
                 type: "INTEGER",
                 required: true,
               },
@@ -115,32 +115,32 @@ module.exports = class BankCommand extends Command {
     }
 
     //
-    else if (sub === "deposit") {
+    else if (sub === "deposer") {
       const coins = args.length && parseInt(args[1]);
-      if (isNaN(coins)) return message.reply("Provide a valid number of coins you wish to deposit");
+      if (isNaN(coins)) return message.reply("Indiquez un nombre valide de pièces que vous souhaitez déposer ");
       response = await deposit(message.author, coins);
     }
 
     //
-    else if (sub === "withdraw") {
+    else if (sub === "retirer") {
       const coins = args.length && parseInt(args[1]);
-      if (isNaN(coins)) return message.reply("Provide a valid number of coins you wish to withdraw");
+      if (isNaN(coins)) return message.reply("Indiquez un nombre valide de pièces que vous souhaitez retirer ");
       response = await withdraw(message.author, coins);
     }
 
     //
-    else if (sub === "transfer") {
-      if (args.length < 3) return message.reply("Provide a valid user and coins to transfer");
+    else if (sub === "transfere") {
+      if (args.length < 3) return message.reply("Fournir un utilisateur valide et des pièces à transférer ");
       const target = await resolveMember(message, args[1], true);
-      if (!target) return message.reply("Provide a valid user to transfer coins to");
+      if (!target) return message.reply("Fournir un utilisateur valide pour transférer des pièces vers ");
       const coins = parseInt(args[2]);
-      if (isNaN(coins)) return message.reply("Provide a valid number of coins you wish to transfer");
+      if (isNaN(coins)) return message.reply("Indiquez un nombre valide de pièces que vous souhaitez transférer ");
       response = await transfer(message.author, target.user, coins);
     }
 
     //
     else {
-      return message.reply("Invalid command usage");
+      return message.reply("Utilisation de la commande non valide ");
     }
 
     await message.reply(response);
@@ -155,26 +155,26 @@ module.exports = class BankCommand extends Command {
 
     // balance
     if (sub === "balance") {
-      const user = interaction.options.getUser("user") || interaction.user;
+      const user = interaction.options.getUser("utilisateur") || interaction.user;
       response = await balance(user);
     }
 
     // deposit
-    else if (sub === "deposit") {
-      const coins = interaction.options.getInteger("coins");
+    else if (sub === "deposer") {
+      const coins = interaction.options.getInteger("pieces");
       response = await deposit(interaction.user, coins);
     }
 
     // withdraw
-    else if (sub === "withdraw") {
-      const coins = interaction.options.getInteger("coins");
+    else if (sub === "retirer") {
+      const coins = interaction.options.getInteger("pieces");
       response = await withdraw(interaction.user, coins);
     }
 
     // transfer
-    else if (sub === "transfer") {
-      const user = interaction.options.getUser("user");
-      const coins = interaction.options.getInteger("coins");
+    else if (sub === "transfere") {
+      const user = interaction.options.getUser("utilisateur");
+      const coins = interaction.options.getInteger("pieces");
       response = await transfer(interaction.user, user, coins);
     }
 

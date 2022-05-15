@@ -6,7 +6,7 @@ const { getXpLb, getInvitesLb } = require("@schemas/Member");
 module.exports = class LeaderBoard extends Command {
   constructor(client) {
     super(client, {
-      name: "leaderboard",
+      name: "classement",
       description: "Affiche le classement xp ou invites",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
@@ -81,7 +81,7 @@ async function getXpLeaderboard({ guild }, author, settings) {
   for (let i = 0; i < lb.length; i++) {
     try {
       const user = await author.client.users.fetch(lb[i].member_id);
-      collector += `<:point:955639055511601152>**#${(i + 1).toString()}** - <@${user.id}>\n`;
+      collector += `<:fleche:975406471774888006> **#${(i + 1).toString()}** - <@${user.id}>\n`;
     } catch (ex) {
       // Ignore
     }
@@ -106,13 +106,13 @@ async function getInviteLeaderboard({ guild }, author, settings) {
   for (let i = 0; i < lb.length; i++) {
     try {
       const memberId = lb[i].member_id;
-      if (memberId === "VANITY") collector += `**#${(i + 1).toString()}** - Lien personnalisé [${lb[i].invites}]\n`;
+      if (memberId === "VANITY") collector += `<:fleche:975406471774888006> **#${(i + 1).toString()}** - Lien personnalisé [${lb[i].invites}]\n`;
       else {
         const user = await author.client.users.fetch(lb[i].member_id);
-        collector += `**#${(i + 1).toString()}** - <@${user.id}> [${lb[i].invites}]\n`;
+        collector += `<:fleche:975406471774888006> **#${(i + 1).toString()}** - <@${user.id}> [${lb[i].invites}]\n`;
       }
     } catch (ex) {
-      collector += `<:point:955639055511601152>**#${(i + 1).toString()}** - DeletedUser#0000 [${lb[i].invites}]\n`;
+      collector += `<:fleche:975406471774888006> **#${(i + 1).toString()}** - DeletedUser#0000 [${lb[i].invites}]\n`;
     }
   }
 

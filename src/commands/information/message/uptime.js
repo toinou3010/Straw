@@ -6,7 +6,7 @@ module.exports = class BotInvite extends Command {
   constructor(client) {
     super(client, {
       name: "uptime",
-      description: "gives you bot uptime",
+      description: "vous donne la disponibilité du bot",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -23,6 +23,6 @@ module.exports = class BotInvite extends Command {
    * @param {string[]} args
    */
   async messageRun(message, args) {
-    await message.reply(`My Uptime: \`${timeformat(process.uptime())}\``);
+    await message.reply(`En ligne depuis: \`${timeformat(process.uptime())}\``);
   }
 };

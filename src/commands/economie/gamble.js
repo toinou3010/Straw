@@ -8,12 +8,12 @@ module.exports = class Gamble extends Command {
   constructor(client) {
     super(client, {
       name: "gamble",
-      description: "try your luck by gambling",
+      description: "tentez votre chance en jouant ",
       category: "ECONOMY",
       botPermissions: ["EMBED_LINKS"],
       command: {
         enabled: true,
-        usage: "<amount>",
+        usage: "<montant>",
         minArgsCount: 1,
         aliases: ["slot"],
       },
@@ -21,8 +21,8 @@ module.exports = class Gamble extends Command {
         enabled: true,
         options: [
           {
-            name: "coins",
-            description: "number of coins to bet",
+            name: "pieces",
+            description: "nombre de pièces à miser ",
             required: true,
             type: "INTEGER",
           },
@@ -37,7 +37,7 @@ module.exports = class Gamble extends Command {
    */
   async messageRun(message, args) {
     const betAmount = parseInt(args[0]);
-    if (isNaN(betAmount)) return message.reply("Bet amount needs to be a valid number input");
+    if (isNaN(betAmount)) return message.reply("Le montant du pari doit être un nombre valide ");
     const response = await gamble(message.author, betAmount);
     await message.reply(response);
   }
@@ -46,7 +46,7 @@ module.exports = class Gamble extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const betAmount = interaction.options.getInteger("coins");
+    const betAmount = interaction.options.getInteger("pieces");
     const response = await gamble(interaction.user, betAmount);
     await interaction.followUp(response);
   }
@@ -85,21 +85,21 @@ function calculateReward(amount, var1, var2, var3) {
 }
 
 async function gamble(user, betAmount) {
-  if (isNaN(betAmount)) return "Bet amount needs to be a valid number input";
-  if (betAmount < 0) return "Bet amount cannot be negative";
-  if (betAmount < 10) return "Bet amount cannot be less than 10";
+  if (isNaN(betAmount)) return "Le montant du pari doit être un nombre valide ";
+  if (betAmount < 0) return "Le montant du pari ne peut pas être négatif ";
+  if (betAmount < 10) return "Le montant du pari ne peut pas être inférieur à 10 ";
 
   const userDb = await getUser(user.id);
   if (userDb.coins < betAmount)
-    return `You do not have sufficient coins to gamble!\n**Coin balance:** ${userDb.coins || 0}${ECONOMY.CURRENCY}`;
+    return `Vous n'avez pas assez de pièces pour jouer !\n**Solde en pièces :** ${userDb.coins || 0}${ECONOMY.CURRENCY}`;
 
   const slot1 = getEmoji();
   const slot2 = getEmoji();
   const slot3 = getEmoji();
 
   const str = `
-    **Gamble Amount:** ${betAmount}${ECONOMY.CURRENCY}
-    **Multiplier:** 2x
+    **Montant du pari :** ${betAmount}${ECONOMY.CURRENCY}
+    **Multiplicateur :** 2x
     ╔══════════╗
     ║ ${getEmoji()} ║ ${getEmoji()} ║ ${getEmoji()} ‎‎‎‎║
     ╠══════════╣
@@ -110,7 +110,7 @@ async function gamble(user, betAmount) {
     `;
 
   const reward = calculateReward(betAmount, slot1, slot2, slot3);
-  const result = (reward > 0 ? `You won: ${reward}` : `You lost: ${betAmount}`) + ECONOMY.CURRENCY;
+  const result = (reward > 0 ? `Tu as gagné : ${reward}` : `Tu as perdu : ${betAmount}`) + ECONOMY.CURRENCY;
   const balance = reward - betAmount;
 
   userDb.coins += balance;
@@ -119,9 +119,9 @@ async function gamble(user, betAmount) {
   const embed = new MessageEmbed()
     .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
     .setColor(EMBED_COLORS.TRANSPARENT)
-    .setThumbnail("https://i.pinimg.com/originals/9a/f1/4e/9af14e0ae92487516894faa9ea2c35dd.gif")
+    .setThumbnail("")
     .setDescription(str)
-    .setFooter({ text: `${result}\nUpdated Wallet balance: ${userDb?.coins}${ECONOMY.CURRENCY}` });
+    .setFooter({ text: `${result}\nSolde mis à jour : ${userDb?.coins}${ECONOMY.CURRENCY}` });
 
   return { embeds: [embed] };
 }

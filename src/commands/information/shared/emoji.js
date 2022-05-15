@@ -3,15 +3,15 @@ const { EMBED_COLORS } = require("@root/config");
 
 module.exports = (emoji) => {
   let custom = Util.parseEmoji(emoji);
-  if (!custom.id) return "This is not a valid guild emoji";
+  if (!custom.id) return "Ceci n'est pas un emoji de guilde valide ";
 
   let url = `https://cdn.discordapp.com/emojis/${custom.id}.${custom.animated ? "gif?v=1" : "png"}`;
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "Emoji Info" })
+    .setAuthor({ name: "Informations sur les émojis " })
     .setDescription(
-      `**Id:** ${custom.id}\n` + `**Name:** ${custom.name}\n` + `**Animated:** ${custom.animated ? "Yes" : "No"}`
+      `**ID :** ${custom.id}\n` + `**Nom :** ${custom.name}\n` + `**Animé :** ${custom.animated ? "Oui " : "Non "}`
     )
     .setImage(url);
 

@@ -3,15 +3,15 @@ const { getUser } = require("@schemas/User");
 const { ECONOMY, EMBED_COLORS } = require("@root/config");
 
 module.exports = async (self, target, coins) => {
-  if (isNaN(coins) || coins <= 0) return "Please enter a valid amount of coins to transfer";
-  if (target.bot) return "You cannot transfer coins to bots!";
-  if (target.id === self.id) return "You cannot transfer coins to self!";
+  if (isNaN(coins) || coins <= 0) return "Veuillez entrer un nombre valide de pièces à transférer ";
+  if (target.bot) return "Vous ne pouvez pas transférer de pièces aux bots !";
+  if (target.id === self.id) return "Vous ne pouvez pas transférer de pièces à vous-même !";
 
   const userDb = await getUser(self.id);
 
   if (userDb.bank < coins) {
-    return `Insufficient bank balance! You only have ${userDb.bank}${ECONOMY.CURRENCY} in your bank account.${
-      userDb.coins > 0 && "\nYou must deposit your coins in bank before you can transfer"
+    return `Solde bancaire insuffisant ! Vous n'avez que  ${userDb.bank}${ECONOMY.CURRENCY} dans votre compte bancaire. ${
+      userDb.coins > 0 && "\nVous devez déposer vos pièces en banque avant de pouvoir transférer "
     } `;
   }
 
@@ -25,8 +25,8 @@ module.exports = async (self, target, coins) => {
 
   const embed = new MessageEmbed()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "Updated Balance" })
-    .setDescription(`You have successfully transferred ${coins}${ECONOMY.CURRENCY} to ${target.tag}`)
+    .setAuthor({ name: "Solde mis à jour " })
+    .setDescription(`Vous avez transféré avec succès  ${coins}${ECONOMY.CURRENCY} à ${target.tag}`)
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

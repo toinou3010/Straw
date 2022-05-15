@@ -6,7 +6,7 @@ module.exports = class SnakeCommand extends Command {
   constructor(client) {
     super(client, {
       name: "snake",
-      description: "play snake game on discord",
+      description: "jouer au jeu du serpent sur discord ",
       cooldown: 300,
       category: "FUN",
       botPermissions: ["SEND_MESSAGES", "EMBED_LINKS", "ADD_REACTIONS", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES"],
@@ -24,7 +24,7 @@ module.exports = class SnakeCommand extends Command {
    * @param {string[]} args
    */
   async messageRun(message, args) {
-    await message.reply("**Starting Snake Game**");
+    await message.reply("**Commencement du jeu du serpent **");
     await startSnakeGame(message);
   }
 
@@ -32,14 +32,14 @@ module.exports = class SnakeCommand extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    await interaction.followUp("**Starting Snake Game**");
+    await interaction.followUp("**Commencement du jeu du serpent**");
     await startSnakeGame(interaction);
   }
 };
 
 async function startSnakeGame(data) {
   const snakeGame = new SnakeGame({
-    title: "Snake Game",
+    title: "Jeu de serpent ",
     color: "#303136",
     timestamp: true,
     gameOverTitle: "Game Over",

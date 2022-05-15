@@ -6,7 +6,7 @@ module.exports = class Volume extends Command {
   constructor(client) {
     super(client, {
       name: "volume",
-      description: "set the music player volume",
+      description: "régler le volume du lecteur de musique ",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -17,8 +17,8 @@ module.exports = class Volume extends Command {
         enabled: true,
         options: [
           {
-            name: "amount",
-            description: "Enter a value to set [0 to 100]",
+            name: "montant",
+            description: "Entrez une valeur pour définir [0 à 100] ",
             type: "INTEGER",
             required: false,
           },
@@ -41,7 +41,7 @@ module.exports = class Volume extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const amount = interaction.options.getInteger("amount");
+    const amount = interaction.options.getInteger("montant");
     const response = volume(interaction, amount);
     await interaction.followUp(response);
   }
@@ -50,9 +50,9 @@ module.exports = class Volume extends Command {
 function volume({ client, guildId }, volume) {
   const player = client.musicManager.get(guildId);
 
-  if (!volume) return `> The player volume is \`${player.volume}\`.`;
-  if (volume < 1 || volume > 100) return "you need to give me a volume between 1 and 100.";
+  if (!volume) return `> Le volume du lecteur est \`${player.volume}\`.`;
+  if (volume < 1 || volume > 100) return "vous devez me donner un volume entre 1 et 100. ";
 
   player.setVolume(volume);
-  return `🎶 Music player volume is set to \`${volume}\`.`;
+  return `Le volume du lecteur de musique est réglé sur  \`${volume}\`.`;
 }

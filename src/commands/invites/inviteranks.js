@@ -6,7 +6,7 @@ module.exports = class InviteRanks extends Command {
   constructor(client) {
     super(client, {
       name: "inviteranks",
-      description: "shows the invite ranks configured on this guild",
+      description: "affiche les rangs d'invitation configurés sur cette guilde ",
       category: "INVITE",
       botPermissions: ["EMBED_LINKS"],
       command: {
@@ -39,7 +39,7 @@ module.exports = class InviteRanks extends Command {
 };
 
 async function getInviteRanks({ guild }, settings) {
-  if (settings.invite.ranks.length === 0) return "No invite ranks configured in this server";
+  if (settings.invite.ranks.length === 0) return "Aucun rang d'invitation configuré sur ce serveur ";
   let str = "";
 
   settings.invite.ranks.forEach((data) => {
@@ -50,7 +50,7 @@ async function getInviteRanks({ guild }, settings) {
   });
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: "Invite Ranks" })
+    .setAuthor({ name: "Rangs d'invitation " })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(str);
   return { embeds: [embed] };

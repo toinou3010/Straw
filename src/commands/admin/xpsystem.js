@@ -5,7 +5,7 @@ module.exports = class XPSystem extends Command {
   constructor(client) {
     super(client, {
       name: "xpsystem",
-      description: "enable or disable XP ranking system in the server",
+      description: "activer ou désactiver le système de classement XP sur le serveur ",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -19,8 +19,8 @@ module.exports = class XPSystem extends Command {
         ephemeral: true,
         options: [
           {
-            name: "status",
-            description: "enabled or disabled",
+            name: "statut",
+            description: "activé ou désactivé ",
             required: true,
             type: "STRING",
             choices: [
@@ -46,7 +46,7 @@ module.exports = class XPSystem extends Command {
    */
   async messageRun(message, args, data) {
     const input = args[0].toLowerCase();
-    if (!["on", "off"].includes(input)) return message.reply("Invalid status. Value must be `on/off`");
+    if (!["on", "off"].includes(input)) return message.reply("Statut invalide. La valeur doit être `on/off`");
     const response = await setStatus(input, data.settings);
     return message.reply(response);
   }
@@ -56,7 +56,7 @@ module.exports = class XPSystem extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const response = await setStatus(interaction.options.getString("status"), data.settings);
+    const response = await setStatus(interaction.options.getString("statut"), data.settings);
     await interaction.followUp(response);
   }
 };
@@ -67,5 +67,5 @@ async function setStatus(input, settings) {
   settings.ranking.enabled = status;
   await settings.save();
 
-  return `Configuration saved! XP System is now ${status ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! Le système XP est maintenant ${status ? "activée" : "desactivée"}`;
 }

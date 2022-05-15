@@ -8,8 +8,8 @@ const { sendMessage } = require("@utils/botUtils");
 module.exports = class Welcome extends Command {
   constructor(client) {
     super(client, {
-      name: "welcome",
-      description: "setup welcome message",
+      name: "bienvenue",
+      description: "configurer le message de bienvenue",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
@@ -17,32 +17,32 @@ module.exports = class Welcome extends Command {
         minArgsCount: 1,
         subcommands: [
           {
-            trigger: "status <on|off>",
-            description: "enable or disable welcome message",
+            trigger: "statut <on|off>",
+            description: "activer ou désactiver le message de bienvenue ",
           },
           {
-            trigger: "channel <#channel>",
-            description: "configure welcome message",
+            trigger: "salon <#salon>",
+            description: "configurer le message de bienvenue ",
           },
           {
-            trigger: "preview",
-            description: "preview the configured welcome message",
+            trigger: "voir",
+            description: "prévisualiser le message de bienvenue configuré ",
           },
           {
             trigger: "desc <text>",
-            description: "set embed description",
+            description: "définir la description intégrée ",
           },
           {
-            trigger: "thumbnail <ON|OFF>",
-            description: "enable/disable embed thumbnail",
+            trigger: "vignette <ON|OFF>",
+            description: "activer/désactiver l'intégration de la vignette ",
           },
           {
-            trigger: "color <hexcolor>",
-            description: "set embed color",
+            trigger: "couleur <#hex>",
+            description: "définir la couleur d'intégration ",
           },
           {
             trigger: "footer <text>",
-            description: "set embed footer content",
+            description: "définir le contenu du pied de page intégré ",
           },
         ],
       },
@@ -51,13 +51,13 @@ module.exports = class Welcome extends Command {
         ephemeral: true,
         options: [
           {
-            name: "status",
-            description: "enable or disable welcome message",
+            name: "statut",
+            description: "activer ou désactiver le message de bienvenue ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "status",
-                description: "enabled or disabled",
+                name: "statut",
+                description: "activé ou désactivé ",
                 required: true,
                 type: "STRING",
                 choices: [
@@ -74,8 +74,8 @@ module.exports = class Welcome extends Command {
             ],
           },
           {
-            name: "preview",
-            description: "preview the configured welcome message",
+            name: "voir",
+            description: "prévisualiser le message de bienvenue configuré ",
             type: "SUB_COMMAND",
           },
           {
@@ -84,8 +84,8 @@ module.exports = class Welcome extends Command {
             type: "SUB_COMMAND",
             options: [
               {
-                name: "channel",
-                description: "channel name",
+                name: "salon",
+                description: "nom du salon",
                 type: "CHANNEL",
                 channelTypes: ["GUILD_TEXT"],
                 required: true,
@@ -94,25 +94,25 @@ module.exports = class Welcome extends Command {
           },
           {
             name: "desc",
-            description: "set embed description",
+            description: "définir la description intégrée ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "content",
-                description: "description content",
+                name: "contenu",
+                description: "contenu descriptif ",
                 type: "STRING",
                 required: true,
               },
             ],
           },
           {
-            name: "thumbnail",
-            description: "configure embed thumbnail",
+            name: "vignette",
+            description: "configurer la miniature intégrée ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "status",
-                description: "thumbnail status",
+                name: "statut",
+                description: "état des vignettes ",
                 type: "STRING",
                 required: true,
                 choices: [
@@ -129,13 +129,12 @@ module.exports = class Welcome extends Command {
             ],
           },
           {
-            name: "color",
-            description: "set embed color",
-            type: "SUB_COMMAND",
+            name: "couleur",
+            description: "définir la couleur d'intégration ",
             options: [
               {
                 name: "hex-code",
-                description: "hex color code",
+                description: "code couleur hexadécimal ",
                 type: "STRING",
                 required: true,
               },
@@ -143,12 +142,12 @@ module.exports = class Welcome extends Command {
           },
           {
             name: "footer",
-            description: "set embed footer",
+            description: "définir le pied de page intégré ",
             type: "SUB_COMMAND",
             options: [
               {
-                name: "content",
-                description: "footer content",
+                name: "contenu",
+                description: "contenu du bas de page ",
                 type: "STRING",
                 required: true,
               },
@@ -170,53 +169,53 @@ module.exports = class Welcome extends Command {
     let response;
 
     // preview
-    if (type === "preview") {
+    if (type === "voir") {
       response = await sendPreview(settings, message.member);
     }
 
     // status
-    else if (type === "status") {
+    else if (type === "statut") {
       const status = args[1]?.toUpperCase();
-      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Statut invalide. La valeur doit être `on/off`");
       response = await setStatus(settings, status);
     }
 
     // channel
-    else if (type === "channel") {
+    else if (type === "salon") {
       const channel = message.mentions.channels.first();
       response = await setChannel(settings, channel);
     }
 
     // desc
     else if (type === "desc") {
-      if (args.length < 2) return message.reply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.reply("Arguments insuffisants ! Veuillez fournir un contenu valide ");
       const desc = args.slice(1).join(" ");
       response = await setDescription(settings, desc);
     }
 
     // thumbnail
-    else if (type === "thumbnail") {
+    else if (type === "vignette") {
       const status = args[1]?.toUpperCase();
-      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Invalid status. Value must be `on/off`");
+      if (!status || !["ON", "OFF"].includes(status)) return message.reply("Statut invalide. La valeur doit être `on/off`");
       response = await setThumbnail(settings, status);
     }
 
     // color
-    else if (type === "color") {
+    else if (type === "couleur") {
       const color = args[1];
-      if (!color || !isHex(color)) return message.reply("Invalid color. Value must be a valid hex color");
+      if (!color || !isHex(color)) return message.reply("Couleur invalide. La valeur doit être une couleur hexadécimale valide ");
       response = await setColor(settings, color);
     }
 
     // footer
     else if (type === "footer") {
-      if (args.length < 2) return message.reply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.reply("Arguments insuffisants ! Veuillez fournir un contenu valide ");
       const content = args.slice(1).join(" ");
       response = await setFooter(settings, content);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Utilisation de la commande non valide !";
     return message.reply(response);
   }
 
@@ -231,36 +230,36 @@ module.exports = class Welcome extends Command {
 
     let response;
     switch (sub) {
-      case "preview":
+      case "voir":
         response = await sendPreview(settings, interaction.member);
         break;
 
-      case "status":
-        response = await setStatus(settings, interaction.options.getString("status"));
+      case "statut":
+        response = await setStatus(settings, interaction.options.getString("statut"));
         break;
 
-      case "channel":
-        response = await setChannel(settings, interaction.options.getChannel("channel"));
+      case "salon":
+        response = await setChannel(settings, interaction.options.getChannel("salon"));
         break;
 
       case "desc":
-        response = await setDescription(settings, interaction.options.getString("content"));
+        response = await setDescription(settings, interaction.options.getString("contenu"));
         break;
 
-      case "thumbnail":
-        response = await setThumbnail(settings, interaction.options.getString("status"));
+      case "vignette":
+        response = await setThumbnail(settings, interaction.options.getString("statut"));
         break;
 
-      case "color":
-        response = await setColor(settings, interaction.options.getString("color"));
+      case "couleur":
+        response = await setColor(settings, interaction.options.getString("couleur"));
         break;
 
       case "footer":
-        response = await setFooter(settings, interaction.options.getString("content"));
+        response = await setFooter(settings, interaction.options.getString("contenu"));
         break;
 
       default:
-        response = "Invalid subcommand";
+        response = "Sous-commande invalide ";
     }
 
     return interaction.followUp(response);
@@ -268,56 +267,56 @@ module.exports = class Welcome extends Command {
 };
 
 async function sendPreview(settings, member) {
-  if (!settings.welcome?.enabled) return "Welcome message not enabled in this server";
+  if (!settings.welcome?.enabled) return "Message de bienvenue non activé sur ce serveur ";
 
   const targetChannel = member.guild.channels.cache.get(settings.welcome.channel);
-  if (!targetChannel) return "No channel is configured to send welcome message";
+  if (!targetChannel) return "Aucun canal n'est configuré pour envoyer un message de bienvenue ";
 
   const response = await buildGreeting(member, "WELCOME", settings.welcome);
   await sendMessage(targetChannel, response);
 
-  return `Sent welcome preview to ${targetChannel.toString()}`;
+  return `Aperçu de bienvenue envoyé à  ${targetChannel.toString()}`;
 }
 
 async function setStatus(settings, status) {
   const enabled = status.toUpperCase() === "ON" ? true : false;
   settings.welcome.enabled = enabled;
   await settings.save();
-  return `Configuration saved! Welcome message ${enabled ? "enabled" : "disabled"}`;
+  return `Configuration enregistrée ! Message de bienvenue ${enabled ? "activer" : "desactiver"}`;
 }
 
 async function setChannel(settings, channel) {
   if (!canSendEmbeds(channel)) {
     return (
-      "Ugh! I cannot send greeting to that channel? I need the `Write Messages` and `Embed Links` permissions in " +
+      "Pouah! Je ne peux pas envoyer de message d'accueil à ce canal ? J'ai besoin des autorisations `Write Messages` et `Embed Links` dans " +
       channel.toString()
     );
   }
   settings.welcome.channel = channel.id;
   await settings.save();
-  return `Configuration saved! Welcome message will be sent to ${channel ? channel.toString() : "Not found"}`;
+  return `Configuration enregistrée ! Un message de bienvenue sera envoyé à ${channel ? channel.toString() : "Pas trouvé"}`;
 }
 
 async function setDescription(settings, desc) {
   settings.welcome.embed.description = desc;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Configuration enregistrée ! Message de bienvenue mis à jour ";
 }
 
 async function setThumbnail(settings, status) {
   settings.welcome.embed.thumbnail = status.toUpperCase() === "ON" ? true : false;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Configuration enregistrée ! Message de bienvenue mis à jour ";
 }
 
 async function setColor(settings, color) {
   settings.welcome.embed.color = color;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Configuration enregistrée ! Message de bienvenue mis à jour ";
 }
 
 async function setFooter(settings, content) {
   settings.welcome.embed.footer = content;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Configuration enregistrée ! Message de bienvenue mis à jour ";
 }

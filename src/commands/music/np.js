@@ -50,8 +50,8 @@ function nowPlaying({ client, guildId }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: "En Cours" })
     .setDescription(`[${track.title}](${track.uri})`)
-    .addField("<:point:955639055511601152>Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
-    .addField("<:point:955639055511601152>Ajoûter par", track.requester.tag || "Inconnue", true)
+    .addField("<:fleche:975406471774888006> Durée", "`" + prettyMs(track.duration, { colonNotation: true }) + "`", true)
+    .addField("<:fleche:975406471774888006> Ajoûter par", track.requester.tag || "Inconnue", true)
     .addField(
       "\u200b",
       new Date(player.position).toISOString().slice(11, 19) +

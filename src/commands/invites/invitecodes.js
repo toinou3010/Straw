@@ -7,19 +7,19 @@ module.exports = class InviteCodes extends Command {
   constructor(client) {
     super(client, {
       name: "invitecodes",
-      description: "list all your invites codes in this guild",
+      description: "lister tous vos codes d'invitations dans cette guilde ",
       category: "INVITE",
       botPermissions: ["EMBED_LINKS", "MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "[@member|id]",
+        usage: "[@membre|id]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "the user to get the invite codes for",
+            name: "utilisateur",
+            description: "à l'utilisateur d'obtenir les codes d'invitation pour ",
             type: "USER",
             required: false,
           },
@@ -42,7 +42,7 @@ module.exports = class InviteCodes extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const user = interaction.options.getUser("user") || interaction.user;
+    const user = interaction.options.getUser("utilisateur") || interaction.user;
     const response = await getInviteCodes(interaction, user);
     await interaction.followUp(response);
   }
@@ -51,15 +51,15 @@ module.exports = class InviteCodes extends Command {
 async function getInviteCodes({ guild }, user) {
   const invites = await guild.invites.fetch({ cache: false });
   const reqInvites = invites.filter((inv) => inv.inviter.id === user.id);
-  if (reqInvites.size === 0) return `\`${user.tag}\` has no invites in this server`;
+  if (reqInvites.size === 0) return `\`${user.tag}\` n'a pas d'invitations sur ce serveur `;
 
   let str = "";
   reqInvites.forEach((inv) => {
-    str += `❯ [${inv.code}](${inv.url}) : ${inv.uses} uses\n`;
+    str += `❯ [${inv.code}](${inv.url}) : ${inv.uses} utilisations\n`;
   });
 
   const embed = new MessageEmbed()
-    .setAuthor({ name: `Invite code for ${user.username}` })
+    .setAuthor({ name: `Code d'invitation pour  ${user.username}` })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(str);
 

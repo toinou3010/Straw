@@ -6,7 +6,7 @@ module.exports = {
     ENABLED: true,
     STATUS: "online",
     TYPE: "WATCHING",
-    MESSAGE: ".help",
+    MESSAGE: ".aide",
   },
   DASHBOARD: {
     enabled: false,
@@ -15,10 +15,10 @@ module.exports = {
     port: "8080",
   },
   INTERACTIONS: {
-    SLASH: true,
+    SLASH: false,
     CONTEXT: true,
     GLOBAL: true,
-    TEST_GUILD_ID: "681797849926860810",
+    TEST_GUILD_ID: "",
   },
   XP_SYSTEM: {
     COOLDOWN: 5,
@@ -28,7 +28,7 @@ module.exports = {
     DAILY_COINS: 1000,
   },
   ECONOMY: {
-    CURRENCY: "❀",
+    CURRENCY: " 🥜",
     DAILY_COINS: 1000,
     MIN_BEG_AMOUNT: 100,
     MAX_BEG_AMOUNT: 2500,
@@ -48,7 +48,7 @@ module.exports = {
   },
   MUSIC: {
     IDLE_TIME: 1000,
-    MAX_SEARCH_RESULTS: 10,
+    MAX_SEARCH_RESULTS: 20,
     NODES: [
       {
         host: "ger.lavalink.mitask.tech",
@@ -70,7 +70,7 @@ module.exports = {
   },
   /* Couleurs des embed */
   EMBED_COLORS: {
-    BOT_EMBED: "#303136",
+    BOT_EMBED: "#F4BFD4",
     TRANSPARENT: "#303136",
     SUCCESS: "#303136",
     ERROR: "#303136",

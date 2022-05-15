@@ -6,7 +6,7 @@ module.exports = class Skip extends Command {
   constructor(client) {
     super(client, {
       name: "skip",
-      description: "skip the current song",
+      description: "sauter la chanson en cours ",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -40,5 +40,5 @@ function skip({ client, guildId }) {
   const player = client.musicManager.get(guildId);
   const { title } = player.queue.current;
   player.stop();
-  return `⏯️ ${title} was skipped.`;
+  return `${title} a été sauté. `;
 }

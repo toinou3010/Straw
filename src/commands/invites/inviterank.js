@@ -6,21 +6,21 @@ module.exports = class AddInvitesCommand extends Command {
   constructor(client) {
     super(client, {
       name: "inviterank",
-      description: "configure invite ranks",
+      description: "configurer les rangs d'invitation ",
       category: "INVITE",
       userPermissions: ["MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "<role-name> <invites>",
+        usage: "<role> <invites>",
         minArgsCount: 2,
         subcommands: [
           {
-            trigger: "add <role> <invites>",
-            description: "add auto-rank after reaching a particular number of invites",
+            trigger: "ajouter <role> <invites>",
+            description: "ajouter un classement automatique après avoir atteint un certain nombre d'invitations ",
           },
           {
-            trigger: "remove role",
-            description: "remove invite rank configured with that role",
+            trigger: "retirer role",
+            description: "supprimer le rang d'invitation configuré avec ce rôle ",
           },
         ],
       },
@@ -29,32 +29,32 @@ module.exports = class AddInvitesCommand extends Command {
         ephemeral: true,
         options: [
           {
-            name: "add",
-            description: "add a new invite rank",
+            name: "ajouter",
+            description: "ajouter un nouveau rang d'invitation ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "role",
-                description: "role to be given",
+                description: "rôle à donner ",
                 type: "ROLE",
                 required: true,
               },
               {
                 name: "invites",
-                description: "number of invites required to obtain the role",
+                description: "nombre d'invitations nécessaires pour obtenir le rôle ",
                 type: "INTEGER",
                 required: true,
               },
             ],
           },
           {
-            name: "remove",
-            description: "remove a previously configured invite rank",
+            name: "retirer",
+            description: "supprimer un rang d'invitation précédemment configuré ",
             type: "SUB_COMMAND",
             options: [
               {
                 name: "role",
-                description: "role with configured invite rank",
+                description: "rôle avec rang d'invitation configuré ",
                 type: "ROLE",
                 required: true,
               },
@@ -73,30 +73,30 @@ module.exports = class AddInvitesCommand extends Command {
   async messageRun(message, args, data) {
     const sub = args[0].toLowerCase();
 
-    if (sub === "add") {
+    if (sub === "ajouter") {
       const query = args[1];
       const invites = args[2];
 
-      if (isNaN(invites)) return message.reply(`\`${invites}\` is not a valid number of invites?`);
+      if (isNaN(invites)) return message.reply(`\`${invites}\` n'est pas un nombre valide d'invitations ?`);
       const role = message.mentions.roles.first() || findMatchingRoles(message.guild, query)[0];
-      if (!role) return message.reply(`No roles found matching \`${query}\``);
+      if (!role) return message.reply(`Aucun rôle trouvé correspondant  \`${query}\``);
 
       const response = await addInviteRank(message, role, invites, data.settings);
       await message.reply(response);
     }
 
     //
-    else if (sub === "remove") {
+    else if (sub === "retirer") {
       const query = args[1];
       const role = message.mentions.roles.first() || findMatchingRoles(message.guild, query)[0];
-      if (!role) return message.reply(`No roles found matching \`${query}\``);
+      if (!role) return message.reply(`Aucun rôle trouvé correspondant  \`${query}\``);
       const response = await removeInviteRank(message, role, data.settings);
       await message.reply(response);
     }
 
     //
     else {
-      await message.reply("Incorrect command usage!");
+      await message.reply("Utilisation incorrecte de la commande !");
     }
   }
 
@@ -107,7 +107,7 @@ module.exports = class AddInvitesCommand extends Command {
   async interactionRun(interaction, data) {
     const sub = interaction.options.getSubcommand();
     //
-    if (sub === "add") {
+    if (sub === "ajouter") {
       const role = interaction.options.getRole("role");
       const invites = interaction.options.getInteger("invites");
 
@@ -116,7 +116,7 @@ module.exports = class AddInvitesCommand extends Command {
     }
 
     //
-    else if (sub === "remove") {
+    else if (sub === "retirer") {
       const role = interaction.options.getRole("role");
       const response = await removeInviteRank(interaction, role, data.settings);
       await interaction.followUp(response);
@@ -125,18 +125,18 @@ module.exports = class AddInvitesCommand extends Command {
 };
 
 async function addInviteRank({ guild }, role, invites, settings) {
-  if (!settings.invite.tracking) return `Invite tracking is disabled in this server`;
+  if (!settings.invite.tracking) return `Le suivi des invitations est désactivé sur ce serveur `;
 
   if (role.managed) {
-    return "You cannot assign a bot role";
+    return "Vous ne pouvez pas attribuer un rôle de bot ";
   }
 
   if (guild.roles.everyone.id === role.id) {
-    return "I cannot assign the everyone role.";
+    return "Je ne peux pas attribuer le rôle à tout le monde. ";
   }
 
   if (!role.editable) {
-    return "I am missing permissions to move members to that role. Is that role below my highest role?";
+    return "Il me manque des autorisations pour déplacer des membres vers ce rôle. Ce rôle est-il en dessous de mon rôle le plus élevé ?";
   }
 
   const exists = settings.invite.ranks.find((obj) => obj._id === role.id);
@@ -144,36 +144,36 @@ async function addInviteRank({ guild }, role, invites, settings) {
   let msg = "";
   if (exists) {
     exists.invites = invites;
-    msg += "Previous configuration found for this role. Overwriting data\n";
+    msg += "Configuration précédente trouvée pour ce rôle. Ecrasement des données \n";
   }
 
   settings.invite.ranks.push({ _id: role.id, invites });
   await settings.save();
-  return `${msg}Success! Configuration saved.`;
+  return `${msg}Succès! Configuration enregistrée. `;
 }
 
 async function removeInviteRank({ guild }, role, settings) {
-  if (!settings.invite.tracking) return `Invite tracking is disabled in this server`;
+  if (!settings.invite.tracking) return `Le suivi des invitations est désactivé sur ce serveur `;
 
   if (role.managed) {
-    return "You cannot assign a bot role";
+    return "Vous ne pouvez pas attribuer un rôle de bot ";
   }
 
   if (guild.roles.everyone.id === role.id) {
-    return "You cannot assign the everyone role.";
+    return "Vous ne pouvez pas attribuer le rôle Tout le monde. ";
   }
 
   if (!role.editable) {
-    return "I am missing permissions to move members from that role. Is that role below my highest role?";
+    return "Il me manque des autorisations pour déplacer des membres de ce rôle. Ce rôle est-il en dessous de mon rôle le plus élevé ?";
   }
 
   const exists = settings.invite.ranks.find((obj) => obj._id === role.id);
-  if (!exists) return "No previous invite rank is configured found for this role";
+  if (!exists) return "Aucun classement d'invitation précédent n'a été configuré pour ce rôle ";
 
   // delete element from array
   const i = settings.invite.ranks.findIndex((obj) => obj._id === role.id);
   if (i > -1) settings.invite.ranks.splice(i, 1);
 
   await settings.save();
-  return "Success! Configuration saved.";
+  return "Succès! Configuration enregistrée. ";
 }

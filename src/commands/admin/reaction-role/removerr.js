@@ -10,12 +10,12 @@ module.exports = class RemoveReactionRole extends Command {
   constructor(client) {
     super(client, {
       name: "removerr",
-      description: "remove configured reaction for the specified message",
+      description: "supprimer la réaction configurée pour le message spécifié ",
       category: "ADMIN",
       userPermissions: ["MANAGE_GUILD"],
       command: {
         enabled: true,
-        usage: "<#channel> <messageid>",
+        usage: "<#salon> <messageid>",
         minArgsCount: 2,
       },
       slashCommand: {
@@ -23,15 +23,15 @@ module.exports = class RemoveReactionRole extends Command {
         ephemeral: true,
         options: [
           {
-            name: "channel",
-            description: "channel where the message exists",
+            name: "salon",
+            description: "canal où le message existe ",
             type: "CHANNEL",
             channelTypes: ["GUILD_TEXT"],
             required: true,
           },
           {
             name: "message_id",
-            description: "message id for which reaction roles was configured",
+            description: "ID de message pour lequel les rôles de réaction ont été configurés ",
             type: "STRING",
             required: true,
           },
@@ -46,7 +46,7 @@ module.exports = class RemoveReactionRole extends Command {
    */
   async messageRun(message, args) {
     const targetChannel = getMatchingChannels(message.guild, args[0]);
-    if (targetChannel.length === 0) return message.reply(`No channels found matching ${args[0]}`);
+    if (targetChannel.length === 0) return message.reply(`Aucune chaîne trouvée correspondant ${args[0]}`);
 
     const targetMessage = args[1];
     const response = await removeRR(message.guild, targetChannel[0], targetMessage);
@@ -58,7 +58,7 @@ module.exports = class RemoveReactionRole extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const targetChannel = interaction.options.getChannel("channel");
+    const targetChannel = interaction.options.getString("salon");
     const messageId = interaction.options.getString("message_id");
 
     const response = await removeRR(interaction.guild, targetChannel, messageId);
@@ -68,22 +68,22 @@ module.exports = class RemoveReactionRole extends Command {
 
 async function removeRR(guild, channel, messageId) {
   if (!channel.permissionsFor(guild.me).has(channelPerms)) {
-    return `You need the following permissions in ${channel.toString()}\n${parsePermissions(channelPerms)}`;
+    return `Vous avez besoin des autorisations suivantes dans  ${channel.toString()}\n${parsePermissions(channelPerms)}`;
   }
 
   let targetMessage;
   try {
     targetMessage = await channel.messages.fetch(messageId);
   } catch (ex) {
-    return "Could not fetch message. Did you provide a valid messageId?";
+    return "Impossible de récupérer le message. Avez-vous fourni un identifiant de message valide ?";
   }
 
   try {
     await removeReactionRole(guild.id, channel.id, targetMessage.id);
     await targetMessage.reactions?.removeAll();
   } catch (ex) {
-    return "Oops! An unexpected error occurred. Try again later";
+    return "Oups! Une erreur inattendue est apparue. Réessayez plus tard ";
   }
 
-  return "Done! Configuration updated";
+  return "Fait! Configuration mise à jour ";
 }

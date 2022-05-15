@@ -130,7 +130,7 @@ async function getHelpMenu({ client, guild }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setImage("")
     .setDescription("<:loupe:963263165632741457> **À propos de moi:**\n" +
-        `> Je suis Eiko, un bot multifonction pour aider sur votre serveur !\n` +
+        `<:flechebas:975429499254632468>\n> Je suis Straw, un bot multifonction pour aider sur votre serveur !\n` +
         "> Je suis en maintenance certains de mes commandes ne sont pas 100% fonctionnel.\n\n" +
         `<:flame2:963276599137013800> **Invite Moi:** [Aller clique](${client.getInvite()})\n` +
         `<:fly:963276657387536386> **Serveur d'Assistance:** [Straw Café](${SUPPORT_SERVER})`
@@ -301,11 +301,11 @@ function getMsgCategoryEmbeds(client, category, prefix) {
       );
 
     collector +=
-      "\n\nYou can use these image commands in following formats\n" +
-      `**${prefix}cmd:** Picks message authors avatar as image\n` +
-      `**${prefix}cmd <@member>:** Picks mentioned members avatar as image\n` +
-      `**${prefix}cmd <url>:** Picks image from provided URL\n` +
-      `**${prefix}cmd [attachment]:** Picks attachment image`;
+      "\n\nVous pouvez utiliser ces commandes d'image dans les formats suivants\n" +
+      `**${prefix}cmd:** Sélectionne l'avatar des auteurs du message comme image\n` +
+      `**${prefix}cmd <@membre>:** Sélectionne l'avatar des membres mentionnés comme image\n` +
+      `**${prefix}cmd <url>:** Sélectionne l'image à partir de l'URL fournie\n` +
+      `**${prefix}cmd [image]:** Sélectionne l'image de la pièce jointe`;
 
     const embed = new MessageEmbed()
       .setColor(EMBED_COLORS.BOT_EMBED)

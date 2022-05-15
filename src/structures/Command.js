@@ -242,7 +242,7 @@ class Command {
     let desc = "";
     if (this.command.subcommands.length > 0) {
       this.command.subcommands.forEach((sub) => {
-        desc += `\`${prefix}${invoke} ${sub.trigger}\`\n<:point:955639055511601152>${sub.description}\n\n`;
+        desc += `\`${prefix}${invoke} ${sub.trigger}\`\n<:fleche:963265299992444998>${sub.description}\n\n`;
       });
       if (this.cooldown) {
         desc += `**Temps d'attente :** ${timeformat(this.cooldown)}`;

@@ -5,8 +5,8 @@ const guildInfo = require("../shared/guild");
 module.exports = class GuildInfo extends Command {
   constructor(client) {
     super(client, {
-      name: "guildinfo",
-      description: "shows information about the server",
+      name: "infoserveur",
+      description: "affiche des informations sur le serveur",
       category: "INFORMATION",
       botPermissions: ["EMBED_LINKS"],
       cooldown: 5,

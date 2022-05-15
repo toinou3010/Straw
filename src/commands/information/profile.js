@@ -9,19 +9,19 @@ module.exports = class Profile extends Command {
   constructor(client) {
     super(client, {
       name: "profile",
-      description: "shows members profile",
+      description: "affiche le profil des membres",
       cooldown: 5,
       category: "INFORMATION",
       command: {
         enabled: true,
-        usage: "[@member|id]",
+        usage: "[@membre|id]",
       },
       slashCommand: {
         enabled: true,
         options: [
           {
-            name: "user",
-            description: "target user",
+            name: "utilisateur",
+            description: "utilisateur cible ",
             type: "USER",
             required: false,
           },
@@ -46,7 +46,7 @@ module.exports = class Profile extends Command {
    * @param {object} data
    */
   async interactionRun(interaction, data) {
-    const user = interaction.options.getUser("user") || interaction.user;
+    const user = interaction.options.getUser("utilisateur") || interaction.user;
     const response = await profile(interaction, user, data.settings);
     await interaction.followUp(response);
   }
@@ -59,20 +59,19 @@ async function profile({ guild }, user, settings) {
   const embed = new MessageEmbed()
     .setThumbnail(user.displayAvatarURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .addField("User Tag", user.tag, true)
+    .addField("Tag d'utilisateur", user.tag, true)
     .addField("ID", user.id, true)
-    .addField("Discord Registered", user.createdAt.toDateString(), false)
-    .addField("Cash", `${userData.coins} ${ECONOMY.CURRENCY}`, true)
-    .addField("Bank", `${userData.bank} ${ECONOMY.CURRENCY}`, true)
-    .addField("Net Worth", `${userData.coins + userData.bank}${ECONOMY.CURRENCY}`, true)
+    .addField("Inscription Discord", user.createdAt.toDateString(), false)
+    .addField("Argent", `${userData.coins} ${ECONOMY.CURRENCY}`, true)
+    .addField("Banque", `${userData.bank} ${ECONOMY.CURRENCY}`, true)
+    .addField("Valeur nette", `${userData.coins + userData.bank}${ECONOMY.CURRENCY}`, true)
     .addField("Reputation", `${userData.reputation.received}`, true)
-    .addField("Daily Streak", `${userData.daily.streak}`, true)
-    .addField("XP*", `${settings.ranking.enabled ? memberData.xp + " " : "Not Tracked"}`, true)
-    .addField("Level*", `${settings.ranking.enabled ? memberData.level + " " : "Not Tracked"}`, true)
-    .addField("Strikes*", memberData.strikes + " ", true)
-    .addField("Warnings*", memberData.warnings + " ", true)
-    .addField("Avatar-URL", user.displayAvatarURL({ format: "png" }))
-    .setFooter({ text: "Fields marked (*) are guild specific" });
+    .addField("Série quotidienne", `${userData.daily.streak}`, true)
+    .addField("XP*", `${settings.ranking.enabled ? memberData.xp + " " : "Non suivi"}`, true)
+    .addField("Niveau*", `${settings.ranking.enabled ? memberData.level + " " : "Non suivi"}`, true)
+    .addField("Series*", memberData.strikes + " ", true)
+    .addField("Avertissement*", memberData.warnings + " ", true)
+    .setFooter({ text: "Les champs marqués (*) sont spécifiques à la guilde" });
 
   return { embeds: [embed] };
 }

@@ -6,7 +6,7 @@ const { EMBED_COLORS } = require("@root/config");
 module.exports = class Search extends Command {
   constructor(client) {
     super(client, {
-      name: "recherche",
+      name: "search",
       description: "rechercher une musique",
       category: "MUSIC",
       botPermissions: ["EMBED_LINKS"],

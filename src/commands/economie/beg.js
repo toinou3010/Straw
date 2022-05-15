@@ -7,7 +7,7 @@ module.exports = class BegCommand extends Command {
   constructor(client) {
     super(client, {
       name: "beg",
-      description: "beg from someone",
+      description: "mendier à quelqu'un ",
       category: "ECONOMY",
       cooldown: 21600,
       botPermissions: ["EMBED_LINKS"],
@@ -40,32 +40,12 @@ module.exports = class BegCommand extends Command {
 
 async function beg(user) {
   let users = [
-    "PewDiePie",
-    "T-Series",
-    "Sans",
-    "RLX",
-    "Pro Gamer 711",
-    "Zenitsu",
-    "Jake Paul",
-    "Kaneki Ken",
-    "KSI",
-    "Naruto",
-    "Mr. Beast",
-    "Ur Mom",
-    "A Broke Person",
-    "Giyu Tomiaka",
-    "Bejing Embacy",
-    "A Random Asian Mom",
-    "Ur Step Sis",
-    "Jin Mori",
-    "Sakura (AKA Trash Can)",
-    "Hammy The Hamster",
-    "Kakashi Sensei",
-    "Minato",
-    "Tanjiro",
-    "ZHC",
-    "The IRS",
-    "Joe Mama",
+    "Becky Blackbell",
+    "Franky",
+    "Bond Forger",
+    "Yor Forger",
+    "Anya Forger",
+    "Loid Forger",
   ];
 
   let amount = Math.floor(Math.random() * `${ECONOMY.MAX_BEG_AMOUNT}` + `${ECONOMY.MIN_BEG_AMOUNT}`);
@@ -77,8 +57,8 @@ async function beg(user) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: `${user.username}`, iconURL: user.displayAvatarURL() })
     .setDescription(
-      `**${users[Math.floor(Math.random() * users.length)]}** donated you **${amount}** ${ECONOMY.CURRENCY}\n` +
-        `**Updated Balance:** **${userDb.coins}** ${ECONOMY.CURRENCY}`
+      `**${users[Math.floor(Math.random() * users.length)]}** vous a fait don de **${amount}** ${ECONOMY.CURRENCY}\n` +
+        `**Solde mis à jour :** **${userDb.coins}** ${ECONOMY.CURRENCY}`
     );
 
   return { embeds: [embed] };

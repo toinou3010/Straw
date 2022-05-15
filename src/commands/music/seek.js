@@ -8,7 +8,7 @@ module.exports = class Seek extends Command {
   constructor(client) {
     super(client, {
       name: "seek",
-      description: "sets the playing track's position to the specified position",
+      description: "définit la position de la piste de lecture à la position spécifiée ",
       category: "MUSIC",
       validations: musicValidations,
       command: {
@@ -19,8 +19,8 @@ module.exports = class Seek extends Command {
         enabled: true,
         options: [
           {
-            name: "time",
-            description: "The time you want to seek to.",
+            name: "temp",
+            description: "Le temps que vous voulez chercher. ",
             type: "STRING",
             required: true,
           },
@@ -43,7 +43,7 @@ module.exports = class Seek extends Command {
    * @param {CommandInteraction} interaction
    */
   async interactionRun(interaction) {
-    const time = interaction.options.getString("time");
+    const time = interaction.options.getString("temp");
     const response = seekTo(interaction, time);
     await interaction.followUp(response);
   }
@@ -54,9 +54,9 @@ function seekTo({ client, guildId }, time) {
   const seekTo = durationToMillis(time);
 
   if (seekTo > player.queue.current.duration) {
-    return "The duration you provide exceeds the duration of the current track";
+    return "La durée que vous fournissez dépasse la durée de la piste actuelle ";
   }
 
   player.seek(seekTo);
-  return `Seeked to ${prettyMs(seekTo, { colonNotation: true, secondsDecimalDigits: 0 })}`;
+  return `A cherché à  ${prettyMs(seekTo, { colonNotation: true, secondsDecimalDigits: 0 })}`;
 }
