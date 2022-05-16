@@ -6,7 +6,7 @@ module.exports = {
     ENABLED: true,
     STATUS: "online",
     TYPE: "WATCHING",
-    MESSAGE: ".aide",
+    MESSAGE: ".aide || ",
   },
   DASHBOARD: {
     enabled: false,
